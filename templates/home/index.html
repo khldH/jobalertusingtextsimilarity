@@ -1,0 +1,110 @@
+{% extends "shared/base.html" %}
+
+
+{% block title %}
+<title>Job Board</title>
+{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="row my-5">
+        <h5 class="display-5"></h5>
+        <div class="text-danger font-weight-bold">
+            {% for error in errors %}
+            <li>{{error}}</li>
+            {% endfor %}
+        </div>
+    </div>
+    <div class="row my-5">
+        <!--        <form class="form-inline" action="/search/">-->
+        <!--            <div class="input-group">-->
+        <!--                <input type="search" required placeholder="job description, title, keyword, organization, location"-->
+        <!--                       value="{{query}}"-->
+        <!--                       name="query" class="form-control">-->
+        <!--                <button type="submit" formnovalidate class="btn btn-primary">Submit</button>-->
+        <!--            </div>-->
+        <!--        </form>-->
+    </div>
+    <div class="row height d-flex justify-content-center align-items-center">
+
+        <div class="col-md-8">
+            <form class="form-inline" action="/search/">
+                <div class="search">
+                    <!--                    <i class="fa fa-search"></i>-->
+                    <input type="text" class="form-control" name="query" value="{{query}}"
+                           placeholder="Have a question? Ask Now">
+                    <button class="btn btn-primary" style="width:110px">Search</button>
+                </div>
+            </form>
+        </div>
+
+    </div>
+
+
+    {% if jobs%}
+    <div class="row my-5">
+        <hr>
+        <div class="col-md-8">
+<!--            <div class="card">-->
+<!--                <div class="list border-bottom">-->
+<!--                    <div class="d-flex flex-column ml-3"> <span>Client communication policy</span> <small>#politics - may - @max</small> </div>-->
+<!--                </div>-->
+<!--            </div>-->
+<!--            <p class="text-muted">{{jobs|length}} jobs found</p>-->
+            {% for job in jobs%}
+            <a class="" href={{job.url}} style="text-decoration:none;" target="_blank">
+                <div class="card">
+                    <div class="list border-bottom">
+                         <div class="d-flex flex-column ml-3"> <span>{{job.title}}</span>
+                             <span><small><i class="fas fa-external-link-alt"></i> [{{job.source}}]  <i class="far  fa-clock"></i>  {{job.posted_date}} <i class="far fa-building"></i>  {{job.organization}} </small></span>
+<!--                             <span><small>{{job.posted_date}}</small></span>-->
+<!--                              <span><small>{{job.organization}}</small></span>-->
+                         </div>
+<!--                        <p class="card-title">{{job.title}}</p>-->
+<!--                        <p class="card-subtitle mb-2 text-muted">{{job.source}}</p>-->
+<!--                        <p class="card-subtitle mb-2 text-muted">{{job.posted_date}}</p>-->
+<!--                        <p class="card-subtitle mb-2 text-muted">{{job.organization}}</p>-->
+                    </div>
+                </div>
+            </a>
+            {% endfor %}
+        </div>
+        <div class="col-md-4">
+            <div class="card bg-light mb-3">
+                <div class="card-header">
+                    <p class="font-weight-light">Get new jobs for this search "{{query}}" by email</p>
+                </div>
+                <div class="card-body">
+                    <form method="POST" action="/subscribe">
+                        <!--                        <div class="mb-3">-->
+                        <!--                            <label>Name</label>-->
+                        <!--                            <input type="text" required class="form-control" name="name" value="{{name}}"-->
+                        <!--                                   placeholder="name">-->
+                        <!--                        </div>-->
+                        <div class="search subscribe">
+                            <input type="text" required placeholder="Your email" name="email" value="{{email}}"
+                                   class="form-control">
+                            <button type="submit" class="btn btn-primary">Send me new jobs</button>
+                        </div>
+                        <div class="mb-3">
+                            <input type="hidden" required placeholder="write a summary" value="{{query}}"
+                                   name="job_description" class="form-control">
+                        </div>
+
+                    </form>
+                </div>
+            </div>
+        </div>
+        {% elif query %}
+        <p class="text-muted"> The search <strong>{{query}}</strong> did not match any jobs</p>
+        <ul>
+            <li>Try more general keywords</li>
+            <li>Check your spelling</li>
+            <li>Replace abbreviations with full words</li>
+        </ul>
+        {% endif %}
+    </div>
+</div>
+</div>
+{% endblock %}
+
