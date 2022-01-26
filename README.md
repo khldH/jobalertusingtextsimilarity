@@ -1,4 +1,4 @@
-sett up a job alert for users and find relevant jobs using text similiarity search
+job alert using text similiarity search
 ==============================
 
 A short description of the project.
