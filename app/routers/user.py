@@ -46,9 +46,13 @@ async def subscribe(request: Request, db: Session = Depends(get_db)):
                     status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
                     detail="Email couldn't be send. Please try again.",
                 )
-            return responses.RedirectResponse(
-                "/?msg=registration successful", status_code=status.HTTP_302_FOUND
-            )  # default is post request, to use get request added status code 302
+            # return responses.RedirectResponse(
+            #     "/?msg=registration successful", status_code=status.HTTP_302_FOUND
+            # )  # default is post request, to use get request added status code 302
+            return templates.TemplateResponse(
+                "users/success.html",
+                {"request": request, "msg": "registration successful"},
+            )
 
         except ValueError as e:
             form.__dict__.get("errors").append(e)
@@ -57,7 +61,7 @@ async def subscribe(request: Request, db: Session = Depends(get_db)):
 
 
 @router.get("/verify/{token}")
-async def verify(token: str, db: Session = Depends(get_db)):
+async def verify(request: Request, token: str, db: Session = Depends(get_db)):
     invalid_token_error = HTTPException(status_code=400, detail="Invalid token")
     try:
         payload = jwt.decode(
@@ -70,15 +74,23 @@ async def verify(token: str, db: Session = Depends(get_db)):
     # user_query = db.query(User).filter(User.id == payload["sub"])
     # user = user_query.first()
     user_dynamodb = get_user_by_id(dynamodb, user_id=payload["sub"])
-    print(user_dynamodb)
+    # print(user_dynamodb)
     if not user_dynamodb:
         raise invalid_token_error
     if user_dynamodb["is_active"]:
-        return responses.RedirectResponse("/?msg=user already verified")
+        # return responses.RedirectResponse("/?msg=user already verified")
+        return templates.TemplateResponse(
+            "users/success.html",
+            {"request": request, "msg": "user already verified"},
+        )
     try:
         update_user_status(dynamodb, user_dynamodb["id"])
         # user.is_active = True
         # db.commit()
-        return responses.RedirectResponse("/?msg=successfully verified")
+        # return responses.RedirectResponse("/?msg=successfully verified")
+        return templates.TemplateResponse(
+            "users/success.html",
+            {"request": request, "msg": "verification successful"},
+        )
     except jwt.JWTError:
         return templates.TemplateResponse("users/subscribe.html")

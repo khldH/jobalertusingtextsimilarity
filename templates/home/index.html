@@ -2,7 +2,7 @@
 
 
 {% block title %}
-<title>Job Board</title>
+<title>get new job alerts in your email</title>
 {% endblock %}
 
 {% block content %}
@@ -15,24 +15,33 @@
             {% endfor %}
         </div>
     </div>
-    <div class="row my-5">
-        <!--        <form class="form-inline" action="/search/">-->
-        <!--            <div class="input-group">-->
-        <!--                <input type="search" required placeholder="job description, title, keyword, organization, location"-->
-        <!--                       value="{{query}}"-->
-        <!--                       name="query" class="form-control">-->
-        <!--                <button type="submit" formnovalidate class="btn btn-primary">Submit</button>-->
-        <!--            </div>-->
-        <!--        </form>-->
+    <div class="row my-5 justify-content-center">
+        <div class="col text-center">
+            <div class="card border-0">
+                <div class="card-body">
+                    <div class="card-title">
+                        <h3 class="mb-4">Put your job search on auto-pilot</h3>
+                    </div>
+                    <div class="row justify-content-center">
+                        <div class="col-md-6 col">
+                            <p class="small color-text">Use job title, keywords,
+                                organization or location to search jobs and set up daily job alerts based on your
+                                search.
+                                We will crawl all your favourite job posting sites and match you with relevant jobs
+                                using advanced Machine Learning technology </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
     <div class="row height d-flex justify-content-center align-items-center">
-
         <div class="col-md-8">
             <form class="form-inline" action="/search/">
                 <div class="search">
                     <!--                    <i class="fa fa-search"></i>-->
                     <input type="text" class="form-control" name="query" value="{{query}}"
-                           placeholder="Have a question? Ask Now">
+                           placeholder="Job title, keywords,organization or location">
                     <button class="btn btn-primary" style="width:110px">Search</button>
                 </div>
             </form>
@@ -44,31 +53,6 @@
     {% if jobs%}
     <div class="row my-5">
         <hr>
-        <div class="col-md-8">
-<!--            <div class="card">-->
-<!--                <div class="list border-bottom">-->
-<!--                    <div class="d-flex flex-column ml-3"> <span>Client communication policy</span> <small>#politics - may - @max</small> </div>-->
-<!--                </div>-->
-<!--            </div>-->
-<!--            <p class="text-muted">{{jobs|length}} jobs found</p>-->
-            {% for job in jobs%}
-            <a class="" href={{job.url}} style="text-decoration:none;" target="_blank">
-                <div class="card">
-                    <div class="list border-bottom">
-                         <div class="d-flex flex-column ml-3"> <span>{{job.title}}</span>
-                             <span><small><i class="fas fa-external-link-alt"></i> [{{job.source}}]  <i class="far  fa-clock"></i>  {{job.posted_date}} <i class="far fa-building"></i>  {{job.organization}} </small></span>
-<!--                             <span><small>{{job.posted_date}}</small></span>-->
-<!--                              <span><small>{{job.organization}}</small></span>-->
-                         </div>
-<!--                        <p class="card-title">{{job.title}}</p>-->
-<!--                        <p class="card-subtitle mb-2 text-muted">{{job.source}}</p>-->
-<!--                        <p class="card-subtitle mb-2 text-muted">{{job.posted_date}}</p>-->
-<!--                        <p class="card-subtitle mb-2 text-muted">{{job.organization}}</p>-->
-                    </div>
-                </div>
-            </a>
-            {% endfor %}
-        </div>
         <div class="col-md-4">
             <div class="card bg-light mb-3">
                 <div class="card-header">
@@ -81,29 +65,91 @@
                         <!--                            <input type="text" required class="form-control" name="name" value="{{name}}"-->
                         <!--                                   placeholder="name">-->
                         <!--                        </div>-->
-                        <div class="search subscribe">
+                        <div class="mb-3">
                             <input type="text" required placeholder="Your email" name="email" value="{{email}}"
                                    class="form-control">
-                            <button type="submit" class="btn btn-primary">Send me new jobs</button>
                         </div>
                         <div class="mb-3">
                             <input type="hidden" required placeholder="write a summary" value="{{query}}"
                                    name="job_description" class="form-control">
                         </div>
-
+                        <button type="submit" class="btn btn-outline-secondary "
+                                style="color:#fa4a06;background-color: #6c757d00;font-weight:bold" ;>Send me new jobs
+                        </button>
                     </form>
                 </div>
             </div>
         </div>
-        {% elif query %}
-        <p class="text-muted"> The search <strong>{{query}}</strong> did not match any jobs</p>
-        <ul>
-            <li>Try more general keywords</li>
-            <li>Check your spelling</li>
-            <li>Replace abbreviations with full words</li>
-        </ul>
+        <div class="col-md-8">
+            <!--            <div class="card">-->
+            <!--                <div class="list border-bottom">-->
+            <!--                    <div class="d-flex flex-column ml-3"> <span>Client communication policy</span> <small>#politics - may - @max</small> </div>-->
+            <!--                </div>-->
+            <!--            </div>-->
+            <!--            <p class="text-muted">{{jobs|length}} jobs found</p>-->
+            {% for job in jobs%}
+            <a class="" href={{job.url}} style="text-decoration:none;" target="_blank">
+                <div class="card">
+                    <div class="list border-bottom">
+                        <div class="d-flex flex-column ml-3"><span>{{job.title}}</span>
+                            {% if job.days_since_posted == 0 %}
+                             <span class="text-muted"><small><i class=""></i> today </small></span>
+                            {% elif  job.days_since_posted ==1%}
+                            <span class="text-muted"><small><i class=""></i> {{job.days_since_posted}} day ago</small></span>
+                            {% else %}
+                             <span class="text-muted"><small><i class=""></i> {{job.days_since_posted}} days ago</small></span>
+                            {%endif%}
+                            <!--                             <span><small>{{job.posted_date}}</small></span>-->
+                            <!--                              <span><small>{{job.organization}}</small></span>-->
+                        </div>
+                        <!--                        <p class="card-title">{{job.title}}</p>-->
+                        <!--                        <p class="card-subtitle mb-2 text-muted">{{job.source}}</p>-->
+                        <!--                        <p class="card-subtitle mb-2 text-muted">{{job.posted_date}}</p>-->
+                        <!--                        <p class="card-subtitle mb-2 text-muted">{{job.organization}}</p>-->
+                    </div>
+                </div>
+            </a>
+            {% endfor %}
+        </div>
+
+        {% elif query%}
+        <hr>
+
+        <div class="col-md-6">
+            <p class="text-muted"> The search <strong>{{query}}</strong> did not match any jobs</p>
+            <ul>
+                <li>Try more general keywords</li>
+                <li>Check your spelling</li>
+                <li>Replace abbreviations with full words</li>
+            </ul>
+        </div>
+        {% else %}
+        <br>
+        <div class="row my-5 justify-content-center">
+            <div class="col text-center">
+                <div class="card border-0">
+                    <div class="card-body">
+                        <div class="card-title">
+                            <h6 class="mb-4">Popular job posting sites crawled by our service</h6>
+
+                        </div>
+                        <br>
+                        <div class="row justify-content-center">
+                            <div class="col-md-4 col">
+                                <img src="{{ url_for('static', path='imgs/sjlogo.jpg')}}" alt="">
+                            </div>
+
+                            <div class="col-md-4 col">
+                                <img src="{{ url_for('static', path='imgs/rwlogo.png') }}" alt="">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
         {% endif %}
     </div>
+
 </div>
 </div>
 {% endblock %}

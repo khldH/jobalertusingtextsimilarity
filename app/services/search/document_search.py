@@ -2,6 +2,7 @@ from typing import List
 
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.metrics.pairwise import cosine_similarity
+from datetime import datetime
 
 
 class DocumentSearch(TfidfVectorizer):
@@ -30,11 +31,22 @@ class DocumentSearch(TfidfVectorizer):
                         "source": document.source,
                         "similarity_score": similarity,
                         "organization": document.organization,
-                        "posted_date":document.posted_date
+                        "posted_date": document.posted_date,
                     }
+                    if document.source == "Somali jobs":
+                        job["days_since_posted"] = (
+                            datetime.now().date()
+                            - datetime.strptime(document.posted_date, "%d %b %Y").date()
+                        ).days
+                    else:
+                        job["days_since_posted"] = (
+                            datetime.now().date()
+                            - datetime.fromisoformat(document.posted_date).date()
+                        ).days
+
                     results.append(job)
             return sorted(
-                results, key=lambda item: item["similarity_score"], reverse=True
+                results, key=lambda item: item["days_since_posted"], reverse=False
             )
         except Exception:
             raise ValueError("not a valid sentence")
