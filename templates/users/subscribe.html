@@ -2,36 +2,48 @@
 
 
 {% block title %}
-  <title>Job Detail</title>
+<title>get new job alerts by email</title>
 {% endblock %}
 
 {% block content %}
-  <div class="container">
-    <div class="row">
-      <h5 class="display-5">Subscribe to your job hunting hero</h5>
-      <div class="text-danger font-weight-bold">
-          {% for error in errors %}
-            <li>{{error}}</li>
-          {% endfor %}
-      </div>
-    </div>
-
+<div class="container">
     <div class="row my-5">
-      <form method="POST">
-<!--        <div class="mb-3">-->
-<!--          <label>Name</label>-->
-<!--          <input type="text" required class="form-control" name="name" value="{{name}}" placeholder="name">-->
-<!--        </div>-->
-        <div class="mb-3">
-          <label>Email</label>
-          <input type="text" required placeholder="Your email" name="email" value="{{email}}" class="form-control">
+        <div class="text-danger font-weight-bold">
+            {% for error in errors %}
+            <li>{{error}}</li>
+            {% endfor %}
         </div>
-        <div class="mb-3">
-          <label>Job Description</label>
-          <input type="text-area" required placeholder="write a summary" value="{{job_description}}" name="job_description" class="form-control">
-        </div>
-        <button type="submit" class="btn btn-primary">Submit</button>
-      </form>
     </div>
-  </div>
-  {% endblock %}
+    <div class="row my-5">
+
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-header">
+                    <p class="font-weight-light">subscribe and get new job alerts by email</p>
+                </div>
+            </div>
+            <div class="card-body">
+                <form method="POST">
+                    <!--        <div class="mb-3">-->
+                    <!--          <label>Name</label>-->
+                    <!--          <input type="text" required class="form-control" name="name" value="{{name}}" placeholder="name">-->
+                    <!--        </div>-->
+                    <div class="mb-3">
+                        <!--          <label>Email</label>-->
+                        <input type="text" required placeholder="Your email" name="email" value="{{email}}"
+                               class="form-control">
+                    </div>
+                    <div class="mb-3">
+                        <!--          <label>Job Description</label>-->
+                        <input type="text-area" required placeholder="title, keyword, organization or location"
+                               value="{{job_description}}" name="job_description" class="form-control">
+                    </div>
+                    <button type="submit" class="btn btn-outline-secondary ">Send me new jobs</button>
+                </form>
+            </div>
+
+        </div>
+
+    </div>
+</div>
+{% endblock %}

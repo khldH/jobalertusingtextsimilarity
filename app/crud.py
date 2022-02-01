@@ -31,8 +31,10 @@ def create_new_user_dynamodb(db, new_user: UserCreate):
 
 def get_user_by_id(db, user_id):
     table = db.Table("users")
-    user = table.scan(FilterExpression=Key("id").eq(user_id))["Items"][0]
-    return user
+    items = table.scan(FilterExpression=Key("id").eq(user_id))["Items"]
+    if len(items) > 0:
+        return table.scan(FilterExpression=Key("id").eq(user_id))["Items"][0]
+    return {}
 
 
 def update_user_status(db, user_id):
