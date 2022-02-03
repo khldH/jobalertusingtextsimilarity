@@ -1,16 +1,13 @@
-from fastapi import APIRouter, Depends, HTTPException, Request, responses, status
+from fastapi import (APIRouter, Depends, HTTPException, Request, responses,
+                     status)
 from fastapi.templating import Jinja2Templates
 from jose import jwt
 from sqlalchemy.exc import IntegrityError
 from sqlalchemy.orm import Session
 
 from ..config import settings
-from ..crud import (
-    # create_new_user,
-    create_new_user_dynamodb,
-    get_user_by_id,
-    update_user_status,
-)
+from ..crud import (create_new_user_dynamodb,  # create_new_user,
+                    get_user_by_id, update_user_status)
 from ..database import dynamodb, dynamodb_web_service
 from ..email_alert import Email
 # from ..models import User

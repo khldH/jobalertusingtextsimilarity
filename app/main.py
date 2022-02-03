@@ -1,11 +1,10 @@
 import uvicorn
 from fastapi import FastAPI
+from fastapi.staticfiles import StaticFiles
 
 # from app import models
 # from app.database import engine
 from app.routers import index, user
-from fastapi import FastAPI
-from fastapi.staticfiles import StaticFiles
 
 
 def include_router(application):

@@ -1,12 +1,13 @@
 import re
+from pathlib import Path
 from typing import Optional
 
 from fastapi import APIRouter, Request
-from fastapi.templating import Jinja2Templates
 from fastapi.staticfiles import StaticFiles
-from pathlib import Path
-from app.database import dynamodb, dynamodb_web_service
+from fastapi.templating import Jinja2Templates
+
 from app.config import settings
+from app.database import dynamodb, dynamodb_web_service
 from app.services.search.document import Document
 
 # from ..services.scrappers.scrape_jobs import create_documents
@@ -42,13 +43,18 @@ async def search(request: Request, query: Optional[str] = None):
     documents = []
     for job in jobs:
         documents.append(Document(**job))
-    document_search = DocumentSearch(documents)
-    query = re.sub("[^A-Za-z0-9]+", " ", query)
-    matched_jobs = []
-    if len(query) > 1:
-        matched_jobs = document_search.search(query)
-    return templates.TemplateResponse(
-        "home/index.html",
-        {"request": request, "jobs": matched_jobs, "query": query},
-    )
+    try:
+        document_search = DocumentSearch(documents)
+        query = re.sub("[^A-Za-z0-9]+", " ", query)
+        matched_jobs = []
+        if len(query) > 1:
+            matched_jobs = document_search.search(query)
+        return templates.TemplateResponse(
+            "home/index.html",
+            {"request": request, "jobs": matched_jobs, "query": query},
+        )
+    except ValueError:
+        return templates.TemplateResponse(
+            "home/index.html", {"request": request, "query": query}
+        )
     return templates.TemplateResponse("home/index.html")
