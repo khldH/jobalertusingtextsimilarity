@@ -21,6 +21,7 @@ class Settings(BaseSettings):
     token_algorithm = "HS256"
     registration_token_lifetime = 60 * 60
     base_url = "{}:{}".format(host, str(port))
+    is_prod: bool
 
     class Config:
         env_file = ".env"

@@ -4,16 +4,16 @@ from datetime import datetime
 from boto3.dynamodb.conditions import Attr, Key
 from sqlalchemy.orm import Session
 
-from .models import Job, User
+# from .models import Job, User
 from .schemas import JobCreate, UserCreate
 
 
-def create_new_user(user: UserCreate, db: Session):
-    user = User(email=user.email, job_description=user.job_description)
-    db.add(user)
-    db.commit()
-    db.refresh(user)
-    return user
+# def create_new_user(user: UserCreate, db: Session):
+#     user = User(email=user.email, job_description=user.job_description)
+#     db.add(user)
+#     db.commit()
+#     db.refresh(user)
+#     return user
 
 
 def create_new_user_dynamodb(db, new_user: UserCreate):
