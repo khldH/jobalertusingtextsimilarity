@@ -14,10 +14,11 @@ psycopg2==2.9.2
 SQLAlchemy==1.4.28
 fastapi==0.70.1
 uvicorn==0.16.0
-jose==1.0.0
+#jose==1.0.0
 #spacy==3.2.1
 numpy==1.22.0
 scikit-learn==1.0.2
 requests==2.26.0
 boto3==1.20.37
 Jinja2==3.0.3
+python-jose==3.3.0
