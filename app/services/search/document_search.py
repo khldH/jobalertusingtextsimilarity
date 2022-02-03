@@ -1,8 +1,8 @@
+from datetime import datetime
 from typing import List
 
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.metrics.pairwise import cosine_similarity
-from datetime import datetime
 
 
 class DocumentSearch(TfidfVectorizer):
@@ -48,5 +48,6 @@ class DocumentSearch(TfidfVectorizer):
             return sorted(
                 results, key=lambda item: item["days_since_posted"], reverse=False
             )
-        except Exception:
+        except Exception as e:
+            print(e)
             raise ValueError("not a valid sentence")

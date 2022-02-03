@@ -9,9 +9,9 @@ class Settings(BaseSettings):
     database_password: str
     database_name: str
     database_username: str
-    aws_region_name: Optional[str]
-    aws_access_key_id: Optional[str]
-    aws_secret_access_key: Optional[str]
+    aws_region_name: str
+    aws_access_key_id: str
+    aws_secret_access_key: str
     host = "localhost"
     port = 8001
     mail_sender: str
@@ -21,6 +21,7 @@ class Settings(BaseSettings):
     token_algorithm = "HS256"
     registration_token_lifetime = 60 * 60
     base_url = "{}:{}".format(host, str(port))
+    is_prod: bool
 
     class Config:
         env_file = ".env"

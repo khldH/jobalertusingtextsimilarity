@@ -1,0 +1,7 @@
+version: "3"
+services:
+  jobalertapp:
+    build: .
+    ports:
+      - 8001:8001
+
