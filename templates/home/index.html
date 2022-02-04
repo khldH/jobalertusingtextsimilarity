@@ -35,19 +35,49 @@
             </div>
         </div>
     </div>
-    <div class="row height d-flex justify-content-center align-items-center">
-        <div class="col-md-8">
-            <form class="form-inline" action="/search/">
-                <div class="search">
-                    <!--                    <i class="fa fa-search"></i>-->
-                    <input type="text" class="form-control" name="query" value="{{query}}"
-                           placeholder="Job title, keywords,organization or location">
-                    <button class="btn btn-primary" style="width:110px">Search</button>
-                </div>
-            </form>
-        </div>
+    <div class="row mb-5">
+        <div class="col-lg-8 mx-auto">
+            <div class="bg-white p-5 rounded shadow">
+                <form action="/search/">
+                    <div class="p-1 bg-light rounded rounded-pill shadow-sm mb-4">
+                        <div class="input-group">
+                            <input type="search"name="query" value="{{query}}"
+                               placeholder="Job title, keywords,organization or location"
+                                   aria-describedby="button-addon1" class="form-control border-0 bg-light">
+                            <div class="input-group-append">
+                                <button id="button-addon1" type="submit" class="btn btn-link text-primary"><i
+                                        class="fa fa-search"></i></button>
+                            </div>
+                        </div>
+                    </div>
 
+
+                </form>
+                <!-- End -->
+
+            </div>
+        </div>
     </div>
+<!--    <div class="row height d-flex justify-content-center align-items-center">-->
+<!--        <div class="col-md-8">-->
+<!--            <form class="form-inline" action="/search/">-->
+<!--                <div class="search">-->
+<!--                    &lt;!&ndash;                    <i class="fa fa-search"></i>&ndash;&gt;-->
+<!--                    <div class="col-md-8">-->
+<!--                        <input type="text" class="form-control" name="query" value="{{query}}"-->
+<!--                               placeholder="Job title, keywords,organization or location">-->
+
+<!--                    </div>-->
+<!--                    <div class="col-md-2">-->
+<!--                        <button class="btn btn-primary" style="width:110px">Search</button>-->
+<!--                    </div>-->
+
+
+<!--                </div>-->
+<!--            </form>-->
+<!--        </div>-->
+
+<!--    </div>-->
 
 
     {% if jobs%}
@@ -93,11 +123,12 @@
                     <div class="list border-bottom">
                         <div class="d-flex flex-column ml-3"><span>{{job.title}}</span>
                             {% if job.days_since_posted == 0 %}
-                             <span class="text-muted"><small><i class=""></i> today </small></span>
-                            {% elif  job.days_since_posted ==1%}
-                            <span class="text-muted"><small><i class=""></i> {{job.days_since_posted}} day ago</small></span>
+                            <span class="text-muted"><small><i class=""></i> today </small></span>
+                            {% elif job.days_since_posted ==1%}
+                            <span class="text-muted"><small><i
+                                    class=""></i> {{job.days_since_posted}} day ago</small></span>
                             {% else %}
-                             <span class="text-muted"><small><i class=""></i> {{job.days_since_posted}} days ago</small></span>
+                            <span class="text-muted"><small><i class=""></i> {{job.days_since_posted}} days ago</small></span>
                             {%endif%}
                             <!--                             <span><small>{{job.posted_date}}</small></span>-->
                             <!--                              <span><small>{{job.organization}}</small></span>-->
