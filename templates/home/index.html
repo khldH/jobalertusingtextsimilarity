@@ -37,12 +37,12 @@
     </div>
     <div class="row mb-5">
         <div class="col-lg-8 mx-auto">
-            <div class="bg-white p-5 rounded shadow">
+            <div class="bg-white p-5 rounded">
                 <form action="/search/">
                     <div class="p-1 bg-light rounded rounded-pill shadow-sm mb-4">
                         <div class="input-group">
-                            <input type="search"name="query" value="{{query}}"
-                               placeholder="Job title, keywords,organization or location"
+                            <input type="search" name="query" value="{{query}}"
+                                   placeholder="Job title, keywords,organization or location"
                                    aria-describedby="button-addon1" class="form-control border-0 bg-light">
                             <div class="input-group-append">
                                 <button id="button-addon1" type="submit" class="btn btn-link text-primary"><i
@@ -58,36 +58,37 @@
             </div>
         </div>
     </div>
-<!--    <div class="row height d-flex justify-content-center align-items-center">-->
-<!--        <div class="col-md-8">-->
-<!--            <form class="form-inline" action="/search/">-->
-<!--                <div class="search">-->
-<!--                    &lt;!&ndash;                    <i class="fa fa-search"></i>&ndash;&gt;-->
-<!--                    <div class="col-md-8">-->
-<!--                        <input type="text" class="form-control" name="query" value="{{query}}"-->
-<!--                               placeholder="Job title, keywords,organization or location">-->
+    <!--    <div class="row height d-flex justify-content-center align-items-center">-->
+    <!--        <div class="col-md-8">-->
+    <!--            <form class="form-inline" action="/search/">-->
+    <!--                <div class="search">-->
+    <!--                    &lt;!&ndash;                    <i class="fa fa-search"></i>&ndash;&gt;-->
+    <!--                    <div class="col-md-8">-->
+    <!--                        <input type="text" class="form-control" name="query" value="{{query}}"-->
+    <!--                               placeholder="Job title, keywords,organization or location">-->
 
-<!--                    </div>-->
-<!--                    <div class="col-md-2">-->
-<!--                        <button class="btn btn-primary" style="width:110px">Search</button>-->
-<!--                    </div>-->
+    <!--                    </div>-->
+    <!--                    <div class="col-md-2">-->
+    <!--                        <button class="btn btn-primary" style="width:110px">Search</button>-->
+    <!--                    </div>-->
 
 
-<!--                </div>-->
-<!--            </form>-->
-<!--        </div>-->
+    <!--                </div>-->
+    <!--            </form>-->
+    <!--        </div>-->
 
-<!--    </div>-->
+    <!--    </div>-->
 
 
     {% if jobs%}
     <div class="row my-5">
         <hr>
         <div class="col-md-4">
-            <div class="card bg-light mb-3">
-                <div class="card-header">
-                    <p class="font-weight-light">Get new jobs for this search "{{query}}" by email</p>
+            <div class="card bg-dark mb-3" style="background-color:#41464b !important">
+                <div class="card-header" style="border-bottom: 1px solid #f8f9fa">
+                    <p class="font-weight-light text-white">Get new jobs for this search "{{query}}" by email</p>
                 </div>
+
                 <div class="card-body">
                     <form method="POST" action="/subscribe">
                         <!--                        <div class="mb-3">-->
@@ -96,20 +97,24 @@
                         <!--                                   placeholder="name">-->
                         <!--                        </div>-->
                         <div class="mb-3">
-                            <input type="text" required placeholder="Your email" name="email" value="{{email}}"
+                            <input type="text" required placeholder="email address" name="email" value="{{email}}"
                                    class="form-control">
                         </div>
                         <div class="mb-3">
                             <input type="hidden" required placeholder="write a summary" value="{{query}}"
                                    name="job_description" class="form-control">
                         </div>
-                        <button type="submit" class="btn btn-outline-secondary "
-                                style="color:#fa4a06;background-color: #6c757d00;font-weight:bold" ;>Send me new jobs
+                        <div class="mb-3">
+                             <button type="submit" class="btn bg-warning text-white form-control"
+                                style="background-color: #ff8007!important ;font-weight:bold" ;>Send me new jobs
                         </button>
+                        </div>
+
                     </form>
                 </div>
             </div>
         </div>
+
         <div class="col-md-8">
             <!--            <div class="card">-->
             <!--                <div class="list border-bottom">-->
@@ -173,6 +178,9 @@
                             <div class="col-md-4 col">
                                 <img src="{{ url_for('static', path='imgs/rwlogo.png') }}" alt="">
                             </div>
+<!--                            <div class="col-md-4 col">-->
+<!--                                <img src="{{ url_for('static', path='imgs/unjobslogo.jpg') }}" alt="">-->
+<!--                            </div>-->
                         </div>
                     </div>
                 </div>
