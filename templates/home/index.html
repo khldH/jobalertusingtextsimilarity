@@ -15,29 +15,55 @@
             {% endfor %}
         </div>
     </div>
-    <div class="row my-5 justify-content-center">
-        <div class="col text-center">
-            <div class="card border-0">
-                <div class="card-body">
-                    <div class="card-title">
-                        <h3 class="mb-4">Put your job search on auto-pilot</h3>
-                    </div>
-                    <div class="row justify-content-center">
-                        <div class="col-md-6 col">
-                            <p class="small color-text">Use job title, keywords,
-                                organization or location to search jobs and set up daily job alerts based on your
-                                search.
-                                We will crawl all your favourite job posting sites and match you with relevant jobs
-                                using advanced Machine Learning technology </p>
-                        </div>
-                    </div>
-                </div>
+    <div class="row my-5">
+        <div class="col-lg-6">
+            <div class="p-2 mt-4 ">
+                <h5 class="display-6 font-weight-bold">Put your job search on autopilot</h5>
+                <p class="lead text-justify">Use job title, keywords,
+                    organization or location to search jobs and set up daily job alerts based on your
+                    search. We will crawl all your favourite job posting sites and career pages and match you with
+                    relevant jobs
+                    using Machine Learning </p>
+                <!--                <a href="#" class="btn btn-outline-dark">Read More</a>-->
+
+
             </div>
         </div>
+        <div class="col-lg-6">
+            <img class="shadow" src="{{ url_for('static', path='imgs/samplealert.png')}}" alt=""/>
+        </div>
     </div>
+    <!--    <div class="row my-5"  style="background-color:#00a6ff21">-->
+    <!--        <div class="col-md-8">-->
+    <!--            <div class="">-->
+    <!--                <div class="card-body">-->
+    <!--                    <div class="card-title">-->
+    <!--                        <h1 class="mb-4">Put your job search on auto-pilot</h1>-->
+    <!--                    </div>-->
+    <!--                    <div class="row">-->
+    <!--                        <div class="col-md-6 col">-->
+    <!--                            <p class="small color-text">Use job title, keywords,-->
+    <!--                                organization or location to search jobs and set up daily job alerts based on your-->
+    <!--                                search.-->
+    <!--                                We will crawl all your favourite job posting sites and match you with relevant jobs-->
+    <!--                                using advanced Machine Learning technology </p>-->
+    <!--                        </div>-->
+    <!--                    </div>-->
+    <!--                </div>-->
+    <!--            </div>-->
+    <!--        </div>-->
+    <!--        <div class="col-md-4" >-->
+    <!--            <div  class="card"style="background-color:#00a6ff21">-->
+    <!--                <div class="card-body">-->
+    <!--                     <img src="{{ url_for('static', path='imgs/rsz_11samplelert.png')}}" alt="">-->
+    <!--                </div>-->
+    <!--            </div>-->
+
+    <!--        </div>-->
+    <!--    </div>-->
     <div class="row mb-5">
-        <div class="col-lg-8 mx-auto">
-            <div class="bg-white p-5 rounded">
+        <div class="col-lg-8 mx-auto ">
+            <div class="bg-white  rounded">
                 <form action="/search/">
                     <div class="p-1 bg-light rounded rounded-pill shadow-sm mb-4">
                         <div class="input-group">
@@ -50,11 +76,8 @@
                             </div>
                         </div>
                     </div>
-
-
                 </form>
                 <!-- End -->
-
             </div>
         </div>
     </div>
@@ -105,9 +128,9 @@
                                    name="job_description" class="form-control">
                         </div>
                         <div class="mb-3">
-                             <button type="submit" class="btn bg-warning text-white form-control"
-                                style="background-color: #ff8007!important ;font-weight:bold" ;>Send me new jobs
-                        </button>
+                            <button type="submit" class="btn bg-warning text-white form-control"
+                                    style="background-color: #ff8007!important ;font-weight:bold" ;>Send me new jobs
+                            </button>
                         </div>
 
                     </form>
@@ -160,27 +183,33 @@
             </ul>
         </div>
         {% else %}
-        <br>
+
         <div class="row my-5 justify-content-center">
             <div class="col text-center">
-                <div class="card border-0">
-                    <div class="card-body">
-                        <div class="card-title">
-                            <h6 class="mb-4">Popular job posting sites crawled by our service</h6>
-
+                <div class=" ">
+                    <div class="">
+                        <div class="p-2 mt-4">
+                            <h6 class="mb-4">Popular job posting sites and career pages crawled by our service</h6>
                         </div>
                         <br>
                         <div class="row justify-content-center">
-                            <div class="col-md-4 col">
-                                <img src="{{ url_for('static', path='imgs/sjlogo.jpg')}}" alt="">
+                            <div class="col-md-2">
+                                <img class="" src="{{ url_for('static', path='imgs/undp.png') }}" alt="">
+                            </div>
+                            <div class="col-md-2">
+                                <img class="" src="{{ url_for('static', path='imgs/unjobs.jpg') }}" alt="">
                             </div>
 
-                            <div class="col-md-4 col">
-                                <img src="{{ url_for('static', path='imgs/rwlogo.png') }}" alt="">
+                            <div class="col-md-2">
+                                <img class="" src="{{ url_for('static', path='imgs/somjobs.jpg')}}" alt="">
                             </div>
-<!--                            <div class="col-md-4 col">-->
-<!--                                <img src="{{ url_for('static', path='imgs/unjobslogo.jpg') }}" alt="">-->
-<!--                            </div>-->
+
+                            <div class="col-md-2">
+                                <img class="" src="{{ url_for('static', path='imgs/rw.png') }}" alt="">
+                            </div>
+                            <div class="col-md-2">
+                                <img class="" src="{{ url_for('static', path='imgs/sc.jpg') }}" alt="">
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -190,6 +219,16 @@
     </div>
 
 </div>
+<footer class="text-center text-lg-start bg-light text-muted">
+
+
+    <!-- Copyright -->
+    <div class="text-center p-4" style="background-color: rgba(0, 0, 0, 0.05);">
+        © 2022 Copyright:
+        <a class="text-reset fw-bold" href="/">somjobsalert</a>
+    </div>
+    <!-- Copyright -->
+</footer>
 </div>
 {% endblock %}
 
