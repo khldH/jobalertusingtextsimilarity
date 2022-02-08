@@ -6,6 +6,24 @@
 {% endblock %}
 
 {% block content %}
+
+<div class="row my-5 p-2 bg-dark mt-5">
+        <div class="col-lg-6">
+            <div class="p-2 mt-4 text-white">
+                <h5 class=" " style="font-size: 2.8rem; line-height: 54px;font-weight: 900">Put your job search on autopilot</h5>
+                <p class="small text-justify text-mute">Use job title, keywords,
+                    organization or location to search jobs and set up daily job alerts based on your
+                    search. We will crawl all your favourite job posting sites and career pages and match you with
+                    relevant jobs
+                    using Machine Learning </p>
+                <!--                <a href="#" class="btn btn-outline-dark">Read More</a>-->
+
+            </div>
+        </div>
+        <div class="col-lg-6">
+            <img class="shadow mt-4 mb-3 mr-5" src="{{ url_for('static', path='imgs/samplealert.png')}}" alt=""/>
+        </div>
+    </div>
 <div class="container">
     <div class="row my-5">
         <h5 class="display-5"></h5>
@@ -15,49 +33,86 @@
             {% endfor %}
         </div>
     </div>
-    <div class="row my-5 justify-content-center">
-        <div class="col text-center">
-            <div class="card border-0">
-                <div class="card-body">
-                    <div class="card-title">
-                        <h3 class="mb-4">Put your job search on auto-pilot</h3>
-                    </div>
-                    <div class="row justify-content-center">
-                        <div class="col-md-6 col">
-                            <p class="small color-text">Use job title, keywords,
-                                organization or location to search jobs and set up daily job alerts based on your
-                                search.
-                                We will crawl all your favourite job posting sites and match you with relevant jobs
-                                using advanced Machine Learning technology </p>
+
+    <!--    <div class="row my-5"  style="background-color:#00a6ff21">-->
+    <!--        <div class="col-md-8">-->
+    <!--            <div class="">-->
+    <!--                <div class="card-body">-->
+    <!--                    <div class="card-title">-->
+    <!--                        <h1 class="mb-4">Put your job search on auto-pilot</h1>-->
+    <!--                    </div>-->
+    <!--                    <div class="row">-->
+    <!--                        <div class="col-md-6 col">-->
+    <!--                            <p class="small color-text">Use job title, keywords,-->
+    <!--                                organization or location to search jobs and set up daily job alerts based on your-->
+    <!--                                search.-->
+    <!--                                We will crawl all your favourite job posting sites and match you with relevant jobs-->
+    <!--                                using advanced Machine Learning technology </p>-->
+    <!--                        </div>-->
+    <!--                    </div>-->
+    <!--                </div>-->
+    <!--            </div>-->
+    <!--        </div>-->
+    <!--        <div class="col-md-4" >-->
+    <!--            <div  class="card"style="background-color:#00a6ff21">-->
+    <!--                <div class="card-body">-->
+    <!--                     <img src="{{ url_for('static', path='imgs/rsz_11samplelert.png')}}" alt="">-->
+    <!--                </div>-->
+    <!--            </div>-->
+
+    <!--        </div>-->
+    <!--    </div>-->
+    <div class="row mb-5">
+        <div class="col-lg-8 mx-auto ">
+            <div class="bg-white  rounded">
+                <form action="/search/">
+                    <div class="p-1 bg-light rounded rounded-pill shadow-sm mb-4">
+                        <div class="input-group">
+                            <input type="search" name="query" value="{{query}}"
+                                   placeholder="Job title, keywords,organization or location"
+                                   aria-describedby="button-addon1" class="form-control border-0 bg-light">
+                            <div class="input-group-append">
+                                <button id="button-addon1" type="submit" class="btn btn-link text-primary"><i
+                                        class="fa fa-search"></i></button>
+                            </div>
                         </div>
                     </div>
-                </div>
+                </form>
+                <!-- End -->
             </div>
         </div>
     </div>
-    <div class="row height d-flex justify-content-center align-items-center">
-        <div class="col-md-8">
-            <form class="form-inline" action="/search/">
-                <div class="search">
-                    <!--                    <i class="fa fa-search"></i>-->
-                    <input type="text" class="form-control" name="query" value="{{query}}"
-                           placeholder="Job title, keywords,organization or location">
-                    <button class="btn btn-primary" style="width:110px">Search</button>
-                </div>
-            </form>
-        </div>
+    <!--    <div class="row height d-flex justify-content-center align-items-center">-->
+    <!--        <div class="col-md-8">-->
+    <!--            <form class="form-inline" action="/search/">-->
+    <!--                <div class="search">-->
+    <!--                    &lt;!&ndash;                    <i class="fa fa-search"></i>&ndash;&gt;-->
+    <!--                    <div class="col-md-8">-->
+    <!--                        <input type="text" class="form-control" name="query" value="{{query}}"-->
+    <!--                               placeholder="Job title, keywords,organization or location">-->
 
-    </div>
+    <!--                    </div>-->
+    <!--                    <div class="col-md-2">-->
+    <!--                        <button class="btn btn-primary" style="width:110px">Search</button>-->
+    <!--                    </div>-->
+
+
+    <!--                </div>-->
+    <!--            </form>-->
+    <!--        </div>-->
+
+    <!--    </div>-->
 
 
     {% if jobs%}
     <div class="row my-5">
         <hr>
         <div class="col-md-4">
-            <div class="card bg-light mb-3">
-                <div class="card-header">
-                    <p class="font-weight-light">Get new jobs for this search "{{query}}" by email</p>
+            <div class="card bg-dark mb-3" style="background-color:#41464b !important">
+                <div class="card-header" style="border-bottom: 1px solid #f8f9fa">
+                    <p class="font-weight-light text-white">Get new jobs for this search "{{query}}" by email</p>
                 </div>
+
                 <div class="card-body">
                     <form method="POST" action="/subscribe">
                         <!--                        <div class="mb-3">-->
@@ -66,20 +121,24 @@
                         <!--                                   placeholder="name">-->
                         <!--                        </div>-->
                         <div class="mb-3">
-                            <input type="text" required placeholder="Your email" name="email" value="{{email}}"
+                            <input type="text" required placeholder="email address" name="email" value="{{email}}"
                                    class="form-control">
                         </div>
                         <div class="mb-3">
                             <input type="hidden" required placeholder="write a summary" value="{{query}}"
                                    name="job_description" class="form-control">
                         </div>
-                        <button type="submit" class="btn btn-outline-secondary "
-                                style="color:#fa4a06;background-color: #6c757d00;font-weight:bold" ;>Send me new jobs
-                        </button>
+                        <div class="mb-3">
+                            <button type="submit" class="btn bg-warning text-white form-control"
+                                    style="background-color: #ff8007!important ;font-weight:bold" ;>Send me new jobs
+                            </button>
+                        </div>
+
                     </form>
                 </div>
             </div>
         </div>
+
         <div class="col-md-8">
             <!--            <div class="card">-->
             <!--                <div class="list border-bottom">-->
@@ -93,11 +152,12 @@
                     <div class="list border-bottom">
                         <div class="d-flex flex-column ml-3"><span>{{job.title}}</span>
                             {% if job.days_since_posted == 0 %}
-                             <span class="text-muted"><small><i class=""></i> today </small></span>
-                            {% elif  job.days_since_posted ==1%}
-                            <span class="text-muted"><small><i class=""></i> {{job.days_since_posted}} day ago</small></span>
+                            <span class="text-muted"><small><i class=""></i> today </small></span>
+                            {% elif job.days_since_posted ==1%}
+                            <span class="text-muted"><small><i
+                                    class=""></i> {{job.days_since_posted}} day ago</small></span>
                             {% else %}
-                             <span class="text-muted"><small><i class=""></i> {{job.days_since_posted}} days ago</small></span>
+                            <span class="text-muted"><small><i class=""></i> {{job.days_since_posted}} days ago</small></span>
                             {%endif%}
                             <!--                             <span><small>{{job.posted_date}}</small></span>-->
                             <!--                              <span><small>{{job.organization}}</small></span>-->
@@ -124,33 +184,53 @@
             </ul>
         </div>
         {% else %}
-        <br>
+
         <div class="row my-5 justify-content-center">
             <div class="col text-center">
-                <div class="card border-0">
-                    <div class="card-body">
-                        <div class="card-title">
-                            <h6 class="mb-4">Popular job posting sites crawled by our service</h6>
-
+                <div class="mb-5">
+                    <div class="p-2 mt-4">
+                        <h6 class="mb-4">Popular job posting sites and career pages crawled by our service</h6>
+                    </div>
+                    <br>
+                    <div class="row justify-content-center">
+                        <div class="col-md-2">
+                            <img class="" src="{{ url_for('static', path='imgs/undp.png') }}" alt="">
                         </div>
-                        <br>
-                        <div class="row justify-content-center">
-                            <div class="col-md-4 col">
-                                <img src="{{ url_for('static', path='imgs/sjlogo.jpg')}}" alt="">
-                            </div>
+                        <div class="col-md-2">
+                            <img class="" src="{{ url_for('static', path='imgs/unjobs.jpg') }}" alt="">
+                        </div>
 
-                            <div class="col-md-4 col">
-                                <img src="{{ url_for('static', path='imgs/rwlogo.png') }}" alt="">
-                            </div>
+                        <div class="col-md-2">
+                            <img class="" src="{{ url_for('static', path='imgs/somjobs.jpg')}}" alt="">
+                        </div>
+
+                        <div class="col-md-2">
+                            <img class="" src="{{ url_for('static', path='imgs/rw.png') }}" alt="">
+                        </div>
+                        <div class="col-md-2">
+                            <img class="" src="{{ url_for('static', path='imgs/sc.jpg') }}" alt="">
                         </div>
                     </div>
                 </div>
             </div>
         </div>
         {% endif %}
+        <!--        <div class="row my-5 justify-content-center"></div>-->
+        <!--         <div class="row my-5 justify-content-center"></div>-->
+
     </div>
 
 </div>
+<!--<footer class="text-center text-lg-start bg-light text-muted">-->
+
+
+<!--    &lt;!&ndash; Copyright &ndash;&gt;-->
+<!--    <div class="text-center p-4" style="background-color: rgba(0, 0, 0, 0.05);">-->
+<!--        © 2022 Copyright:-->
+<!--        <a class="text-reset fw-bold" href="/">somjobsalert</a>-->
+<!--    </div>-->
+<!--    &lt;!&ndash; Copyright &ndash;&gt;-->
+<!--</footer>-->
 </div>
 {% endblock %}
 

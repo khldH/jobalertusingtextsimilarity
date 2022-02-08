@@ -65,3 +65,11 @@
     color: #767373
 
 
+@media (max-width: 767.98px) {
+  .mx-w-100 {
+    max-width: 100% !important;
+  }
+}
+
+
+
