@@ -16,6 +16,9 @@
             <li>{{error}}</li>
             {% endfor %}
         </div>
+        {% if jobs%}
+        <div></div>
+        {% else %}
         <div class="row my-5 p-2  mt-5">
             <div class="col-lg-6">
                 <div class="p-2 mt-4 ">
@@ -36,6 +39,7 @@
                 <img class="img-fluid shadow" src="{{ url_for('static', path='imgs/somjobsalert_sample.png')}}" alt=""/>
             </div>
         </div>
+        {% endif %}
     </div>
 
     <!--    <div class="row my-5"  style="background-color:#00a6ff21">-->
@@ -67,7 +71,10 @@
     <!--        </div>-->
     <!--    </div>-->
     <div class="row mb-5">
-        <div class="col-lg-8 mx-auto ">
+<!--        <div class="spinner-border" role="status">-->
+<!--            <span class="sr-only">Loading...</span>-->
+<!--        </div>-->
+        <div class="col-lg-8 mx-auto">
             <div class="rounded">
                 <form action="/search/">
                     <div class="p-1 bg-light rounded rounded-pill shadow-sm mb-4">
@@ -197,7 +204,7 @@
                     </div>
                     <br>
                     <div class="row justify-content-center">
-                         <div class="col-md-3">
+                        <div class="col-md-3">
                             <img class="" src="{{ url_for('static', path='imgs/unhcr.png') }}" alt="">
 
                         </div>
@@ -216,7 +223,7 @@
                             <img class="img-fluid" src="{{ url_for('static', path='imgs/sc.jpg') }}" alt="">
                         </div>
 
-                         <div class="col-md-3">
+                        <div class="col-md-3">
                             <img class="" src="{{ url_for('static', path='imgs/irc.jpg') }}" alt="">
 
                         </div>

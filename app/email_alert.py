@@ -2,6 +2,7 @@ from email.mime.text import MIMEText
 from smtplib import SMTP
 
 from .config import settings
+from app.email_template import html_email
 
 
 class Email:
@@ -39,4 +40,7 @@ class Email:
                 </html>""".format(
             link=confirmation_url, text=confirmation_url
         )
-        self.send_message(message, "Please confirm your registration", mail_to)
+        row = "<tr><td>" "<a href=" + confirmation_url + ">" + "verify your email" + "</a>" "</td></tr>"
+        message = message.format(link=confirmation_url, text=confirmation_url)
+        message = html_email.format(link = confirmation_url)
+        self.send_message(message, "Activate your account", mail_to)
