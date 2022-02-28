@@ -8,6 +8,87 @@
 {% block content %}
 
 
+{% if jobs%}
+<div></div>
+{% else %}
+<div style="height: 55vh; background-color:rgb(236, 237, 232); background-size: cover; background-position: center;" class="position-relative w-100">
+  <div class="position-absolute text-dark d-flex flex-column align-items-center justify-content-center" style="top: 0; right: 0; bottom: 0; left: 0;">
+    <span>Looking for a Job? Get Daily Job Alerts by Email!</span>
+    <h2 class="mb-4 mt-2 font-weight-bold text-center">Your Personal Job Search Assistant</h2>
+
+            <div class="col-lg-6">
+                <form action="/search/">
+                    <div class="p-1 bg-light rounded rounded-pill shadow-sm">
+                        <div class="input-group">
+                            <input  style="border-radius: 30px;" type="search" name="query" value="{{query}}"
+                                   placeholder="Job title, keywords,organization or location"
+                                   aria-describedby="button-addon1" class="form-control border-0 bg-light" >
+                            <div class="">
+                                <button id="" type="submit" class="btn btn-link text-primary"><i
+                                        class="fa fa-search"></i></button>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+                <!-- End -->
+
+
+    </div>
+
+
+
+
+
+      <!-- hover background-color: white; color: black; -->
+<!--      <a href="#" id="filled" class="btn px-5 py-3 text-white mt-3 mt-sm-0 mx-1" style="border-radius: 30px; background-color: #9B5DE5;">Get Started</a>-->
+<!--      &lt;!&ndash; hover background-color: #9B5DE5; color: white; &ndash;&gt;-->
+<!--      <a href="#" id="outlined" class="btn px-5 py-3 text-white mt-3 mt-sm-0 mx-1" style="border-radius: 30px; border:1px solid #9B5DE5;">Showcases</a>-->
+    </div>
+  </div>
+</div>
+<!--<div class="row p-5 text-center align-items-center"-->
+<!--     style="background-color: rgb(238, 95, 0);  color:white;">-->
+
+<!--      <div class="row"> <h5 class="mb-4" style="font-size: 2.2rem;font-weight: 600">Your Personal Job Search Assistant</h5></div>-->
+<!--    <div class="col-lg-3"></div>-->
+
+<!--           <div class="col-lg-5">-->
+<!--            <form action="/search/" id="searchform">-->
+<!--                        <input type="search" name="query" value="{{query}}"-->
+<!--                               placeholder="Job title, keywords,organization or location"-->
+<!--                               aria-describedby="button-addon1" class="form-control mb-2">-->
+<!--            </form>-->
+<!--        </div>-->
+<!--        <div class="col-lg-1">-->
+<!--            <button id="button-addon1" type="submit" class="btn btn-dark form-control " form="searchform">Search </button>-->
+<!--        </div>-->
+
+
+
+
+<!--&lt;!&ndash;    <div class="col-lg-6">&ndash;&gt;-->
+
+<!--&lt;!&ndash;        &lt;!&ndash;        <h5 class="" style="font-size: 2.2rem;font-weight: 600">Your Personal Job Search Assistant</h5>&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;        &lt;!&ndash;        <p class="small">Spare yourself from the trouble of having to regularly browse job boards&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;        &lt;!&ndash;            and career pages to check new job postings,&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;        &lt;!&ndash;            somjobsalert will do the hard work of job hunting for you&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;        &lt;!&ndash;            and email a daily digest of new jobs that match your saved job alert..</p>&ndash;&gt;&ndash;&gt;-->
+
+
+
+
+
+<!--&lt;!&ndash;    </div>&ndash;&gt;-->
+<!--</div>-->
+
+
+<!--            <div class="col-lg-6">-->
+<!--                <img class="img-fluid shadow" src="{{ url_for('static', path='imgs/somjobsalert_sample.png')}}" alt=""/>-->
+<!--            </div>-->
+<!--</div>-->
+{% endif %}
+
+
 <div class="container">
     <div class="row my-5">
         <h5 class="display-5"></h5>
@@ -16,28 +97,7 @@
             <li>{{error}}</li>
             {% endfor %}
         </div>
-        {% if jobs%}
-        <div></div>
-        {% else %}
-        <div class="row my-5 p-2  mt-5">
-            <div class="col-lg-6">
-                <div class="p-2 mt-4 ">
-                    <h5 class="text-muted text-justify " style="font-size: 2.2rem;font-weight: 600">Your Personal Job Search Assistant</h5>
-                    <p class="lead text-justify test">Spare yourself from the trouble of having to regularly browse job boards
-                        and career pages to check new job postings,
-                        somjobsalert will do the hard work of job hunting for you
-                        and email a daily digest of new jobs that match your saved job alert..</p>
-                    <!--                <a href="#" class="btn btn-outline-dark">Read More</a>-->
 
-                </div>
-
-
-            </div>
-            <div class="col-lg-6">
-                <img class="img-fluid shadow" src="{{ url_for('static', path='imgs/somjobsalert_sample.png')}}" alt=""/>
-            </div>
-        </div>
-        {% endif %}
     </div>
 
     <!--    <div class="row my-5"  style="background-color:#00a6ff21">-->
@@ -69,27 +129,27 @@
     <!--        </div>-->
     <!--    </div>-->
     <div class="row mb-5">
-<!--        <div class="spinner-border" role="status">-->
-<!--            <span class="sr-only">Loading...</span>-->
-<!--        </div>-->
-        <div class="col-lg-8 mx-auto">
-            <div class="rounded">
-                <form action="/search/">
-                    <div class="p-1 bg-light rounded rounded-pill shadow-sm mb-4">
-                        <div class="input-group">
-                            <input type="search" name="query" value="{{query}}"
-                                   placeholder="Job title, keywords,organization or location"
-                                   aria-describedby="button-addon1" class="form-control border-0 bg-light">
-                            <div class="input-group-append">
-                                <button id="button-addon1" type="submit" class="btn btn-link text-primary"><i
-                                        class="fa fa-search"></i></button>
-                            </div>
-                        </div>
-                    </div>
-                </form>
-                <!-- End -->
-            </div>
-        </div>
+        <!--        <div class="spinner-border" role="status">-->
+        <!--            <span class="sr-only">Loading...</span>-->
+        <!--        </div>-->
+        <!--        <div class="col-lg-8 mx-auto">-->
+        <!--            <div class="rounded">-->
+        <!--                <form action="/search/">-->
+        <!--                    <div class="p-1 bg-light rounded rounded-pill shadow-sm mb-4">-->
+        <!--                        <div class="input-group">-->
+        <!--                            <input type="search" name="query" value="{{query}}"-->
+        <!--                                   placeholder="Job title, keywords,organization or location"-->
+        <!--                                   aria-describedby="button-addon1" class="form-control border-0 bg-light">-->
+        <!--                            <div class="input-group-append">-->
+        <!--                                <button id="button-addon1" type="submit" class="btn btn-link text-primary"><i-->
+        <!--                                        class="fa fa-search"></i></button>-->
+        <!--                            </div>-->
+        <!--                        </div>-->
+        <!--                    </div>-->
+        <!--                </form>-->
+        <!--                &lt;!&ndash; End &ndash;&gt;-->
+        <!--            </div>-->
+        <!--        </div>-->
     </div>
     <!--    <div class="row height d-flex justify-content-center align-items-center">-->
     <!--        <div class="col-md-8">-->
@@ -211,21 +271,21 @@
                         <div class="col-md-2">
                             <img class="" src="{{ url_for('static', path='imgs/somalijobs.png')}}" alt="">
                         </div>
-<!--                        <div class="col-md-3">-->
-<!--                            <img class="" src="{{ url_for('static', path='imgs/unjobs.jpg') }}" alt="">-->
-<!--                        </div>-->
+                        <!--                        <div class="col-md-3">-->
+                        <!--                            <img class="" src="{{ url_for('static', path='imgs/unjobs.jpg') }}" alt="">-->
+                        <!--                        </div>-->
                         <div class="col-md-2">
                             <img class="img-fluid" src="{{ url_for('static', path='imgs/stc.png') }}" alt="">
                         </div>
-                         <div class="col-md-2">
+                        <div class="col-md-2">
                             <img class="" src="{{ url_for('static', path='imgs/unhcr.png') }}" alt="">
 
                         </div>
 
-<!--                        <div class="col-md-2">-->
-<!--&lt;!&ndash;                            <img class="" src="{{ url_for('static', path='imgs/irc_1.jpg') }}" alt="">&ndash;&gt;-->
+                        <!--                        <div class="col-md-2">-->
+                        <!--&lt;!&ndash;                            <img class="" src="{{ url_for('static', path='imgs/irc_1.jpg') }}" alt="">&ndash;&gt;-->
 
-<!--                        </div>-->
+                        <!--                        </div>-->
                         <div class="col-md-2">
                             <img class="img-fluid" src="{{ url_for('static', path='imgs/unicef.jpg') }}" alt="">
                         </div>
