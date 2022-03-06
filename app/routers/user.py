@@ -42,17 +42,21 @@ async def subscribe(request: Request):
             try:
                 email = Email(settings.mail_sender, settings.mail_sender_password)
                 email.send_confirmation_message(confirmation["token"], form.email)
-            except ConnectionRefusedError:
-                raise HTTPException(
-                    status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-                    detail="Email couldn't be send. Please try again.",
+            except Exception as e:
+                return templates.TemplateResponse(
+                    "users/error_page.html",
+                    {"request": request, "msg": "an error has occurred, email couldn't be send"},
                 )
+                # raise HTTPException(
+                #     status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+                #     detail="Email couldn't be send. Please try again.",
+                # )
             # return responses.RedirectResponse(
             #     "/?msg=registration successful", status_code=status.HTTP_302_FOUND
             # )  # default is post request, to use get request added status code 302
             return templates.TemplateResponse(
                 "users/success.html",
-                {"request": request, "msg": "registration successful"},
+                {"request": request, "msg": "registration successful", "email": form.email},
             )
 
         except ValueError as e:
@@ -81,7 +85,12 @@ async def verify(request: Request, token: str):
     user_dynamodb = get_user_by_id(db, user_id=payload["sub"])
     # print(user_dynamodb)
     if not user_dynamodb:
-        raise invalid_token_error
+        return templates.TemplateResponse(
+            "users/error_page.html",
+            {"request": request, "msg": "User doesn't exist, verification failed, Please subscribe again"},
+        )
+
+        # raise invalid_token_error
     if user_dynamodb["is_active"]:
         # return responses.RedirectResponse("/?msg=user already verified")
         return templates.TemplateResponse(

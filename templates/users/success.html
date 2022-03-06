@@ -11,7 +11,9 @@
         <div class="col-md-4 p-2 text-center">
             {% if msg == 'registration successful' %}
             <div class="alert alert-light" role="alert">
-                Thank you for subscribing to our service. One last step check your inbox and verify your email
+                Thank you for subscribing to the service. Verification email has been sent to {{email}}.
+                Please check your inbox and verify your email.
+                Make sure you check your spam folder as well if you can't find the email in your inbox
             </div>
             {% elif msg == 'verification successful' %}
             <div class="alert alert-light" role="alert">

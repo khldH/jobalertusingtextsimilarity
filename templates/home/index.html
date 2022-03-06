@@ -45,40 +45,52 @@
     </div>
 </div>
 </div>
-<div class="row p-4" >
+<div class="row p-3" style="background-color: rgb(236, 237, 232)">
+    <hr>
     <div class="">
         <div class="row">
-            <div class="col-sm card shadow  ">
-                <h6 class="card-subtitle  text-muted">New Jobs Alert! Why spend hours searching through job boards when you can receive daily alerts? </h6>
-                <p class="card-body small ">
+            <div class="col-sm mb-2">
+                <div class="card">
+                    <h6 class="card-subtitle  text-muted">New Jobs Alert! Why spend hours searching through job boards
+                        when you can receive daily alerts? </h6>
+                    <p class="card-body small ">
 
-                    Navigating multiple career websites and job
-                    boards to check all new job postings can be exhausting. Save your time and create variety by
-                    subscribing to Diractly's email job alert service. Diractly will get every single new job across
-                    multiple job boards, filter out the noise and send you an alert with just the jobs that match your custom search!<br>
+                        Navigating multiple career websites and job
+                        boards to check all new job postings can be exhausting. Save your time and create variety by
+                        subscribing to Diractly's email job alert service. Diractly will get every single new job across
+                        multiple job boards, filter out the noise and send you an alert with just the jobs that match
+                        your custom search!<br>
 
-                    → All career types - full time/part time/contract/freelance (for individuals and creative
-                    agencies)<br>
+                        → All career types - full time/part time/contract/freelance (for individuals and creative
+                        agencies)<br>
 
-                    → 7 days a week – whatever your schedule require, we
-                    have it covered</p>
+                        → 7 days a week – whatever your schedule require, we
+                        have it covered</p>
+                </div>
+
 
             </div>
 
-            <div class="col-sm card shadow ">
-                <img class="img-fluid shadow" src="{{ url_for('static', path='imgs/somjobsalert_sample.png')}}" alt=""/>
+            <div class="col-sm mb-2">
+                <div class="card">
+                    <img class="img-fluid " src="{{ url_for('static', path='imgs/somjobsalert_sample.png')}}"
+                         alt=""/>
+                </div>
 
 
             </div>
-            <div class="col-sm card shadow ">
-                <h6 class="card-subtitle  text-muted">Get daily job alerts about new jobs in your area</h6>
-                <p class="small card-body">
+            <div class="col-sm">
+                <div class="card">
+                    <h6 class="card-subtitle  text-muted">Get daily job alerts about new jobs in your area</h6>
+                    <p class="small card-body">
 
-                    → Saves you time in finding new jobs via email<br>
+                        → Saves you time in finding new jobs via email<br>
 
-                    → find the latest job postings from multiple sources from one place<br>
+                        → find the latest job postings from multiple sources from one place<br>
 
-                    → Customise alerts based on your search criteria </p>
+                        → Customise alerts based on your search criteria </p>
+                </div>
+
             </div>
 
         </div>
@@ -191,29 +203,29 @@
 
     <!--        </div>-->
     <!--    </div>-->
-<!--    <div class="row mb-5">-->
-<!--        &lt;!&ndash;        <div class="spinner-border" role="status">&ndash;&gt;-->
-<!--        &lt;!&ndash;            <span class="sr-only">Loading...</span>&ndash;&gt;-->
-<!--        &lt;!&ndash;        </div>&ndash;&gt;-->
-<!--        &lt;!&ndash;        <div class="col-lg-8 mx-auto">&ndash;&gt;-->
-<!--        &lt;!&ndash;            <div class="rounded">&ndash;&gt;-->
-<!--        &lt;!&ndash;                <form action="/search/">&ndash;&gt;-->
-<!--        &lt;!&ndash;                    <div class="p-1 bg-light rounded rounded-pill shadow-sm mb-4">&ndash;&gt;-->
-<!--        &lt;!&ndash;                        <div class="input-group">&ndash;&gt;-->
-<!--        &lt;!&ndash;                            <input type="search" name="query" value="{{query}}"&ndash;&gt;-->
-<!--        &lt;!&ndash;                                   placeholder="Job title, keywords,organization or location"&ndash;&gt;-->
-<!--        &lt;!&ndash;                                   aria-describedby="button-addon1" class="form-control border-0 bg-light">&ndash;&gt;-->
-<!--        &lt;!&ndash;                            <div class="input-group-append">&ndash;&gt;-->
-<!--        &lt;!&ndash;                                <button id="button-addon1" type="submit" class="btn btn-link text-primary"><i&ndash;&gt;-->
-<!--        &lt;!&ndash;                                        class="fa fa-search"></i></button>&ndash;&gt;-->
-<!--        &lt;!&ndash;                            </div>&ndash;&gt;-->
-<!--        &lt;!&ndash;                        </div>&ndash;&gt;-->
-<!--        &lt;!&ndash;                    </div>&ndash;&gt;-->
-<!--        &lt;!&ndash;                </form>&ndash;&gt;-->
-<!--        &lt;!&ndash;                &lt;!&ndash; End &ndash;&gt;&ndash;&gt;-->
-<!--        &lt;!&ndash;            </div>&ndash;&gt;-->
-<!--        &lt;!&ndash;        </div>&ndash;&gt;-->
-<!--    </div>-->
+    <!--    <div class="row mb-5">-->
+    <!--        &lt;!&ndash;        <div class="spinner-border" role="status">&ndash;&gt;-->
+    <!--        &lt;!&ndash;            <span class="sr-only">Loading...</span>&ndash;&gt;-->
+    <!--        &lt;!&ndash;        </div>&ndash;&gt;-->
+    <!--        &lt;!&ndash;        <div class="col-lg-8 mx-auto">&ndash;&gt;-->
+    <!--        &lt;!&ndash;            <div class="rounded">&ndash;&gt;-->
+    <!--        &lt;!&ndash;                <form action="/search/">&ndash;&gt;-->
+    <!--        &lt;!&ndash;                    <div class="p-1 bg-light rounded rounded-pill shadow-sm mb-4">&ndash;&gt;-->
+    <!--        &lt;!&ndash;                        <div class="input-group">&ndash;&gt;-->
+    <!--        &lt;!&ndash;                            <input type="search" name="query" value="{{query}}"&ndash;&gt;-->
+    <!--        &lt;!&ndash;                                   placeholder="Job title, keywords,organization or location"&ndash;&gt;-->
+    <!--        &lt;!&ndash;                                   aria-describedby="button-addon1" class="form-control border-0 bg-light">&ndash;&gt;-->
+    <!--        &lt;!&ndash;                            <div class="input-group-append">&ndash;&gt;-->
+    <!--        &lt;!&ndash;                                <button id="button-addon1" type="submit" class="btn btn-link text-primary"><i&ndash;&gt;-->
+    <!--        &lt;!&ndash;                                        class="fa fa-search"></i></button>&ndash;&gt;-->
+    <!--        &lt;!&ndash;                            </div>&ndash;&gt;-->
+    <!--        &lt;!&ndash;                        </div>&ndash;&gt;-->
+    <!--        &lt;!&ndash;                    </div>&ndash;&gt;-->
+    <!--        &lt;!&ndash;                </form>&ndash;&gt;-->
+    <!--        &lt;!&ndash;                &lt;!&ndash; End &ndash;&gt;&ndash;&gt;-->
+    <!--        &lt;!&ndash;            </div>&ndash;&gt;-->
+    <!--        &lt;!&ndash;        </div>&ndash;&gt;-->
+    <!--    </div>-->
     <!--    <div class="row height d-flex justify-content-center align-items-center">-->
     <!--        <div class="col-md-8">-->
     <!--            <form class="form-inline" action="/search/">-->
@@ -237,8 +249,8 @@
 
 
     {% if jobs%}
-     <div class="row justify-content-center align-items-center">
-    <div class="col-lg-6">
+    <div class="row justify-content-center align-items-center">
+        <div class="col-lg-6">
             <form action="/search/">
                 <div class="p-1 bg-light rounded rounded-pill shadow-sm">
                     <div class="input-group">
@@ -246,7 +258,7 @@
                                placeholder="Finance jobs in Hargeisa"
                                aria-describedby="button-addon1" class="form-control border-0 bg-light">
                         <div class="">
-                            <button  type="submit" class="btn btn-link text-primary"><i
+                            <button type="submit" class="btn btn-link text-primary"><i
                                     class="fa fa-search"></i></button>
                         </div>
                     </div>
@@ -256,7 +268,7 @@
 
 
         </div>
-     </div>
+    </div>
     <div class="row my-5">
         <hr>
         <div class="col-md-4">
@@ -370,9 +382,9 @@
                         <!--&lt;!&ndash;                            <img class="" src="{{ url_for('static', path='imgs/irc_1.jpg') }}" alt="">&ndash;&gt;-->
 
                         <!--                        </div>-->
-<!--                        <div class="col-md-2">-->
-<!--                            <img class="img-fluid" src="{{ url_for('static', path='imgs/unicef.jpg') }}" alt="">-->
-<!--                        </div>-->
+                        <!--                        <div class="col-md-2">-->
+                        <!--                            <img class="img-fluid" src="{{ url_for('static', path='imgs/unicef.jpg') }}" alt="">-->
+                        <!--                        </div>-->
 
                     </div>
                 </div>
