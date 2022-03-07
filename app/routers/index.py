@@ -32,29 +32,35 @@ async def search(request: Request, query: Optional[str] = None):
     # await form.load_data()
     # if await form.is_valid():
     # documents = create_documents()
-    print(settings.is_prod)
-    if settings.is_prod is False:
-        table = dynamodb.Table("jobs")
-    else:
-        table = dynamodb_web_service.Table("jobs")
-
-    jobs = table.scan()["Items"]
-
-    documents = []
-    for job in jobs:
-        documents.append(Document(**job))
     try:
-        document_search = DocumentSearch(documents)
-        query = re.sub("[^A-Za-z0-9]+", " ", query)
-        matched_jobs = []
-        if len(query) > 1:
-            matched_jobs = document_search.search(query)
+        if settings.is_prod is False:
+            table = dynamodb.Table("jobs")
+        else:
+            table = dynamodb_web_service.Table("jobs")
+
+        jobs = table.scan()["Items"]
+
+        documents = []
+        for job in jobs:
+            documents.append(Document(**job))
+        try:
+            document_search = DocumentSearch(documents)
+            query = re.sub("[^A-Za-z0-9]+", " ", query)
+            matched_jobs = []
+            if len(query) > 1:
+                matched_jobs = document_search.search(query)
+            return templates.TemplateResponse(
+                "home/index.html",
+                {"request": request, "jobs": matched_jobs, "query": query},
+            )
+        except ValueError:
+            return templates.TemplateResponse(
+                "home/index.html", {"request": request, "query": query}
+            )
+        return templates.TemplateResponse("home/index.html")
+    except Exception as e:
         return templates.TemplateResponse(
-            "home/index.html",
-            {"request": request, "jobs": matched_jobs, "query": query},
+            "users/error_page.html", {"request": request,
+                                      "msg": "an error has occurred, Please try again"}
         )
-    except ValueError:
-        return templates.TemplateResponse(
-            "home/index.html", {"request": request, "query": query}
-        )
-    return templates.TemplateResponse("home/index.html")
+

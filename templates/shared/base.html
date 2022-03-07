@@ -1,9 +1,19 @@
 <!DOCTYPE html>
 <html lang="en-us">
 <head>
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-B82NTR5CK9"></script>
+    <script>
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+
+          gtag('config', 'G-B82NTR5CK9');
+
+    </script>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
     <!--    <meta name="fastapitutorial.com" content="Nofoobar">-->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/css/bootstrap.min.css" rel="stylesheet"
           integrity="sha384-BmbxuPwQa2lc/FVzBcNJ7UAyJxM6wuqIj61tLrc4wSX0szH/Ev+nYRRuWlolflfl" crossorigin="anonymous">
@@ -20,13 +30,13 @@
 {% block content %}
 {% endblock %}
 
-<footer class="text-center text-lg-start bg-dark text-muted fixed-bottom">
+<footer class="text-center text-lg-start bg-dark text-muted">
     {% block footer %}
 
     <!-- Copyright -->
     <div class="text-center p-4 text-white">
         © 2022
-        <a class="text-reset fw-bold" href="/">diractly.com</a>
+        <a class="text-reset  text-decoration-none" href="/">diractly.com</a> <span> </span>
     </div>
     <!-- Copyright -->
     {% endblock %}

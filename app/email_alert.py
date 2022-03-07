@@ -1,5 +1,6 @@
 from email.mime.text import MIMEText
 from smtplib import SMTP
+from email.utils import formataddr
 
 from .config import settings
 from app.email_template import html_email
@@ -15,7 +16,7 @@ class Email:
     def send_message(self, content: str, subject: str, mail_to: str):
         message = MIMEText(content, "html", "utf-8")
         message["Subject"] = subject
-        message["From"] = settings.mail_sender
+        message["From"] = formataddr(('diractly', settings.mail_sender))
         message["To"] = mail_to
 
         mail_server = SMTP(self.server, self.port)
