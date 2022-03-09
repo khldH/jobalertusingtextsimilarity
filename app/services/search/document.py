@@ -14,7 +14,8 @@ class Document(BaseModel):
     organization: Optional[str]
     location: Optional[str]
     source: Optional[str]
+    type:Optional[str]
 
     @property
     def full_text(self):
-        return " ".join([self.title, self.category, self.location, self.organization])
+        return " ".join([self.title, self.category, self.type, self.location, self.organization])
