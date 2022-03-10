@@ -17,9 +17,20 @@ from .schemas import JobCreate, UserCreate
 
 def create_new_user_dynamodb(db, new_user: UserCreate):
     table = db.Table("users")
-    user = table.scan(FilterExpression=Attr("email").eq(new_user.email))["Items"]
+    user = table.scan(FilterExpression=Attr("email").eq(new_user.email))["Items"][0]
     if user:
-        raise ValueError("email already exists")
+        if user["is_active"]:
+            raise ValueError("email already exists")
+        updated_user = table.update_item(
+            Key={"id": user["id"]},
+            UpdateExpression="set job_description = :r",
+            ExpressionAttributeValues={
+                ":r": new_user.job_description,
+            },
+            ReturnValues="ALL_NEW",
+        )["Attributes"]
+        return updated_user
+
     dynamodb_user = new_user.dict()
     dynamodb_user["id"] = str(uuid.uuid4())
     dynamodb_user["is_active"] = False
@@ -36,16 +47,22 @@ def get_user_by_id(db, user_id):
     return {}
 
 
-def update_user_status(db, user_id):
+def update_user_status(db, user_id, status=True):
     table = db.Table("users")
     table.update_item(
         Key={"id": user_id},
         UpdateExpression="set is_active = :r",
         ExpressionAttributeValues={
-            ":r": True,
+            ":r": status,
         },
         ReturnValues="UPDATED_NEW",
     )
+
+
+def get_user_by_email(db, email):
+    table = db.Table("users")
+    user = table.scan(FilterExpression=Attr("email").eq(email))["Items"][0]
+    return user
 
 
 # def create_jobs(job: JobCreate, db: Session):

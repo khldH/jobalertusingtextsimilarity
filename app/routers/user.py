@@ -1,18 +1,16 @@
-from fastapi import (APIRouter, Depends, HTTPException, Request, responses,
-                     status)
+from fastapi import (APIRouter, HTTPException, Request)
 from fastapi.templating import Jinja2Templates
+from itsdangerous import BadData, URLSafeSerializer
 from jose import jwt
-from sqlalchemy.exc import IntegrityError
-from sqlalchemy.orm import Session
 
 from ..config import settings
-from ..crud import (create_new_user_dynamodb,  # create_new_user,
-                    get_user_by_id, update_user_status)
+from ..crud import create_new_user_dynamodb  # create_new_user,
+from ..crud import get_user_by_email, get_user_by_id, update_user_status
 from ..database import dynamodb, dynamodb_web_service
 from ..email_alert import Email
 # from ..models import User
 from ..oauth2 import Auth
-from ..schemas import UserCreate, UserOut
+from ..schemas import UserCreate
 from ..views.user import UserCreateForm
 
 templates = Jinja2Templates(directory="templates")
@@ -45,7 +43,10 @@ async def subscribe(request: Request):
             except Exception as e:
                 return templates.TemplateResponse(
                     "users/error_page.html",
-                    {"request": request, "msg": "an error has occurred, email couldn't be send"},
+                    {
+                        "request": request,
+                        "msg": "an error has occurred, email couldn't be send",
+                    },
                 )
                 # raise HTTPException(
                 #     status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
@@ -56,7 +57,11 @@ async def subscribe(request: Request):
             # )  # default is post request, to use get request added status code 302
             return templates.TemplateResponse(
                 "users/success.html",
-                {"request": request, "msg": "registration successful", "email": form.email},
+                {
+                    "request": request,
+                    "msg": "registration successful",
+                    "email": form.email,
+                },
             )
 
         except ValueError as e:
@@ -87,7 +92,10 @@ async def verify(request: Request, token: str):
     if not user_dynamodb:
         return templates.TemplateResponse(
             "users/error_page.html",
-            {"request": request, "msg": "User doesn't exist, verification failed, Please subscribe again"},
+            {
+                "request": request,
+                "msg": "User doesn't exist, verification failed, Please subscribe again",
+            },
         )
 
         # raise invalid_token_error
@@ -108,3 +116,26 @@ async def verify(request: Request, token: str):
         )
     except jwt.JWTError:
         return templates.TemplateResponse("users/subscribe.html")
+
+
+@router.get("/unsubscribe/{token}")
+async def unsubscribe(request: Request, token: str):
+    if settings.is_prod is False:
+        db = dynamodb
+    else:
+        db = dynamodb_web_service
+    s = URLSafeSerializer(settings.secret_key, salt="unsubscribe")
+
+    try:
+        email = s.loads(token)
+        user = get_user_by_email(db, email)
+        update_user_status(db, user["id"], status=False)
+        return templates.TemplateResponse(
+            "users/success.html",
+            {"request": request, "msg": "successfully unsubscribed"},
+        )
+    except BadData:
+        return templates.TemplateResponse(
+            "users/error_page.html",
+            {"request": request, "msg": "error-unsubscirbe"},
+        )

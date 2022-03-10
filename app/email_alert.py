@@ -1,9 +1,10 @@
 from email.mime.text import MIMEText
-from smtplib import SMTP
 from email.utils import formataddr
+from smtplib import SMTP
+
+from app.email_template import html_email
 
 from .config import settings
-from app.email_template import html_email
 
 
 class Email:
@@ -16,7 +17,7 @@ class Email:
     def send_message(self, content: str, subject: str, mail_to: str):
         message = MIMEText(content, "html", "utf-8")
         message["Subject"] = subject
-        message["From"] = formataddr(('diractly', settings.mail_sender))
+        message["From"] = formataddr(("diractly", settings.mail_sender))
         message["To"] = mail_to
 
         mail_server = SMTP(self.server, self.port)
@@ -41,7 +42,11 @@ class Email:
                 </html>""".format(
             link=confirmation_url, text=confirmation_url
         )
-        row = "<tr><td>" "<a href=" + confirmation_url + ">" + "verify your email" + "</a>" "</td></tr>"
+        row = (
+            "<tr><td>"
+            "<a href=" + confirmation_url + ">" + "verify your email" + "</a>"
+            "</td></tr>"
+        )
         message = message.format(link=confirmation_url, text=confirmation_url)
-        message = html_email.format(link = confirmation_url)
+        message = html_email.format(link=confirmation_url)
         self.send_message(message, "Activate your account", mail_to)

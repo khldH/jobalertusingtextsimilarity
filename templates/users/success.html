@@ -9,6 +9,7 @@
 <div class="container">
     <div class="row my-5 p-2 justify-content-center">
         <div class="col-md-4 p-2 text-center">
+
             {% if msg == 'registration successful' %}
             <div class="alert alert-light" role="alert">
                 Thank you for subscribing to the service. Verification email has been sent to {{email}}.
@@ -18,6 +19,10 @@
             {% elif msg == 'verification successful' %}
             <div class="alert alert-light" role="alert">
                 Verification successful
+            </div>
+            {% elif msg == 'successfully unsubscribed' %}
+            <div class="alert alert-success" role="alert">
+                You have been successfully unsubscribed from the service. You can always resubscribe
             </div>
             {% else %}
             <div class="alert alert-light" role="alert">
