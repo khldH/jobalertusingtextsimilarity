@@ -33,9 +33,8 @@ async def subscribe(request: Request):
     if await form.is_valid():
         user_model = UserCreate(email=form.email, job_description=form.job_description)
         try:
-            # user = create_new_user(user=user_model, db=db)
             dynamodb_user = create_new_user_dynamodb(db, new_user=user_model)
-            if dynamodb_user and isinstance(dynamodb_user,UserCreate):
+            if dynamodb_user:
                 print(dynamodb_user)
                 confirmation = Auth.get_confirmation_token(dynamodb_user["id"])
                 try:
@@ -50,13 +49,19 @@ async def subscribe(request: Request):
                             "msg": "an error has occurred, email couldn't be send,please make sure your email is correct",
                         },
                     )
+            else:
+                return templates.TemplateResponse(
+                    "users/error_page.html",
+                    {
+                        "request": request,
+                        "msg": "an error has occurred",
+                    },
+                )
+
                 # raise HTTPException(
                 #     status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
                 #     detail="Email couldn't be send. Please try again.",
                 # )
-            # return responses.RedirectResponse(
-            #     "/?msg=registration successful", status_code=status.HTTP_302_FOUND
-            # )  # default is post request, to use get request added status code 302
             return templates.TemplateResponse(
                 "users/success.html",
                 {
@@ -65,7 +70,6 @@ async def subscribe(request: Request):
                     "email": form.email,
                 },
             )
-
         except ValueError as e:
             form.__dict__.get("errors").append(e)
             return templates.TemplateResponse("users/subscribe.html", form.__dict__)

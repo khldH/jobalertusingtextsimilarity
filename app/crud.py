@@ -41,7 +41,7 @@ def create_new_user_dynamodb(db, new_user: UserCreate):
         table.put_item(Item=dynamodb_user)
         return dynamodb_user
     except Exception as e:
-        return e
+        return {}
 
 
 def get_user_by_id(db, user_id):
