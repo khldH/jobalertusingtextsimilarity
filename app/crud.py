@@ -17,26 +17,31 @@ from .schemas import JobCreate, UserCreate
 
 def create_new_user_dynamodb(db, new_user: UserCreate):
     table = db.Table("users")
-    user = table.scan(FilterExpression=Attr("email").eq(new_user.email))["Items"][0]
-    if user:
-        if user["is_active"]:
-            raise ValueError("email already exists")
-        updated_user = table.update_item(
-            Key={"id": user["id"]},
-            UpdateExpression="set job_description = :r",
-            ExpressionAttributeValues={
-                ":r": new_user.job_description,
-            },
-            ReturnValues="ALL_NEW",
-        )["Attributes"]
-        return updated_user
+    try:
+        user = table.scan(FilterExpression=Attr("email").eq(new_user.email))["Items"]
+        if user:
+            user = user[0]
+            print(user)
+            if user["is_active"]:
+                raise ValueError("email already exists")
+            updated_user = table.update_item(
+                Key={"id": user["id"]},
+                UpdateExpression="set job_description = :r",
+                ExpressionAttributeValues={
+                    ":r": new_user.job_description,
+                },
+                ReturnValues="ALL_NEW",
+            )["Attributes"]
+            return updated_user
 
-    dynamodb_user = new_user.dict()
-    dynamodb_user["id"] = str(uuid.uuid4())
-    dynamodb_user["is_active"] = False
-    dynamodb_user["created_at"] = datetime.utcnow().isoformat()
-    table.put_item(Item=dynamodb_user)
-    return dynamodb_user
+        dynamodb_user = new_user.dict()
+        dynamodb_user["id"] = str(uuid.uuid4())
+        dynamodb_user["is_active"] = False
+        dynamodb_user["created_at"] = datetime.utcnow().isoformat()
+        table.put_item(Item=dynamodb_user)
+        return dynamodb_user
+    except Exception as e:
+        return e
 
 
 def get_user_by_id(db, user_id):

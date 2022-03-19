@@ -35,19 +35,21 @@ async def subscribe(request: Request):
         try:
             # user = create_new_user(user=user_model, db=db)
             dynamodb_user = create_new_user_dynamodb(db, new_user=user_model)
-            # print(dynamodb_user)
-            confirmation = Auth.get_confirmation_token(dynamodb_user["id"])
-            try:
-                email = Email(settings.mail_sender, settings.mail_sender_password)
-                email.send_confirmation_message(confirmation["token"], form.email)
-            except Exception as e:
-                return templates.TemplateResponse(
-                    "users/error_page.html",
-                    {
-                        "request": request,
-                        "msg": "an error has occurred, email couldn't be send",
-                    },
-                )
+            if dynamodb_user and isinstance(dynamodb_user,UserCreate):
+                print(dynamodb_user)
+                confirmation = Auth.get_confirmation_token(dynamodb_user["id"])
+                try:
+                    email = Email(settings.mail_sender, settings.mail_sender_password)
+                    email.send_confirmation_message(confirmation["token"], form.email)
+                except Exception as e:
+                    print(e)
+                    return templates.TemplateResponse(
+                        "users/error_page.html",
+                        {
+                            "request": request,
+                            "msg": "an error has occurred, email couldn't be send,please make sure your email is correct",
+                        },
+                    )
                 # raise HTTPException(
                 #     status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
                 #     detail="Email couldn't be send. Please try again.",
