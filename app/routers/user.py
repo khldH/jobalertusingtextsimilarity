@@ -186,15 +186,13 @@ async def edit_job_alert(request:Request):
     await form.load_data()
     if await form.is_valid():
         try:
-            print(form.id)
-            frequency = "Daily"
+            # frequency = "Daily"
             status = "True"
-            print(form.is_active)
-            if form.frequency =='true':
-                frequency = 'Weekly'
+            # if form.frequency =='true':
+            #     frequency = 'Weekly'
             if form.is_active is None:
                 status = False
-            update_job_alert(db,form.id, status, form.job_description, frequency)
+            update_job_alert(db,form.id, status, form.job_description)
             return templates.TemplateResponse(
                 "users/success.html",
                 {"request": request, "msg": "successfully updated"},

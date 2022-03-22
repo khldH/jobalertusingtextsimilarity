@@ -37,7 +37,7 @@ def create_new_user_dynamodb(db, new_user: UserCreate):
         dynamodb_user = new_user.dict()
         dynamodb_user["id"] = str(uuid.uuid4())
         dynamodb_user["is_active"] = False
-        dynamodb_user['frequency'] = 'Daily'
+        # dynamodb_user['frequency'] = 'Daily'
         dynamodb_user["created_at"] = datetime.utcnow().isoformat()
         table.put_item(Item=dynamodb_user)
         return dynamodb_user
@@ -71,15 +71,14 @@ def get_user_by_email(db, email):
     return user
 
 
-def update_job_alert(db, user_id, status, job_description, frequency):
+def update_job_alert(db, user_id, status, job_description):
     table = db.Table("users")
     table.update_item(
         Key={"id": user_id},
-        UpdateExpression="set is_active = :s, job_description = :j, frequency = :f",
+        UpdateExpression="set is_active = :s, job_description = :j",
         ExpressionAttributeValues={
             ":s": status,
             ":j":job_description,
-            ":f":frequency
         },
         ReturnValues="UPDATED_NEW",
     )

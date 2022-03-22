@@ -16,7 +16,7 @@
                 <input type="hidden"name="id", value="{{user.id}}"></input>
                 <div class='setting'>
                     <div class='name'>
-                        {{user.job_description}} : {{user.frequency}}
+                        {{user.job_description}}
                     </div>
                     <div class='info'>
                         <div class='switch'>
@@ -49,21 +49,21 @@
                                        placeholder="job title, keyword, organization or location"
                                        value="{{user.job_description}}" name="job_description" class="form-control">
                                 <br>
-                                <div class="name">Update frequency</div>
-                                <div class="info">Default frequency is "Daily" toggle the switch to make it weekly</div>
-                                <br>
-                                <div class="form-check form-switch">
-                                    {% if user.frequency == 'Weekly' %}
-                                     <input  data-toggle="toggle" data-onstyle="success" id='touch-enabled'
-                                           value="true" class="form-check-input" type="checkbox"
-                                            name ='frequency' checked>
-                                    {% else %}
-                                    <input  data-toggle="toggle" data-onstyle="success" id='touch-enabled'
-                                           value="true" class="form-check-input" type="checkbox"
-                                            name ='frequency'>
-                                    {% endif %}
-                                    <label class="form-check-label" for="flexSwitchCheckDefault">Weekly</label>
-                                </div>
+<!--                                <div class="name">Update frequency</div>-->
+<!--                                <div class="info">Default frequency is "Daily" toggle the switch to make it weekly</div>-->
+<!--                                <br>-->
+<!--                                <div class="form-check form-switch">-->
+<!--                                    {% if user.frequency == 'Weekly' %}-->
+<!--                                     <input  data-toggle="toggle" data-onstyle="success" id='touch-enabled'-->
+<!--                                           value="true" class="form-check-input" type="checkbox"-->
+<!--                                            name ='frequency' checked>-->
+<!--                                    {% else %}-->
+<!--                                    <input  data-toggle="toggle" data-onstyle="success" id='touch-enabled'-->
+<!--                                           value="true" class="form-check-input" type="checkbox"-->
+<!--                                            name ='frequency'>-->
+<!--                                    {% endif %}-->
+<!--                                    <label class="form-check-label" for="flexSwitchCheckDefault">Weekly</label>-->
+<!--                                </div>-->
 
 
                             </div>
