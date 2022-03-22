@@ -1,0 +1,195 @@
+/*
+https://dribbble.com/shots/2350297-Day-007-Settings-Daily-UI
+*/
+* {
+  padding: 0;
+  margin: 0;
+  font-family: "Lato", sans-serif;
+}
+
+
+
+
+.menu {
+  list-style: none;
+  background: #424c5a;
+  display: flex;
+  height: 60px;
+  align-items: center;
+}
+
+.menu-item {
+  font-size: 2em;
+  text-align: center;
+  flex-basis: 25%;
+  color: #5a6676;
+}
+.menu-item.active {
+  position: relative;
+  color: white;
+}
+.menu-item.active:after {
+  content: "";
+  position: absolute;
+  width: 1em;
+  height: 0;
+  bottom: -11px;
+  left: calc(50% - 0.5em);
+  border: 1px solid #f7ab78;
+}
+
+.settings {
+  margin-top: 12px;
+  padding: 35px;
+
+}
+
+.setting {
+  margin-bottom: 30px;
+}
+.setting .name {
+  text-transform: uppercase;
+
+  font-size: 12px;
+}
+.setting .info {
+  color: #8a8b93;
+  font-size: 12px;
+}
+.setting .switch {
+  float: right;
+  margin-top: -10px;
+}
+
+.checkbox {
+  display: inline-block;
+  vertical-align: top;
+}
+
+.checkbox-label {
+  display: inline-block;
+  height: 30px;
+  line-height: 30px;
+  padding-left: 10px;
+}
+
+.footer {
+  text-align: right;
+}
+
+.button {
+  width: 85px;
+  padding: 16px 0;
+  color: white;
+  text-transform: uppercase;
+  border: 0;
+  outline: none;
+  cursor: pointer;
+}
+.button.cancel {
+  background: #556070;
+}
+.button.save {
+  background: #f7af80;
+  margin-left: 10px;
+}
+
+/* Controls */
+/* Switch */
+.switch {
+  position: relative;
+}
+.switch label {
+  width: 37px;
+  height: 21px;
+  position: relative;
+  background: #5a667645;
+  top: 0;
+
+  border-radius: 50px;
+}
+.switch label:after {
+  content: "";
+  width: 13px;
+  height: 13px;
+  border-radius: 50px;
+  position: absolute;
+  top: 4px;
+  left: 4px;
+  background: white;
+  transition: all 0.1s;
+}
+
+.switch input[type=checkbox] {
+  visibility: hidden;
+}
+.switch input[type=checkbox]:checked + label {
+  background:#31b34c;
+  padding-right:10px;
+}
+.switch input[type=checkbox]:checked + label:after {
+  left: 20px;
+}
+
+/* Checkbox  */
+.checkbox {
+  width: 30px;
+  height: 30px;
+  background: #343f4c;
+  position: relative;
+}
+.checkbox label {
+  width: 28px;
+  height: 28px;
+  position: absolute;
+  top: 1px;
+  left: 1px;
+}
+.label-form{
+    padding-top:5px;
+    text-transform: uppercase;
+    font-size: 12px;
+}
+.checkbox label:before {
+  content: "";
+  width: 9px;
+  height: 5px;
+  border: 3px solid #ffaf7b;
+  position: absolute;
+  border-top: 0;
+  border-right: 0;
+  transform: rotate(-45deg);
+  top: 8px;
+  left: 8px;
+  opacity: 0;
+}
+.checkbox input[type=checkbox] {
+  visibility: hidden;
+}
+.checkbox input[type=checkbox]:checked + label:before {
+  opacity: 1;
+}
+
+/* Slider */
+.slider {
+  width: 100%;
+}
+.slider input {
+  appearance: none;
+  -webkit-appearance: none;
+  width: 100%;
+  height: 6px;
+  border-radius: 2px;
+  outline: none;
+  border: 0;
+  background: linear-gradient(to right, #4e6179 0%, #ffaf7a 54%, #ffaf7a 100%);
+}
+.slider input::-webkit-slider-thumb {
+  appearance: none;
+  -webkit-appearance: none;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: white;
+  border: 0;
+}

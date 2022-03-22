@@ -19,3 +19,25 @@ class UserCreateForm:
 
     async def is_valid(self):
         return True
+
+
+
+class UpdateJobAlertForm:
+    def __init__(self, request: Request):
+        self.request: Request = request
+        self.errors: List = []
+        self.id: Optional[str] = None
+        self.job_description: Optional[str] = None
+        self.is_active:Optional[bool] = False
+        self.frequency:Optional[str] = 'Daily'
+
+    async def load_data(self):
+        form = await self.request.form()
+        self.id = form.get("id")
+        self.job_description = form.get("job_description")
+        self.is_active = form.get('is_active')
+        self.frequency = form.get('frequency')
+
+    async def is_valid(self):
+        return True
+

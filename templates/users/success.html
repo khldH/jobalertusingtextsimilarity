@@ -21,8 +21,12 @@
                 Verification successful
             </div>
             {% elif msg == 'successfully unsubscribed' %}
-            <div class="alert alert-success" role="alert">
+            <div class="alert alert-light" role="alert">
                 You have been successfully unsubscribed from the service. You can always resubscribe
+            </div>
+            {% elif msg == "successfully updated" %}
+             <div class="alert alert-light" role="alert">
+                Your job alert has been successfully updated
             </div>
             {% else %}
             <div class="alert alert-light" role="alert">
