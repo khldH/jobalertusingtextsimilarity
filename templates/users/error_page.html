@@ -10,14 +10,18 @@
     <div class="row row my-5 p-2 justify-content-center">
         <div class="col-md-12">
             <div class="p-2 text-center">
-<!--                <h2>-->
-<!--                    404 Not Found</h2>-->
+                {% if msg == 'error-unsubscirbe' %}
+                <div class="alert alert-light" role="alert">
+                    <p>an error has occurred</p>
+                </div>
+                {% else %}
                 <div class="error-details">
                     {{msg}}
                 </div>
                 <div class="error-actions mt-4">
-                         </a><a href="/" class="btn btn-outline-secondary btn-lg"> Take me home</a>
+                    </a><a href="/" class="btn btn-outline-secondary btn-lg"> Take me home</a>
                 </div>
+                {%endif%}
             </div>
         </div>
     </div>

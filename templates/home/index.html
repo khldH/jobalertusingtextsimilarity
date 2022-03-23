@@ -2,7 +2,11 @@
 
 
 {% block title %}
-<title>get new job alerts in your email</title>
+{% if query %}
+<title>{{query}}</title>
+{% else %}
+<title>get new jobs in your email</title>
+{% endif %}
 {% endblock %}
 
 {% block content %}
@@ -23,7 +27,7 @@
                 <div class="p-1 bg-light rounded rounded-pill shadow-sm">
                     <div class="input-group">
                         <input style="border-radius: 30px;" type="search" name="query" value="{{query}}"
-                               placeholder="Finance jobs in Hargeisa"
+                               placeholder="use keyword, title, location or organiztion"
                                aria-describedby="button-addon1" class="form-control border-0 bg-light">
                         <div class="">
                             <button id="" type="submit" class="btn btn-link text-primary"><i
@@ -377,7 +381,7 @@
 
             <div class="col-sm mb-2">
                 <div class="card">
-                    <img class="img-fluid " src="{{ url_for('static', path='imgs/diractly_sample_alert.png')}}"
+                    <img class="img-fluid " src="{{ url_for('static', path='imgs/d_sample_alert.png')}}"
                          alt=""/>
                 </div>
 

@@ -1,0 +1,111 @@
+{% extends "shared/base.html" %}
+
+
+{% block title %}
+<title>{{msg}}</title>
+{% endblock %}
+
+{% block content %}
+<div class='row justify-content-center'>
+    <div class="col-md-6">
+        <h6 class="text-muted p-2">Get exactly the job alerts you want by adjusting your search terms and frequency</h6>
+        <hr>
+        <div class='settings'>
+
+            <form method="POST" , action="/edit">
+                <input type="hidden"name="id", value="{{user.id}}"></input>
+                <div class='setting'>
+                    <div class='name'>
+                        {{user.job_description}}
+                    </div>
+                    <div class='info'>
+                        <div class='switch'>
+                            {% if user.is_active %}
+                            <input checked data-toggle="toggle" id='touch-enabled' type='checkbox' name="is_active" value="{{user.is_active}}">
+                            {% else %}
+                             <input  data-toggle="toggle" id='touch-enabled' type='checkbox' name="is_active" value="{{user.is_active}}">
+                            {% endif %}
+<!--                                   onclick="showPreferences()"-->
+
+                            <label for='touch-enabled'></label>
+                        </div>
+                        Enable/disable job alert by toggling the switch
+
+                    </div>
+                </div>
+                <hr class="my-4">
+                <div class="user-preferences" id="preferences">
+                    <div class='setting'>
+                        <div class='name'>
+                            Update search term
+                        </div>
+                        <div class='info'>
+                            Update your job alert and save your changes
+                        </div>
+                        <br>
+                        <div>
+                            <div class="form-group">
+                                <input type="text-area" required
+                                       placeholder="job title, keyword, organization or location"
+                                       value="{{user.job_description}}" name="job_description" class="form-control">
+                                <br>
+<!--                                <div class="name">Update frequency</div>-->
+<!--                                <div class="info">Default frequency is "Daily" toggle the switch to make it weekly</div>-->
+<!--                                <br>-->
+<!--                                <div class="form-check form-switch">-->
+<!--                                    {% if user.frequency == 'Weekly' %}-->
+<!--                                     <input  data-toggle="toggle" data-onstyle="success" id='touch-enabled'-->
+<!--                                           value="true" class="form-check-input" type="checkbox"-->
+<!--                                            name ='frequency' checked>-->
+<!--                                    {% else %}-->
+<!--                                    <input  data-toggle="toggle" data-onstyle="success" id='touch-enabled'-->
+<!--                                           value="true" class="form-check-input" type="checkbox"-->
+<!--                                            name ='frequency'>-->
+<!--                                    {% endif %}-->
+<!--                                    <label class="form-check-label" for="flexSwitchCheckDefault">Weekly</label>-->
+<!--                                </div>-->
+
+
+                            </div>
+                            <div class="form-group">
+                                <div class="">
+<!--                                    <input class="btn btn-secondary" type="reset" value="Cancel">-->
+                                    <input class="btn btn-primary" type="submit" , value="Save changes">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </form>
+
+        </div>
+    </div>
+</div>
+<script>
+  function showPreferences() {
+  // Get the checkbox
+  var checkBox = document.getElementById("touch-enabled");
+  // Get the output text
+  var text = document.getElementById("preferences");
+
+  // If the checkbox is checked, display the output text
+  if (checkBox.checked == true){
+    text.style.display = "block";
+  } else {
+    text.style.display = "none";
+  }
+}
+
+
+
+
+
+</script>
+{% endblock %}
+
+
+
+
+
+
