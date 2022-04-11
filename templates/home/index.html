@@ -15,262 +15,280 @@
 {% if jobs%}
 <div></div>
 {% else %}
-<div style="height: 55vh; background-color:rgb(236, 237, 232); background-size: cover; background-position: center;"
-     class="position-relative w-100">
-    <div class="position-absolute text-dark d-flex flex-column align-items-center justify-content-center"
-         style="top: 0; right: 0; bottom: 0; left: 0;">
-        <span>Looking for a Job? Get Daily Job Alerts by Email!</span>
-        <h4 class="mb-4 mt-2 font-weight-bold text-center">Your Personal Job Search Assistant</h4>
-
-        <div class="col-lg-6">
-            <form action="/search/">
-                <div class="p-1 bg-light rounded rounded-pill shadow-sm">
-                    <div class="input-group">
-                        <input style="border-radius: 30px;" type="search" name="query" value="{{query}}"
-                               placeholder="use keyword, title, location or organiztion"
-                               aria-describedby="button-addon1" class="form-control border-0 bg-light">
-                        <div class="">
-                            <button id="" type="submit" class="btn btn-link text-primary"><i
-                                    class="fa fa-search"></i></button>
-                        </div>
+<div class="position-relative w-100" style="background-color:rgb(252 248 239 / 80%)">
+    <div class="container">
+        <div class="row pt-3">
+            <div class="col-lg mb-2">
+                <h3 class="font-weight-bold">Keep track of the jobs that interest without spending hours
+                    searching for them</h3>
+                <span class="text-muted ">Diractly scrapes job listings from a variety of Somali
+                job posting sites and sends you daily
+                email alerts when new jobs matching your criteria are posted online</span>
+                <br>
+                <span class="text-muted"> Don't spend hours searching for a job. Let Diractly do the hard work of job hunting for you. It will take less than a minute to set up your job alert</span>
+                <!--            <hr>-->
+            </div>
+            <div class="col-lg-5">
+                <div class="card p-2" style="background-color:#41464b !important">
+                    <div class="card-header" style="border-bottom: 1px solid #f8f9fa">
+                        <p class="font-weight-light text-white">Subscribe and get new job alerts by email</p>
+                    </div>
+                    <div class="card-body">
+                        <form method="POST" action="/subscribe">
+                            <div class="mb-3">
+                                <input type="text-area" required
+                                       placeholder="job-title, keyword, organization or location"
+                                       value="" name="job_description" class="form-control">
+                            </div>
+                            <div class="mb-3">
+                                <input type="text" required placeholder="email" name="email" value=""
+                                       class="form-control">
+                            </div>
+                            <button style="background-color: #ff8007!important ;font-weight:bold" type="submit"
+                                    class="btn bg-warning text-white form-control ">Subscribe
+                            </button>
+                        </form>
                     </div>
                 </div>
-            </form>
-            <!-- End -->
-
+            </div>
+        </div>
+        <div class="row p-5">
+            <div class="text-center">
+                <h5 class="p-2 text-muted">Popular job posting sites and career pages crawled by the service</h5>
+                <br>
+                <div class="row justify-content-center">
+                    <div class="col-sm-2">
+                        <img alt="" class="" src="{{ url_for('static', path='imgs/somalijobs.png') }}">
+                    </div>
+                    <div class="col-sm-2">
+                        <img alt="" class="img-fluid" src="{{ url_for('static', path='imgs/qaran.png') }}">
+                    </div>
+                    <div class="col-sm-2">
+                        <img alt="" class="" src="{{ url_for('static', path='imgs/reliefweb.png') }}">
+                    </div>
+                    <div class="col-sm-2">
+                        <img alt="" class="" src="{{ url_for('static', path='imgs/Unjobs.png') }}">
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row p-2 justify-content-center align-items-center">
+            <hr>
+            <h4 class="text-muted text-center"> New job alerts from organizations you follow</h4>
+            <span class="text-muted text-center">Follow from a curated selection of organizations to get started and receive job alerts for the new jobs they advertise </span>
+            <div class="col-lg-8">
+                <form action="/follow" , method="POST">
+                    <div class="mt-3">
+                        <div class="checkbox-block">
+                            <div class="btn btn-outline-primary rounded-pill mx-sm-2 mb-2">
+                                <label for="1" role="button" class="mb-0">
+                                    World Bank <span><i class="fad fa-plus fa-lg"></i></span> </label>
+                                <input name="org" id="1" style="display:none"
+                                       type="checkbox" value="World Bank">
+                            </div>
+                            <div class="btn btn-outline-primary rounded-pill mx-sm-2 mb-2">
+                                <label for="2" role="button" class="mb-0">
+                                    ACTED <span><i class="fad fa-plus fa-lg"></i></span> </label>
+                                <input name="org" id="2" style="display:none;"
+                                       type="checkbox" value="ACTED">
+                            </div>
+                            <div class="btn btn-outline-primary rounded-pill mx-sm-2 mb-2">
+                                <label for="3" role="button" class="mb-0">
+                                    Mercy Corps <span><i class="fad fa-plus fa-lg"></i></span> </label>
+                                <input name="org" id="3" style="display:none;"
+                                       type="checkbox" value="Mercy Corps">
+                            </div>
+                            <div class="btn btn-outline-primary rounded-pill mx-sm-2 mb-2">
+                                <label for="4" role="button" class="mb-0">
+                                    Consilient <span><i class="fad fa-plus fa-lg"></i></span> </label>
+                                <input name="org" id="4" style="display:none;"
+                                       type="checkbox" value="Consilient">
+                            </div>
+                            <div class="btn btn-outline-primary rounded-pill mx-sm-2 mb-2">
+                                <label for="5" role="button" class="mb-0">
+                                    Shaqodoon Organization <span><i class="fad fa-plus fa-lg"></i></span> </label>
+                                <input name="org" id="5" style="display:none;"
+                                       type="checkbox" value="Shaqodoon Organization">
+                            </div>
+                            <div class="btn btn-outline-primary rounded-pill mx-sm-2 mb-2">
+                                <label for="6" role="button" class="mb-0">
+                                    Save the Children <span><i class="fad fa-plus fa-lg"></i></span> </label>
+                                <input name="org" id="6" style="display:none;"
+                                       type="checkbox" value="Save the Children">
+                            </div>
+                            <div class="btn btn-outline-primary rounded-pill mx-sm-2 mb-2">
+                                <label for="7" role="button" class="mb-0">
+                                    CTG <span><i class="fad fa-plus fa-lg"></i></span> </label>
+                                <input name="org" id="7" style="display:none;"
+                                       type="checkbox" value="CTG">
+                            </div>
+                            <div class="btn btn-outline-primary rounded-pill mx-sm-2 mb-2">
+                                <label for="8" role="button" class="mb-0">
+                                    Danish Refugee Council <span><i class="fad fa-plus fa-lg"></i></span> </label>
+                                <input name="org" id="8" style="display:none;"
+                                       type="checkbox" value="Danish Refugee Council">
+                            </div>
+                            <div class="btn btn-outline-primary rounded-pill mx-sm-2 mb-2">
+                                <label for="9" role="button" class="mb-0">
+                                    UNOPS <span><i class="fad fa-plus fa-lg"></i></span> </label>
+                                <input name="" id="9" style="display:none;"
+                                       type="checkbox" value="UNOPS">
+                            </div>
+                            <div class="btn btn-outline-primary rounded-pill mx-sm-2 mb-2">
+                                <label for="10" role="button" class="mb-0">
+                                    Human Appeal <span><i class="fad fa-plus fa-lg"></i></span> </label>
+                                <input name="org" id="10" style="display:none;"
+                                       type="checkbox" value="Human Appeal">
+                            </div>
+                            <div class="btn btn-outline-primary rounded-pill mx-sm-2 mb-2">
+                                <label for="11" role="button" class="mb-0">
+                                    Islamic Relief <span><i class="fad fa-plus fa-lg"></i></span> </label>
+                                <input name="org" id="11" style="display:none;"
+                                       type="checkbox" value="Islamic Relief">
+                            </div>
+                            <div class="btn btn-outline-primary rounded-pill mx-sm-2 mb-2">
+                                <label for="12" role="button" class="mb-0">
+                                    Dahabshiil Real Estate <span><i class="fad fa-plus fa-lg"></i></span> </label>
+                                <input name="org" id="12" style="display:none;"
+                                       type="checkbox" value="Dahabshiil Real Estate">
+                            </div>
+                            <div class="btn btn-outline-primary rounded-pill mx-sm-2 mb-2">
+                                <label for="13" role="button" class="mb-0">
+                                    The International Rescue Committee <span><i class="fad fa-plus fa-lg"></i></span>
+                                </label>
+                                <input name="org" id="13" style="display:none;"
+                                       type="checkbox" value="The International Rescue Committe">
+                            </div>
+                            <div class="btn btn-outline-primary rounded-pill mx-sm-2 mb-2">
+                                <label for="14" role="button" class="mb-0">
+                                    UNHCR <span><i class="fad fa-plus fa-lg"></i></span> </label>
+                                <input name="org" id="14" style="display:none;"
+                                       type="checkbox" value="UNHCR">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="collapse" id="collapseSubscribe">
+                        <div class="card card-body">
+                            <div class="row g-3 justify-content-center">
+                                <div class="tag-list">
+                                    <p class="text-muted small">Notify me about jobs posted by these organization(s)</p>
+                                    <span class="badge bg-success rounded-pill" data-id="1" role="button">
+                                    World Bank  <i class="fa-thin fa-x"></i>
+                                </span>
+                                    <span class="badge bg-success rounded-pill" data-id="2" role="button">
+                                    ACTED <i class="fa-thin fa-x"></i>
+                                </span>
+                                    <span class="badge bg-success rounded-pill" data-id="3" role="button">
+                                    Mercy Corps <i class="fa-thin fa-x"></i></span>
+                                    <span class="badge bg-success rounded-pill" data-id="4" role="button">
+                                    Consilient <i class="fa-thin fa-x"></i></span>
+                                    <span class="badge bg-success rounded-pill" data-id="5" role="button">
+                                    Shaqodoon Organization <i class="fa-thin fa-x"></i></span>
+                                    <span class="badge bg-success rounded-pill" data-id="6" role="button">
+                                    Save the Children <i class="fa-thin fa-x"></i></span>
+                                    <span class="badge bg-success rounded-pill" data-id="7" role="button">
+                                    CTG <i class="fa-thin fa-x"></i></span>
+                                    <span class="badge bg-success rounded-pill" data-id="8" role="button">
+                                    Danish Refugee Council <i class="fa-thin fa-x"></i></span>
+                                    <span class="badge bg-success rounded-pill" data-id="9" role="button">
+                                    UNOPS <i class="fa-thin fa-x"></i></span>
+                                    <span class="badge bg-success rounded-pill" data-id="10" role="button">
+                                    Human Appeal <i class="fa-thin fa-x"></i></span>
+                                    <span class="badge bg-success rounded-pill" data-id="11" role="button">
+                                    Islamic Relief <i class="fa-thin fa-x"></i></span>
+                                    <span class="badge bg-success rounded-pill" data-id="12" role="button">
+                                    Dahabshiil Real Estate <i class="fa-thin fa-x"></i></span>
+                                    <span class="badge bg-success rounded-pill" data-id="13" role="button">
+                                    The International Rescue Committee <i class="fa-thin fa-x"></i></span>
+                                    <span class="badge bg-success rounded-pill" data-id="14" role="button">
+                                    UNHCR <i class="fa-thin fa-x"></i></span>
+                                </div>
+                                <div class="col-sm-7">
+                                    <input type="text" required class="form-control" id="email-address"
+                                           placeholder="email" name="email">
+                                </div>
+                                <div class="col-sm-2">
+                                    <button style="background-color: #ff8007!important"
+                                            type="submit"
+                                            class="btn btn-primary font-weight-bold form-control mb-3 border-0">
+                                        Subscribe
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <div class="row p-2 justify-content-center align-items-center">
+            <hr>
+            <h4 class="text-muted text-center">Set up your job alert from a custom search</h4>
+            <span class="text-muted text-center">Use job title, industry, keywords,organization or location to search jobs and set up daily job alerts based on your search</span>
+            <div class="col-lg-8">
+                <div class="mt-3">
+                    <div class="">
+                        <form action="/search/" class="row g-2 justify-content-center">
+                            <div class="col-sm-6">
+                                <input type="search" name="query" value="{{query}}" class="form-control"
+                                       placeholder="title, keyword, organization">
+                            </div>
+                            <div class="col-sm-2">
+                                <button style="background-color: #ff8007!important" type="submit"
+                                        class="btn btn-primary font-weight-bold form-control mb-3 border-0">Search
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
 
         </div>
+        <!--     style="height: 55vh; background-color:rgb(236, 237, 232); background-size: cover; background-position: center;">-->
+        <!--    <div class="position-absolute text-dark d-flex flex-column align-items-center justify-content-center"-->
+        <!--         style="top: 0; right: 0; bottom: 0; left: 0;">-->
+        <!--        <span>Looking for a Job? Get Daily Job Alerts by Email!</span>-->
+        <!--        <h4 class="mb-4 mt-2 font-weight-bold text-center">Your Personal Job Search Assistant</h4>-->
 
-
-        <!-- hover background-color: white; color: black; -->
-        <!--      <a href="#" id="filled" class="btn px-5 py-3 text-white mt-3 mt-sm-0 mx-1" style="border-radius: 30px; background-color: #9B5DE5;">Get Started</a>-->
-        <!--      &lt;!&ndash; hover background-color: #9B5DE5; color: white; &ndash;&gt;-->
-        <!--      <a href="#" id="outlined" class="btn px-5 py-3 text-white mt-3 mt-sm-0 mx-1" style="border-radius: 30px; border:1px solid #9B5DE5;">Showcases</a>-->
+        <!--        <div class="col-lg-6">-->
+        <!--            <form action="/search/">-->
+        <!--                <div class="p-1 bg-light rounded rounded-pill shadow-sm">-->
+        <!--                    <div class="input-group">-->
+        <!--                        <input aria-describedby="button-addon1" class="form-control border-0 bg-light" name="query"-->
+        <!--                               placeholder="use keyword, title, location or organiztion"-->
+        <!--                               style="border-radius: 30px;"-->
+        <!--                               type="search" value="{{query}}">-->
+        <!--                        <div class="">-->
+        <!--                            <button class="btn btn-link text-primary" id="" type="submit"><i-->
+        <!--                                    class="fa fa-search"></i></button>-->
+        <!--                        </div>-->
+        <!--                    </div>-->
+        <!--                </div>-->
+        <!--            </form>-->
+        <!--            &lt;!&ndash; End &ndash;&gt;-->
+        <!--        </div>-->
+        <!--    </div>-->
     </div>
 </div>
-</div>
-<!--<div class="row p-3" style="background-color: rgb(236, 237, 232)">-->
-<!--    <hr>-->
-<!--    <div class="">-->
-<!--        <div class="row">-->
-<!--            <div class="col-sm mb-2">-->
-<!--                <div class="card">-->
-<!--                    <h6 class="card-subtitle  text-muted">New Jobs Alert! Why spend hours searching through job boards-->
-<!--                        when you can receive daily alerts? </h6>-->
-<!--                    <p class="card-body small ">-->
-
-<!--                        Navigating multiple career websites and job-->
-<!--                        boards to check all new job postings can be exhausting. Save your time and create variety by-->
-<!--                        subscribing to Diractly's email job alert service. Diractly will get every single new job across-->
-<!--                        multiple job boards, filter out the noise and send you an alert with just the jobs that match-->
-<!--                        your custom search!<br>-->
-
-<!--                        → All career types - full time/part time/contract/freelance (for individuals and creative-->
-<!--                        agencies)<br>-->
-
-<!--                        → 7 days a week – whatever your schedule require, we-->
-<!--                        have it covered</p>-->
-<!--                </div>-->
-
-
-<!--            </div>-->
-
-<!--            <div class="col-sm mb-2">-->
-<!--                <div class="card">-->
-<!--                    <img class="img-fluid " src="{{ url_for('static', path='imgs/diractly_alert.png')}}"-->
-<!--                         alt=""/>-->
-<!--                </div>-->
-
-
-<!--            </div>-->
-<!--            <div class="col-sm">-->
-<!--                <div class="card">-->
-<!--                    <h6 class="card-subtitle  text-muted">Get daily job alerts about new jobs in your area</h6>-->
-<!--                    <p class="small card-body">-->
-
-<!--                        → Saves you time in finding new jobs via email<br>-->
-
-<!--                        → find the latest job postings from multiple sources from one place<br>-->
-
-<!--                        → Customise alerts based on your search criteria </p>-->
-<!--                </div>-->
-
-<!--            </div>-->
-
-<!--        </div>-->
-<!--        &lt;!&ndash;    <div class="container">&ndash;&gt;-->
-<!--        &lt;!&ndash;        <div class="col-lg-4">&ndash;&gt;-->
-<!--        &lt;!&ndash;            <h5 class="mb-4">Save time and effort</h5>&ndash;&gt;-->
-<!--        &lt;!&ndash;            <p class="small ">Spare yourself from the trouble of having to regularly browse job boards&ndash;&gt;-->
-<!--        &lt;!&ndash;                and career pages to check new job postings,&ndash;&gt;-->
-<!--        &lt;!&ndash;                Diractly will do the hard work of job hunting for you&ndash;&gt;-->
-<!--        &lt;!&ndash;                and email a daily digest of new jobs that match your saved job alert..</p>&ndash;&gt;-->
-
-<!--        &lt;!&ndash;        </div>&ndash;&gt;-->
-<!--        &lt;!&ndash;        <div class="col-lg-4">&ndash;&gt;-->
-<!--        &lt;!&ndash;            <h5 class="mb-4">Save time and effort</h5>&ndash;&gt;-->
-<!--        &lt;!&ndash;            <p class="small ">Spare yourself from the trouble of having to regularly browse job boards&ndash;&gt;-->
-<!--        &lt;!&ndash;                and career pages to check new job postings,&ndash;&gt;-->
-<!--        &lt;!&ndash;                Diractly will do the hard work of job hunting for you&ndash;&gt;-->
-<!--        &lt;!&ndash;                and email a daily digest of new jobs that match your saved job alert..</p>&ndash;&gt;-->
-
-<!--        &lt;!&ndash;        </div>&ndash;&gt;-->
-<!--        &lt;!&ndash;        <div class="col-lg-4">&ndash;&gt;-->
-<!--        &lt;!&ndash;            <h5 class="mb-4">Save time and effort</h5>&ndash;&gt;-->
-<!--        &lt;!&ndash;            <p class="small ">Spare yourself from the trouble of having to regularly browse job boards&ndash;&gt;-->
-<!--        &lt;!&ndash;                and career pages to check new job postings,&ndash;&gt;-->
-<!--        &lt;!&ndash;                Diractly will do the hard work of job hunting for you&ndash;&gt;-->
-<!--        &lt;!&ndash;                and email a daily digest of new jobs that match your saved job alert..</p>&ndash;&gt;-->
-
-<!--        &lt;!&ndash;        </div>&ndash;&gt;-->
-
-<!--        &lt;!&ndash;    </div>&ndash;&gt;-->
-
-
-<!--    </div>-->
-<!--</div>-->
-
-<!--<div class="row p-5 text-center align-items-center"-->
-<!--     style="background-color: rgb(238, 95, 0);  color:white;">-->
-
-<!--      <div class="row"> <h5 class="mb-4" style="font-size: 2.2rem;font-weight: 600">Your Personal Job Search Assistant</h5></div>-->
-<!--    <div class="col-lg-3"></div>-->
-
-<!--           <div class="col-lg-5">-->
-<!--            <form action="/search/" id="searchform">-->
-<!--                        <input type="search" name="query" value="{{query}}"-->
-<!--                               placeholder="Job title, keywords,organization or location"-->
-<!--                               aria-describedby="button-addon1" class="form-control mb-2">-->
-<!--            </form>-->
-<!--        </div>-->
-<!--        <div class="col-lg-1">-->
-<!--            <button id="button-addon1" type="submit" class="btn btn-dark form-control " form="searchform">Search </button>-->
-<!--        </div>-->
-
-
-<!--&lt;!&ndash;    <div class="col-lg-6">&ndash;&gt;-->
-
-<!--&lt;!&ndash;        &lt;!&ndash;        <h5 class="" style="font-size: 2.2rem;font-weight: 600">Your Personal Job Search Assistant</h5>&ndash;&gt;&ndash;&gt;-->
-<!--&lt;!&ndash;        &lt;!&ndash;        <p class="small">Spare yourself from the trouble of having to regularly browse job boards&ndash;&gt;&ndash;&gt;-->
-<!--&lt;!&ndash;        &lt;!&ndash;            and career pages to check new job postings,&ndash;&gt;&ndash;&gt;-->
-<!--&lt;!&ndash;        &lt;!&ndash;            somjobsalert will do the hard work of job hunting for you&ndash;&gt;&ndash;&gt;-->
-<!--&lt;!&ndash;        &lt;!&ndash;            and email a daily digest of new jobs that match your saved job alert..</p>&ndash;&gt;&ndash;&gt;-->
-
-
-<!--&lt;!&ndash;    </div>&ndash;&gt;-->
-<!--</div>-->
-
-
-<!--            <div class="col-lg-6">-->
-<!--                <img class="img-fluid shadow" src="{{ url_for('static', path='imgs/somjobsalert_sample.png')}}" alt=""/>-->
-<!--            </div>-->
-<!--</div>-->
 {% endif %}
-
-
 <div class="">
-<!--    <div class="row">-->
-<!--        <h5 class="display-5"></h5>-->
-<!--        <div class="text-danger font-weight-bold">-->
-<!--            {% for error in errors %}-->
-<!--            <li>{{error}}</li>-->
-<!--            {% endfor %}-->
-<!--        </div>-->
-
-<!--    </div>-->
-
-    <!--    <div class="row my-5"  style="background-color:#00a6ff21">-->
-    <!--        <div class="col-md-8">-->
-    <!--            <div class="">-->
-    <!--                <div class="card-body">-->
-    <!--                    <div class="card-title">-->
-    <!--                        <h1 class="mb-4">Put your job search on auto-pilot</h1>-->
-    <!--                    </div>-->
-    <!--                    <div class="row">-->
-    <!--                        <div class="col-md-6 col">-->
-    <!--                            <p class="small color-text">Use job title, keywords,-->
-    <!--                                organization or location to search jobs and set up daily job alerts based on your-->
-    <!--                                search.-->
-    <!--                                We will crawl all your favourite job posting sites and match you with relevant jobs-->
-    <!--                                using advanced Machine Learning technology </p>-->
-    <!--                        </div>-->
-    <!--                    </div>-->
-    <!--                </div>-->
-    <!--            </div>-->
-    <!--        </div>-->
-    <!--        <div class="col-md-4" >-->
-    <!--            <div  class="card"style="background-color:#00a6ff21">-->
-    <!--                <div class="card-body">-->
-    <!--                     <img src="{{ url_for('static', path='imgs/rsz_11samplelert.png')}}" alt="">-->
-    <!--                </div>-->
-    <!--            </div>-->
-
-    <!--        </div>-->
-    <!--    </div>-->
-    <!--    <div class="row mb-5">-->
-    <!--        &lt;!&ndash;        <div class="spinner-border" role="status">&ndash;&gt;-->
-    <!--        &lt;!&ndash;            <span class="sr-only">Loading...</span>&ndash;&gt;-->
-    <!--        &lt;!&ndash;        </div>&ndash;&gt;-->
-    <!--        &lt;!&ndash;        <div class="col-lg-8 mx-auto">&ndash;&gt;-->
-    <!--        &lt;!&ndash;            <div class="rounded">&ndash;&gt;-->
-    <!--        &lt;!&ndash;                <form action="/search/">&ndash;&gt;-->
-    <!--        &lt;!&ndash;                    <div class="p-1 bg-light rounded rounded-pill shadow-sm mb-4">&ndash;&gt;-->
-    <!--        &lt;!&ndash;                        <div class="input-group">&ndash;&gt;-->
-    <!--        &lt;!&ndash;                            <input type="search" name="query" value="{{query}}"&ndash;&gt;-->
-    <!--        &lt;!&ndash;                                   placeholder="Job title, keywords,organization or location"&ndash;&gt;-->
-    <!--        &lt;!&ndash;                                   aria-describedby="button-addon1" class="form-control border-0 bg-light">&ndash;&gt;-->
-    <!--        &lt;!&ndash;                            <div class="input-group-append">&ndash;&gt;-->
-    <!--        &lt;!&ndash;                                <button id="button-addon1" type="submit" class="btn btn-link text-primary"><i&ndash;&gt;-->
-    <!--        &lt;!&ndash;                                        class="fa fa-search"></i></button>&ndash;&gt;-->
-    <!--        &lt;!&ndash;                            </div>&ndash;&gt;-->
-    <!--        &lt;!&ndash;                        </div>&ndash;&gt;-->
-    <!--        &lt;!&ndash;                    </div>&ndash;&gt;-->
-    <!--        &lt;!&ndash;                </form>&ndash;&gt;-->
-    <!--        &lt;!&ndash;                &lt;!&ndash; End &ndash;&gt;&ndash;&gt;-->
-    <!--        &lt;!&ndash;            </div>&ndash;&gt;-->
-    <!--        &lt;!&ndash;        </div>&ndash;&gt;-->
-    <!--    </div>-->
-    <!--    <div class="row height d-flex justify-content-center align-items-center">-->
-    <!--        <div class="col-md-8">-->
-    <!--            <form class="form-inline" action="/search/">-->
-    <!--                <div class="search">-->
-    <!--                    &lt;!&ndash;                    <i class="fa fa-search"></i>&ndash;&gt;-->
-    <!--                    <div class="col-md-8">-->
-    <!--                        <input type="text" class="form-control" name="query" value="{{query}}"-->
-    <!--                               placeholder="Job title, keywords,organization or location">-->
-
-    <!--                    </div>-->
-    <!--                    <div class="col-md-2">-->
-    <!--                        <button class="btn btn-primary" style="width:110px">Search</button>-->
-    <!--                    </div>-->
-
-
-    <!--                </div>-->
-    <!--            </form>-->
-    <!--        </div>-->
-
-    <!--    </div>-->
-
-
     {% if jobs%}
     <div class="row p-2 mt-2 justify-content-center align-items-center">
         <div class="col-lg-6 ">
             <form action="/search/">
                 <div class="p-1 bg-light rounded rounded-pill shadow-sm">
                     <div class="input-group">
-                        <input style="border-radius: 30px;" type="search" name="query" value="{{query}}"
-                               placeholder="Finance jobs in Hargeisa"
-                               aria-describedby="button-addon1" class="form-control border-0 bg-light">
+                        <input aria-describedby="button-addon1" class="form-control border-0 bg-light" name="query"
+                               placeholder="title, keyword, organization"
+                               style="border-radius: 30px;"
+                               type="search" value="{{query}}">
                         <div class="">
-                            <button type="submit" class="btn btn-link text-primary"><i
+                            <button class="btn btn-link text-primary" type="submit"><i
                                     class="fa fa-search"></i></button>
                         </div>
                     </div>
                 </div>
             </form>
             <!-- End -->
-
-
         </div>
     </div>
     <div class="row p-3">
@@ -282,23 +300,19 @@
                 </div>
 
                 <div class="card-body">
-                    <form method="POST" action="/subscribe">
-                        <!--                        <div class="mb-3">-->
-                        <!--                            <label>Name</label>-->
-                        <!--                            <input type="text" required class="form-control" name="name" value="{{name}}"-->
-                        <!--                                   placeholder="name">-->
-                        <!--                        </div>-->
+                    <form action="/subscribe" method="POST">
                         <div class="mb-3">
-                            <input type="text" required placeholder="email address" name="email" value="{{email}}"
-                                   class="form-control">
+                            <input class="form-control" name="email" placeholder="email address" required type="text"
+                                   value="{{email}}">
                         </div>
                         <div class="mb-3">
-                            <input type="hidden" required placeholder="write a summary" value="{{query}}"
-                                   name="job_description" class="form-control">
+                            <input class="form-control" name="job_description" placeholder="write a summary" required
+                                   type="hidden" value="{{query}}">
                         </div>
                         <div class="mb-3">
-                            <button type="submit" class="btn bg-warning text-white form-control"
-                                    style="background-color: #ff8007!important ;font-weight:bold" ;>Send me new jobs
+                            <button ; class="btn bg-warning text-white form-control"
+                                    style="background-color: #ff8007!important ;font-weight:bold" type="submit">Send me
+                                new jobs
                             </button>
                         </div>
 
@@ -308,11 +322,6 @@
         </div>
 
         <div class="col-md-8">
-            <!--            <div class="card">-->
-            <!--                <div class="list border-bottom">-->
-            <!--                    <div class="d-flex flex-column ml-3"> <span>Client communication policy</span> <small>#politics - may - @max</small> </div>-->
-            <!--                </div>-->
-            <!--            </div>-->
             <!--            <p class="text-muted">{{jobs|length}} jobs found</p>-->
             {% for job in jobs%}
             <a class="" href={{job.url}} style="text-decoration:none;" target="_blank">
@@ -328,13 +337,7 @@
                             <span class="text-muted"><small><i
                                     class=""></i> {{job.days_since_posted}} days ago</small></span>
                             {%endif%}
-                            <!--                             <span><small>{{job.posted_date}}</small></span>-->
-                            <!--                              <span><small>{{job.organization}}</small></span>-->
                         </div>
-                        <!--                        <p class="card-title">{{job.title}}</p>-->
-                        <!--                        <p class="card-subtitle mb-2 text-muted">{{job.source}}</p>-->
-                        <!--                        <p class="card-subtitle mb-2 text-muted">{{job.posted_date}}</p>-->
-                        <!--                        <p class="card-subtitle mb-2 text-muted">{{job.organization}}</p>-->
                     </div>
                 </div>
             </a>
@@ -342,8 +345,7 @@
         </div>
 
         {% elif query%}
-<!--        <hr>-->
-
+        <!--        <hr>-->
         <div class="col-md-6 p-5">
             <p class="text-muted"> The search <strong>{{query}}</strong> did not match any jobs</p>
             <ul>
@@ -353,144 +355,136 @@
             </ul>
         </div>
         {% else %}
-        <div class="row p-3" style="background-color: rgb(236, 237, 232)">
-    <hr>
-    <div class="">
-        <div class="row">
-            <div class="col-sm mb-2">
-                <div class="card">
-                    <h6 class="card-subtitle  text-muted">New Jobs Alert! Why spend hours searching through job boards
-                        when you can receive daily alerts? </h6>
-                    <p class="card-body small ">
+        <!--        <div class="row p-3" style="background-color: rgb(236, 237, 232)">-->
+        <!--            <hr>-->
+        <!--            <div class="">-->
+        <!--                <div class="row">-->
+        <!--                    <div class="col-sm mb-2">-->
+        <!--                        <div class="card">-->
+        <!--                            <h6 class="card-subtitle  text-muted">New Jobs Alert! Why spend hours searching through job-->
+        <!--                                boards-->
+        <!--                                when you can receive daily alerts? </h6>-->
+        <!--                            <p class="card-body small ">-->
 
-                        Navigating multiple career websites and job
-                        boards to check all new job postings can be exhausting. Save your time and create variety by
-                        subscribing to Diractly's email job alert service. Diractly will get every single new job across
-                        multiple job boards, filter out the noise and send you an alert with just the jobs that match
-                        your custom search!<br>
+        <!--                                Navigating multiple career websites and job-->
+        <!--                                boards to check all new job postings can be exhausting. Save your time and create-->
+        <!--                                variety by-->
+        <!--                                subscribing to Diractly's email job alert service. Diractly will get every single new-->
+        <!--                                job across-->
+        <!--                                multiple job boards, filter out the noise and send you an alert with just the jobs that-->
+        <!--                                match-->
+        <!--                                your custom search!<br>-->
 
-                        → All career types - full time/part time/contract/freelance (for individuals and creative
-                        agencies)<br>
+        <!--                                → All career types - full time/part time/contract/freelance (for individuals and-->
+        <!--                                creative-->
+        <!--                                agencies)<br>-->
 
-                        → 7 days a week – whatever your schedule require, we
-                        have it covered</p>
-                </div>
-
-
-            </div>
-
-            <div class="col-sm mb-2">
-                <div class="card">
-                    <img class="img-fluid " src="{{ url_for('static', path='imgs/d_sample_alert.png')}}"
-                         alt=""/>
-                </div>
+        <!--                                → 7 days a week – whatever your schedule require, we-->
+        <!--                                have it covered</p>-->
+        <!--                        </div>-->
 
 
-            </div>
-            <div class="col-sm">
-                <div class="card">
-                    <h6 class="card-subtitle  text-muted">Get daily job alerts about new jobs in your area</h6>
-                    <p class="small card-body">
+        <!--                    </div>-->
 
-                        → Saves you time in finding new jobs via email<br>
+        <!--                    <div class="col-sm mb-2">-->
+        <!--                        <div class="card">-->
+        <!--                            <img alt="" class="img-fluid "-->
+        <!--                                 src="{{ url_for('static', path='imgs/d_sample_alert.png')}}"/>-->
+        <!--                        </div>-->
 
-                        → find the latest job postings from multiple sources from one place<br>
 
-                        → Customise alerts based on your search criteria </p>
-                </div>
+        <!--                    </div>-->
+        <!--                    <div class="col-sm">-->
+        <!--                        <div class="card">-->
+        <!--                            <h6 class="card-subtitle  text-muted">Get daily job alerts about new jobs in your area</h6>-->
+        <!--                            <p class="small card-body">-->
 
-            </div>
+        <!--                                → Saves you time in finding new jobs via email<br>-->
 
-        </div>
-        <!--    <div class="container">-->
-        <!--        <div class="col-lg-4">-->
-        <!--            <h5 class="mb-4">Save time and effort</h5>-->
-        <!--            <p class="small ">Spare yourself from the trouble of having to regularly browse job boards-->
-        <!--                and career pages to check new job postings,-->
-        <!--                Diractly will do the hard work of job hunting for you-->
-        <!--                and email a daily digest of new jobs that match your saved job alert..</p>-->
+        <!--                                → find the latest job postings from multiple sources from one place<br>-->
 
-        <!--        </div>-->
-        <!--        <div class="col-lg-4">-->
-        <!--            <h5 class="mb-4">Save time and effort</h5>-->
-        <!--            <p class="small ">Spare yourself from the trouble of having to regularly browse job boards-->
-        <!--                and career pages to check new job postings,-->
-        <!--                Diractly will do the hard work of job hunting for you-->
-        <!--                and email a daily digest of new jobs that match your saved job alert..</p>-->
-
-        <!--        </div>-->
-        <!--        <div class="col-lg-4">-->
-        <!--            <h5 class="mb-4">Save time and effort</h5>-->
-        <!--            <p class="small ">Spare yourself from the trouble of having to regularly browse job boards-->
-        <!--                and career pages to check new job postings,-->
-        <!--                Diractly will do the hard work of job hunting for you-->
-        <!--                and email a daily digest of new jobs that match your saved job alert..</p>-->
-
+        <!--                                → Customise alerts based on your search criteria </p>-->
+        <!--                        </div>-->
+        <!--                    </div>-->
+        <!--                </div>-->
+        <!--            </div>-->
         <!--        </div>-->
 
-        <!--    </div>-->
+        <!--        <div class="row my-5">-->
+        <!--            <div class="col text-center">-->
+        <!--                <div class="mb-5">-->
+        <!--                    <div class="">-->
+        <!--                        <h6 class="mb-4 lead">Popular job posting sites and career pages crawled by the service</h6>-->
+        <!--                    </div>-->
+        <!--                    <br>-->
+        <!--                    <div class="row justify-content-center">-->
 
+        <!--                        <div class="col-md-2">-->
+        <!--                            <img alt="" class="" src="{{ url_for('static', path='imgs/reliefweb.png') }}">-->
 
-    </div>
-</div>
+        <!--                        </div>-->
 
-        <div class="row my-5">
-            <div class="col text-center">
-                <div class="mb-5">
-                    <div class="">
-                        <h6 class="mb-4 lead">Popular job posting sites and career pages crawled by the service</h6>
-                    </div>
-                    <br>
-                    <div class="row justify-content-center">
+        <!--                        <div class="col-md-2">-->
+        <!--                            <img alt="" class="" src="{{ url_for('static', path='imgs/somalijobs.png')}}">-->
+        <!--                        </div>-->
 
-                        <div class="col-md-2">
-                            <img class="" src="{{ url_for('static', path='imgs/reliefweb.png') }}" alt="">
-
-                        </div>
-
-                        <div class="col-md-2">
-                            <img class="" src="{{ url_for('static', path='imgs/somalijobs.png')}}" alt="">
-                        </div>
-                        <!--                        <div class="col-md-3">-->
-                        <!--                            <img class="" src="{{ url_for('static', path='imgs/unjobs.jpg') }}" alt="">-->
-                        <!--                        </div>-->
-                        <div class="col-md-2">
-                            <img class="img-fluid" src="{{ url_for('static', path='imgs/stc.png') }}" alt="">
-                        </div>
-                        <div class="col-md-2">
-                            <img class="" src="{{ url_for('static', path='imgs/UNjobs.png') }}" alt="">
-
-                        </div>
-
-                        <!--                        <div class="col-md-2">-->
-                        <!--&lt;!&ndash;                            <img class="" src="{{ url_for('static', path='imgs/irc_1.jpg') }}" alt="">&ndash;&gt;-->
-
-                        <!--                        </div>-->
-                        <!--                        <div class="col-md-2">-->
-                        <!--                            <img class="img-fluid" src="{{ url_for('static', path='imgs/unicef.jpg') }}" alt="">-->
-                        <!--                        </div>-->
-
-                    </div>
-                </div>
-            </div>
-        </div>
+        <!--                        <div class="col-md-2">-->
+        <!--                            <img alt="" class="img-fluid" src="{{ url_for('static', path='imgs/stc.png') }}">-->
+        <!--                        </div>-->
+        <!--                        <div class="col-md-2">-->
+        <!--                            <img alt="" class="" src="{{ url_for('static', path='imgs/UNjobs.png') }}">-->
+        <!--                        </div>-->
+        <!--                    </div>-->
+        <!--                </div>-->
+        <!--            </div>-->
+        <!--        </div>-->
         {% endif %}
-        <!--        <div class="row my-5 justify-content-center"></div>-->
-        <!--         <div class="row my-5 justify-content-center"></div>-->
-
     </div>
-
 </div>
-<!--<footer class="text-center text-lg-start bg-light text-muted">-->
-
-
-<!--    &lt;!&ndash; Copyright &ndash;&gt;-->
-<!--    <div class="text-center p-4" style="background-color: rgba(0, 0, 0, 0.05);">-->
-<!--        © 2022 Copyright:-->
-<!--        <a class="text-reset fw-bold" href="/">somjobsalert</a>-->
-<!--    </div>-->
-<!--    &lt;!&ndash; Copyright &ndash;&gt;-->
-<!--</footer>-->
 </div>
+<script>
+$(document).ready(function () {
+  var count_checked = $('.checkbox-block').find('input:checkbox:checked').length;
+  console.log(count_checked)
+
+  // If none are checked
+  if (count_checked == 0)  {
+    $(".tag-list span").hide();
+    $(".collapse").hide()
+
+  }
+
+  // On change - checkboxes
+  $('.checkbox-block').find('input:checkbox').change(function () {
+    if ($('.checkbox-block').find('input:checkbox:checked').length) {
+      $('.tag-list span').hide();
+
+
+      $('.checkbox-block').find('input:checkbox:checked').each(function () {
+        $('.tag-list span[data-id="' + $(this).attr('id') + '"]').show();
+        $(".collapse").show();
+        });
+
+    // If none are checked
+    } else if(count_checked == 0) {
+      $(".tag-list span").hide();
+       $(".collapse").hide();
+       }
+  });
+
+
+  $('.tag-list').find('span').click(function () {
+
+    //Find matching checkbox and uncheck it
+    $('.checkbox-block').find('input:checkbox:checked[id=' + $(this).attr('data-id') + ']').prop("checked", false);
+
+    // Hide tag...
+    $(this).hide();
+    });
+});
+
+
+
+</script>
 {% endblock %}
 

@@ -1,18 +1,26 @@
-from fastapi import (APIRouter, HTTPException, Request, Form)
-from fastapi.templating import Jinja2Templates
+from typing import List
+
+from fastapi import APIRouter, Form, HTTPException, Request
 from fastapi.responses import HTMLResponse
+from fastapi.templating import Jinja2Templates
 from itsdangerous import BadData, URLSafeSerializer
 from jose import jwt
 
 from ..config import settings
-from ..crud import create_new_user_dynamodb  # create_new_user,
-from ..crud import get_user_by_email, get_user_by_id, update_user_status, update_job_alert
+from ..crud import create_new_user  # create_new_user,
+from ..crud import (
+    get_user_by_email,
+    get_user_by_id,
+    update_job_alert,
+    update_user_status,
+)
 from ..database import dynamodb, dynamodb_web_service
 from ..email_alert import Email
+
 # from ..models import User
 from ..oauth2 import Auth
 from ..schemas import UserCreate
-from ..views.user import UserCreateForm, UpdateJobAlertForm
+from ..views.user import UpdateJobAlertForm, UserCreateForm
 
 templates = Jinja2Templates(directory="templates")
 router = APIRouter(tags=["Users"])
@@ -34,45 +42,33 @@ async def subscribe(request: Request):
     if await form.is_valid():
         user_model = UserCreate(email=form.email, job_description=form.job_description)
         try:
-            dynamodb_user = create_new_user_dynamodb(db, new_user=user_model)
-            if dynamodb_user:
-                print(dynamodb_user)
-                confirmation = Auth.get_confirmation_token(dynamodb_user["id"])
+            _user = create_new_user(db, new_user=user_model)
+            if _user:
+                confirmation = Auth.get_confirmation_token(_user["id"])
                 try:
                     email = Email(settings.mail_sender, settings.mail_sender_password)
                     email.send_confirmation_message(confirmation["token"], form.email)
+                    return templates.TemplateResponse(
+                        "users/success.html",
+                        {
+                            "request": request,
+                            "msg": "registration successful",
+                            "email": form.email,
+                        })
                 except Exception as e:
                     print(e)
                     return templates.TemplateResponse(
                         "users/error_page.html",
                         {
                             "request": request,
-                            "msg": "an error has occurred, email couldn't be send,please make sure your email is correct",
+                            "msg": "an error has occurred, email couldn't be send,please make sure your email is "
+                                   "correct",
                         },
                     )
-            else:
-                return templates.TemplateResponse(
-                    "users/error_page.html",
-                    {
-                        "request": request,
-                        "msg": "an error has occurred",
-                    },
-                )
-
-                # raise HTTPException(
-                #     status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-                #     detail="Email couldn't be send. Please try again.",
-                # )
-            return templates.TemplateResponse(
-                "users/success.html",
-                {
-                    "request": request,
-                    "msg": "registration successful",
-                    "email": form.email,
-                },
-            )
+            form.__dict__.get("errors").append("email already exists !")
+            return templates.TemplateResponse("users/subscribe.html", form.__dict__)
         except ValueError as e:
-            form.__dict__.get("errors").append(e)
+            form.__dict__.get("errors").append("email already exists !")
             return templates.TemplateResponse("users/subscribe.html", form.__dict__)
     return templates.TemplateResponse("users/subscribe.html", form.__dict__)
 
@@ -92,11 +88,8 @@ async def verify(request: Request, token: str):
         raise HTTPException(status_code=403, detail="Token has expired")
     if payload["scope"] != "registration":
         raise invalid_token_error
-    # user_query = db.query(User).filter(User.id == payload["sub"])
-    # user = user_query.first()
-    user_dynamodb = get_user_by_id(db, user_id=payload["sub"])
-    # print(user_dynamodb)
-    if not user_dynamodb:
+    _user = get_user_by_id(db, user_id=payload["sub"])
+    if not _user:
         return templates.TemplateResponse(
             "users/error_page.html",
             {
@@ -104,19 +97,13 @@ async def verify(request: Request, token: str):
                 "msg": "User doesn't exist, verification failed, Please subscribe again",
             },
         )
-
-        # raise invalid_token_error
-    if user_dynamodb["is_active"]:
-        # return responses.RedirectResponse("/?msg=user already verified")
+    if _user["is_active"]:
         return templates.TemplateResponse(
             "users/success.html",
             {"request": request, "msg": "user already verified"},
         )
     try:
-        update_user_status(db, user_dynamodb["id"])
-        # user.is_active = True
-        # db.commit()
-        # return responses.RedirectResponse("/?msg=successfully verified")
+        update_user_status(db, _user["id"])
         return templates.TemplateResponse(
             "users/success.html",
             {"request": request, "msg": "verification successful"},
@@ -148,8 +135,8 @@ async def unsubscribe(request: Request, token: str):
         )
 
 
-@router.get("/edit/{token}",response_class=HTMLResponse)
-async def edit_job_alert(request:Request, token: str):
+@router.get("/edit/{token}", response_class=HTMLResponse)
+async def edit_job_alert(request: Request, token: str):
     if settings.is_prod is False:
         db = dynamodb
     else:
@@ -159,14 +146,9 @@ async def edit_job_alert(request:Request, token: str):
         e = URLSafeSerializer(settings.secret_key, salt="edit")
         email = e.loads(token)
         user = get_user_by_email(db, email)
-        # print(user)
-        # form = UpdateJobAlertForm(request)
-        # await form.load_data()
-        # if await form.is_valid():
-        #     print(form.is_active)
         return templates.TemplateResponse(
             "users/update_job_alert.html",
-            {"request": request, "msg": "update job alert","user":user},
+            {"request": request, "msg": "update job alert", "user": user},
         )
 
     except Exception as e:
@@ -176,39 +158,115 @@ async def edit_job_alert(request:Request, token: str):
             {"request": request, "msg": "error-unsubscirbe"},
         )
 
+
 @router.post("/edit")
-async def edit_job_alert(request:Request):
+async def edit_job_alert(request: Request, follows: List[str] = Form(...)):
     if settings.is_prod is False:
         db = dynamodb
     else:
         db = dynamodb_web_service
-    form =  UpdateJobAlertForm(request)
+    form = UpdateJobAlertForm(request)
     await form.load_data()
     if await form.is_valid():
         try:
-            # frequency = "Daily"
-            status = "True"
-            # if form.frequency =='true':
-            #     frequency = 'Weekly'
+            user = {}
+            status = True
             if form.is_active is None:
                 status = False
-            update_job_alert(db,form.id, status, form.job_description)
+            user["id"] = form.id
+            user["is_active"] = status
+            user["job_description"] = form.job_description
+            user["follows"] = follows
+            update_job_alert(db, user)
             return templates.TemplateResponse(
                 "users/success.html",
                 {"request": request, "msg": "successfully updated"},
             )
 
-        except:
+        except Exception as e:
             return templates.TemplateResponse(
                 "users/error_page.html",
-                {"request": request, "msg": "job alert couldn't be updated, please try again"},
+                {
+                    "request": request,
+                    "msg": "job alert couldn't be updated, please try again",
+                },
             )
 
 
-
-
-
-
-
-
-
+@router.post("/follow")
+async def follow_organization(
+        request: Request, email: str = Form(...), org: List[str] = Form(...)
+):
+    if settings.is_prod is False:
+        db = dynamodb
+    else:
+        db = dynamodb_web_service
+    try:
+        user = get_user_by_email(db, email)
+        if not user:
+            new_user = UserCreate(email=email)
+            new_user.follows.extend(org)
+            _user = create_new_user(db, new_user)
+            confirmation = Auth.get_confirmation_token(_user["id"])
+            try:
+                email = Email(settings.mail_sender, settings.mail_sender_password)
+                email.send_confirmation_message(confirmation["token"], new_user.email)
+            except Exception as e:
+                print(e)
+                return templates.TemplateResponse(
+                    "users/error_page.html",
+                    {
+                        "request": request,
+                        "msg": "an error has occurred, email couldn't be send,please make sure your email is "
+                               "correct",
+                    },
+                )
+            return templates.TemplateResponse(
+                "users/success.html",
+                {
+                    "request": request,
+                    "msg": "registration successful",
+                    "email": new_user.email,
+                },
+            )
+        user.setdefault("follows", [])
+        user["follows"] = org
+        updated_user = update_job_alert(db, user)
+        if not updated_user["is_active"]:
+            try:
+                confirmation = Auth.get_confirmation_token(updated_user["id"])
+                email = Email(settings.mail_sender, settings.mail_sender_password)
+                email.send_confirmation_message(
+                    confirmation["token"], updated_user["email"]
+                )
+            except Exception as e:
+                print(e)
+                return templates.TemplateResponse(
+                    "users/error_page.html",
+                    {
+                        "request": request,
+                        "msg": "an error has occurred, email couldn't be send,please make sure your email is "
+                               "correct",
+                    },
+                )
+            return templates.TemplateResponse(
+                "users/success.html",
+                {
+                    "request": request,
+                    "msg": "registration successful",
+                    "email": updated_user["email"],
+                },
+            )
+        return templates.TemplateResponse(
+            "users/success.html",
+            {"request": request, "msg": "successful follow", "orgs": org},
+        )
+    except Exception as e:
+        print(e)
+        return templates.TemplateResponse(
+            "users/error_page.html",
+            {
+                "request": request,
+                "msg": "Action couldn't be completed, please try again",
+            },
+        )
