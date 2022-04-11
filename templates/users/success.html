@@ -12,7 +12,7 @@
 
             {% if msg == 'registration successful' %}
             <div class="alert alert-light" role="alert">
-                Thank you for subscribing to the service. Verification email has been sent to {{email}}.
+                Thank you for subscribing to Diractly. Verification email has been sent to {{email}}.
                 Please check your inbox and verify your email.
                 Make sure you check your spam folder as well if you can't find the email in your inbox
             </div>
@@ -25,8 +25,15 @@
                 You have been successfully unsubscribed from the service. You can always resubscribe
             </div>
             {% elif msg == "successfully updated" %}
-             <div class="alert alert-light" role="alert">
+            <div class="alert alert-light" role="alert">
                 Your job alert has been successfully updated
+            </div>
+            {% elif msg == "successful follow" %}
+            <div class="alert alert-light" role="alert">
+                 You're now subscribed to receive alerts for new jobs from
+                {% for org in orgs %}
+                    <span class="badge badge-pill badge-secondary">{{org}}</span>
+                {% endfor %}
             </div>
             {% else %}
             <div class="alert alert-light" role="alert">

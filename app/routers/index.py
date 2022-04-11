@@ -59,6 +59,7 @@ async def search(request: Request, query: Optional[str] = None):
             )
         return templates.TemplateResponse("home/index.html")
     except Exception as e:
+        print(e)
         return templates.TemplateResponse(
             "users/error_page.html",
             {"request": request, "msg": "an error has occurred, Please try again"},

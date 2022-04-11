@@ -13,13 +13,11 @@ class UserCreateForm:
 
     async def load_data(self):
         form = await self.request.form()
-        # self.name = form.get("name")
         self.email = form.get("email")
         self.job_description = form.get("job_description")
 
     async def is_valid(self):
         return True
-
 
 
 class UpdateJobAlertForm:
@@ -28,16 +26,17 @@ class UpdateJobAlertForm:
         self.errors: List = []
         self.id: Optional[str] = None
         self.job_description: Optional[str] = None
-        self.is_active:Optional[bool] = False
+        self.is_active: Optional[bool] = False
+        self.follows:Optional[List] =[]
         # self.frequency:Optional[str] = 'Daily'
 
     async def load_data(self):
         form = await self.request.form()
         self.id = form.get("id")
         self.job_description = form.get("job_description")
-        self.is_active = form.get('is_active')
+        self.is_active = form.get("is_active")
+        self.follows = form.get("follows")
         # self.frequency = form.get('frequency')
 
     async def is_valid(self):
         return True
-
