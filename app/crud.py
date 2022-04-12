@@ -22,7 +22,7 @@ def create_new_user(db, new_user: UserCreate):
         user = table.scan(FilterExpression=Attr("email").eq(new_user.email))["Items"]
         if user:
             user = user[0]
-            if user["is_active"] and user['job_description'] is not None:
+            if user["is_active"] and user["job_description"] is not None:
                 raise ValueError("email already exists")
             updated_user = table.update_item(
                 Key={"id": user["id"]},

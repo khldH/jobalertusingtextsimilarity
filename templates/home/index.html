@@ -428,7 +428,6 @@ $(document).ready(function () {
   if (count_checked == 0)  {
     $(".tag-list span").hide();
     $(".collapse").hide()
-
   }
 
   // On change - checkboxes
@@ -456,7 +455,7 @@ $(document).ready(function () {
     $('.checkbox-block').find('input:checkbox:checked[id=' + $(this).attr('data-id') + ']').prop("checked", false);
 
     // Hide tag...
-    $(this).hide();
+    //$(this).hide();
     });
 });
 
