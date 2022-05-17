@@ -54,7 +54,8 @@ async def subscribe(request: Request):
                             "request": request,
                             "msg": "registration successful",
                             "email": form.email,
-                        })
+                        },
+                    )
                 except Exception as e:
                     print(e)
                     return templates.TemplateResponse(
@@ -62,7 +63,7 @@ async def subscribe(request: Request):
                         {
                             "request": request,
                             "msg": "an error has occurred, email couldn't be send,please make sure your email is "
-                                   "correct",
+                            "correct",
                         },
                     )
             form.__dict__.get("errors").append("email already exists !")
@@ -195,12 +196,13 @@ async def edit_job_alert(request: Request, follows: List[str] = Form(...)):
 
 @router.post("/follow")
 async def follow_organization(
-        request: Request, email: str = Form(...), org: List[str] = Form(...)
+    request: Request, email: str = Form(...), org: List[str] = Form(...)
 ):
     if settings.is_prod is False:
         db = dynamodb
     else:
         db = dynamodb_web_service
+
     try:
         user = get_user_by_email(db, email)
         if not user:
@@ -218,7 +220,7 @@ async def follow_organization(
                     {
                         "request": request,
                         "msg": "an error has occurred, email couldn't be send,please make sure your email is "
-                               "correct",
+                        "correct",
                     },
                 )
             return templates.TemplateResponse(
@@ -246,7 +248,7 @@ async def follow_organization(
                     {
                         "request": request,
                         "msg": "an error has occurred, email couldn't be send,please make sure your email is "
-                               "correct",
+                        "correct",
                     },
                 )
             return templates.TemplateResponse(

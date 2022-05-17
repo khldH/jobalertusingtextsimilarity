@@ -27,7 +27,7 @@ class UpdateJobAlertForm:
         self.id: Optional[str] = None
         self.job_description: Optional[str] = None
         self.is_active: Optional[bool] = False
-        self.follows:Optional[List] =[]
+        self.follows: Optional[List] = []
         # self.frequency:Optional[str] = 'Daily'
 
     async def load_data(self):

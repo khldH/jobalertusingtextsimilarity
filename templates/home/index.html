@@ -15,17 +15,15 @@
 {% if jobs%}
 <div></div>
 {% else %}
-<div class="position-relative w-100" style="background-color:rgb(252 248 239 / 80%)">
+<div class="position-relative w-100" style="background-color:white">
     <div class="container">
-        <div class="row pt-3">
+        <div class="row pt-4 pl-1 pr-1">
             <div class="col-lg mb-2">
-                <h3 class="font-weight-bold">Keep track of the jobs that interest without spending hours
+                <h3 class="font-weight-bold ">Keep track of the jobs that interest you without spending hours
                     searching for them</h3>
-                <span class="text-muted ">Diractly scrapes job listings from a variety of Somali
+                <span class="text-muted text-center">Diractly scrapes job listings from a variety of Somali
                 job posting sites and sends you daily
-                email alerts when new jobs matching your criteria are posted online</span>
-                <br>
-                <span class="text-muted"> Don't spend hours searching for a job. Let Diractly do the hard work of job hunting for you. It will take less than a minute to set up your job alert</span>
+                email alerts when new jobs matching your criteria are posted online. Don't spend hours searching for a job, let Diractly do the hard work of job hunting for you. It will take less than a minute to set up your job alert</span>
                 <!--            <hr>-->
             </div>
             <div class="col-lg-5">
@@ -67,7 +65,7 @@
                         <img alt="" class="" src="{{ url_for('static', path='imgs/reliefweb.png') }}">
                     </div>
                     <div class="col-sm-2">
-                        <img alt="" class="" src="{{ url_for('static', path='imgs/Unjobs.png') }}">
+                        <img alt="" class="" src="{{ url_for('static', path='imgs/UNjobs.png') }}">
                     </div>
                 </div>
             </div>
@@ -243,36 +241,13 @@
             </div>
 
         </div>
-        <!--     style="height: 55vh; background-color:rgb(236, 237, 232); background-size: cover; background-position: center;">-->
-        <!--    <div class="position-absolute text-dark d-flex flex-column align-items-center justify-content-center"-->
-        <!--         style="top: 0; right: 0; bottom: 0; left: 0;">-->
-        <!--        <span>Looking for a Job? Get Daily Job Alerts by Email!</span>-->
-        <!--        <h4 class="mb-4 mt-2 font-weight-bold text-center">Your Personal Job Search Assistant</h4>-->
 
-        <!--        <div class="col-lg-6">-->
-        <!--            <form action="/search/">-->
-        <!--                <div class="p-1 bg-light rounded rounded-pill shadow-sm">-->
-        <!--                    <div class="input-group">-->
-        <!--                        <input aria-describedby="button-addon1" class="form-control border-0 bg-light" name="query"-->
-        <!--                               placeholder="use keyword, title, location or organiztion"-->
-        <!--                               style="border-radius: 30px;"-->
-        <!--                               type="search" value="{{query}}">-->
-        <!--                        <div class="">-->
-        <!--                            <button class="btn btn-link text-primary" id="" type="submit"><i-->
-        <!--                                    class="fa fa-search"></i></button>-->
-        <!--                        </div>-->
-        <!--                    </div>-->
-        <!--                </div>-->
-        <!--            </form>-->
-        <!--            &lt;!&ndash; End &ndash;&gt;-->
-        <!--        </div>-->
-        <!--    </div>-->
     </div>
 </div>
 {% endif %}
 <div class="">
     {% if jobs%}
-    <div class="row p-2 mt-2 justify-content-center align-items-center">
+    <div class="row p-4 mt-2 justify-content-center align-items-center">
         <div class="col-lg-6 ">
             <form action="/search/">
                 <div class="p-1 bg-light rounded rounded-pill shadow-sm">
@@ -291,7 +266,7 @@
             <!-- End -->
         </div>
     </div>
-    <div class="row p-3">
+    <div class="row p-3" >
         <hr>
         <div class="col-md-4">
             <div class="card bg-dark mb-3" style="background-color:#41464b !important">
@@ -451,7 +426,6 @@ $(document).ready(function () {
   if (count_checked == 0)  {
     $(".tag-list span").hide();
     $(".collapse").hide()
-
   }
 
   // On change - checkboxes
@@ -479,7 +453,7 @@ $(document).ready(function () {
     $('.checkbox-block').find('input:checkbox:checked[id=' + $(this).attr('data-id') + ']').prop("checked", false);
 
     // Hide tag...
-    $(this).hide();
+    //$(this).hide();
     });
 });
 
