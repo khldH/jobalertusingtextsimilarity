@@ -1,4 +1,5 @@
 from datetime import datetime
+from dateutil import parser
 from typing import List
 
 from sklearn.feature_extraction.text import TfidfVectorizer
@@ -34,10 +35,15 @@ class DocumentSearch(TfidfVectorizer):
                         "posted_date": document.posted_date,
                     }
                     if document.source == "Somali jobs":
-                        job["days_since_posted"] = (
-                            datetime.now().date()
-                            - datetime.strptime(document.posted_date, "%d %b %Y").date()
-                        ).days
+                        if document.posted_date == "Today":
+                            job["days_since_posted"] = 0
+                        elif document.posted_date == "Yesterday":
+                            job["days_since_posted"] = 1
+                        else:
+                            job["days_since_posted"] = (
+                                datetime.now().date()
+                                - parser.parse(document.posted_date).date()
+                            ).days
                     else:
                         job["days_since_posted"] = (
                             datetime.now().date()
