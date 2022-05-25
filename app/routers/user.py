@@ -8,15 +8,10 @@ from jose import jwt
 
 from ..config import settings
 from ..crud import create_new_user  # create_new_user,
-from ..crud import (
-    get_user_by_email,
-    get_user_by_id,
-    update_job_alert,
-    update_user_status,
-)
+from ..crud import (get_user_by_email, get_user_by_id, update_job_alert,
+                    update_user_status)
 from ..database import dynamodb, dynamodb_web_service
 from ..email_alert import Email
-
 # from ..models import User
 from ..oauth2 import Auth
 from ..schemas import UserCreate

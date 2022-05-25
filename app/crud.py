@@ -7,7 +7,6 @@ from sqlalchemy.orm import Session
 # from .models import Job, User
 from .schemas import JobCreate, UserCreate
 
-
 # def create_new_user(user: UserCreate, db: Session):
 #     user = User(email=user.email, job_description=user.job_description)
 #     db.add(user)

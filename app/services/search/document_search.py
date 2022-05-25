@@ -1,7 +1,7 @@
 from datetime import datetime
-from dateutil import parser
 from typing import List
 
+from dateutil import parser
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.metrics.pairwise import cosine_similarity
 
