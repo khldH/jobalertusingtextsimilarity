@@ -5,7 +5,7 @@
 {% if query %}
 <title>{{query}}</title>
 {% else %}
-<title>get new jobs in your email</title>
+<title>get new  somali jobs delivered to your email everyday</title>
 {% endif %}
 {% endblock %}
 
@@ -21,27 +21,43 @@
             <div class="col-lg mb-2">
                 <h3 class="font-weight-bold ">Keep track of the jobs that interest you without spending hours
                     searching for them</h3>
-                <span class="text-muted text-center">Diractly scrapes job listings from a variety of Somali
+                <span class="text-muted text-center ">Diractly searches job listings from a variety of Somali
                 job posting sites and sends you daily
                 email alerts when new jobs matching your criteria are posted online. Don't spend hours searching for a job,
                     let Diractly do the hard work of job hunting for you. It takes less than a minute to set up your job alert</span>
                 <!--            <hr>-->
             </div>
             <div class="col-lg-5">
+                <div class="text-danger font-weight-bold mb-2">
+                    {% for error in errors %}
+                    <li>{{error}}</li>
+                    {% endfor %}
+                </div>
                 <div class="card p-2" style="background-color:#41464b !important">
                     <div class="card-header" style="border-bottom: 1px solid #f8f9fa">
-                        <p class="font-weight-bold text-white text-center mb-1">Subscribe to our Daily Job Alerts</p>
-                        <p class="small text-center text-white">Receive latest jobs that match your saved job alert up to once a day</p>
+                        <p class="font-weight-bolder text-white text-center mb-1">Subscribe to our daily job alerts</p>
+                        <p class="small font-monospace text-center text-white">Receive latest jobs that match your saved
+                            job alert
+                            delivered to your inbox everyday</p>
                     </div>
                     <div class="card-body">
                         <form method="POST" action="/subscribe">
-                            <div class="mb-3">
-                                <input type="text-area" required
-                                       placeholder="job-title, keyword, organization or location"
-                                       value="" name="job_description" class="form-control">
+                            <div class="form-check form-switch mb-2">
+                                <input class="form-check-input" type="checkbox" id="switch-id" name="is_all"
+                                       style="height: 1.35rem;width: calc(2rem + 0.80rem);border-radius: 3rem;">
+                                <label class="form-check-label fw-normal text-white pl-3 pt-0" for="switch-id">Send all
+                                    new jobs to my email</label>
+                                <p class="small font-monospace text-white all-jobs pl-3 ">Select this option to get all
+                                    new jobs delivered to your inbox </p>
                             </div>
                             <div class="mb-3">
-                                <input type="text" required placeholder="email" name="email" value=""
+                                <input type="text-area"
+                                       placeholder="job-title, keyword, organization or location"
+                                       value="{{job_description}}" name="job_description"
+                                       class="form-control job-description">
+                            </div>
+                            <div class="mb-3">
+                                <input type="text" required placeholder="email" name="email" value="{{email}}"
                                        class="form-control">
                             </div>
                             <button style="background-color: #ff8007!important ;font-weight:bold" type="submit"
@@ -49,6 +65,7 @@
                             </button>
                         </form>
                     </div>
+
                 </div>
             </div>
         </div>
@@ -86,7 +103,7 @@
                             <div class="btn btn-outline-primary rounded-pill mx-sm-2 mb-2">
                                 <label for="{{org}}" role="button" class="mb-0">
                                     {{org}}
-<!--                                    <span><i class="fad fa-plus fa-lg"></i></span> -->
+                                    <!--                                    <span><i class="fad fa-plus fa-lg"></i></span> -->
                                 </label>
                                 <input name="org" id="{{org}}" style="display:none"
                                        type="checkbox" value="{{org}}">
@@ -107,7 +124,7 @@
                                 <div class="btn btn-outline-primary rounded-pill mx-sm-2 mb-2">
                                     <label for="{{org_}}" role="button" class="mb-0">
                                         {{org_}}
-<!--                                        <span><i class="fad fa-plus fa-lg"></i></span> -->
+                                        <!--                                        <span><i class="fad fa-plus fa-lg"></i></span> -->
                                     </label>
                                     <input name="org" id="{{org_}}" style="display:none"
                                            type="checkbox" value="{{org_}}">
@@ -124,7 +141,7 @@
                                     {% for org in all %}
                                     <span class="badge bg-success rounded-pill" data-id="{{org}}" role="button">
                                     {{org}}
-<!--                                        <i class="fa-thin fa-x"></i>-->
+                                        <!--                                        <i class="fa-thin fa-x"></i>-->
                                     </span>
                                     {% endfor %}
 
@@ -303,6 +320,26 @@ $(document).ready(function () {
     //$(this).hide();
     });
 });
+
+
+$(function () {
+        $("#switch-id").change(function () {
+            if ($(this).is(":checked")) {
+                $(".job-description").hide();
+
+                }
+
+             else {
+                $(".job-description").show();
+<!--
+                }
+
+
+        });
+    });
+
+
+
 
 
 

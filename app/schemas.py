@@ -5,10 +5,11 @@ from pydantic import BaseModel, EmailStr
 
 
 class UserCreate(BaseModel):
-    # name: str
     email: EmailStr
     job_description: Optional[str] = None
+    is_all: Optional[bool] = False
     follows: Optional[List] = []
+    is_active: Optional[bool] = False
 
 
 class UserOut(BaseModel):
