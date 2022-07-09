@@ -8,7 +8,7 @@
 {% block content %}
 <div class='row justify-content-center'>
     <div class="col-md-6">
-        <h6 class="text-muted p-2">Get exactly the job alerts you want by adjusting your search terms and frequency</h6>
+        <h6 class="text-muted p-2">Get exactly the job alerts you want by adjusting your search terms and follows</h6>
         <hr>
         <div class='settings'>
 
@@ -34,7 +34,20 @@
                         Enable/disable job alert by toggling the switch
 
                     </div>
+                    <br>
+                    <div>
+                        {% if user.is_all %}
+                        <label class="name">
+                            Send all new jobs to my email </label>
+                        <input type="checkbox" value="{{user.is_all}}" checked name="is_all">
+                        {% else %}
+                        <label class="name">
+                            Send all new jobs to my email </label>
+                        <input type="checkbox" value="{{user.is_all}}" name="is_all">
+                        {% endif %}
+                    </div>
                 </div>
+
                 <hr class="my-4">
                 <div class="user-preferences" id="preferences">
                     <div class='setting'>
@@ -47,21 +60,28 @@
                         <br>
                         <div>
                             <div class="form-group">
-                                <input type="text-area" required
+                                <input type="text-area"
                                        placeholder="job title, keyword, organization or location"
                                        value="{{user.job_description}}" name="job_description" class="form-control">
                                 <br>
+
+
+                                {% if user.follows and user.follows[0] %}
                                 <div class="">
                                     <div class="name">Update following</div>
-                                    <div class="info">Uncheck to unfollow organization
+                                    <div class="info mb-2">Uncheck to unfollow organization
                                     </div>
-                                    <br>
+
                                     {% for org in user.follows %}
                                     <label for="{{org}}" role="button" class="small mb-0">
                                         {{org}} </label>
                                     <input id={{org}} type="checkbox" name="follows" , value="{{org}}" checked><br>
                                     {% endfor %}
+                                    <input id="" type="checkbox" name="follows" , value="" hidden checked>
                                 </div>
+                                {% else %}
+                                <input id="" type="checkbox" name="follows" , value="" hidden checked>
+                                {% endif %}
                                 <!--                                <div class="name">Update frequency</div>-->
                                 <!--                                <div class="info">Default frequency is "Daily" toggle the switch to make it weekly</div>-->
                                 <!--                                <br>-->
@@ -109,6 +129,8 @@
     text.style.display = "none";
   }
 }
+
+
 
 
 

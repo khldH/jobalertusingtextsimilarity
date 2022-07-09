@@ -1,4 +1,5 @@
 import re
+from collections import Counter
 from pathlib import Path
 from typing import Optional
 
@@ -23,7 +24,33 @@ router = APIRouter(prefix="", tags=["home"])
 
 @router.get("/")
 async def home(request: Request):
-    return templates.TemplateResponse("home/index.html", {"request": request})
+    try:
+        if settings.is_prod is False:
+            table = dynamodb.Table("jobs")
+        else:
+            table = dynamodb_web_service.Table("jobs")
+
+        jobs = table.scan()["Items"]
+        orgs = []
+        for job in jobs:
+            orgs.append(job["organization"].strip())
+        common_orgs = Counter(orgs).most_common(15)
+        common_orgs = [name[0].replace(",", "") for name in common_orgs if name[0] != ""]
+        more_orgs = [org for org in orgs if org not in common_orgs and org != ""]
+        return templates.TemplateResponse(
+            "home/index.html",
+            {
+                "request": request,
+                "common_orgs": common_orgs,
+                "more_orgs": more_orgs,
+            },
+        )
+    except Exception as e:
+        print(e)
+        return templates.TemplateResponse(
+            "users/error_page.html",
+            {"request": request, "msg": "an error has occurred, Please try again"},
+        )
 
 
 @router.get("/search/")
@@ -54,9 +81,7 @@ async def search(request: Request, query: Optional[str] = None):
                 {"request": request, "jobs": matched_jobs, "query": query},
             )
         except ValueError:
-            return templates.TemplateResponse(
-                "home/index.html", {"request": request, "query": query}
-            )
+            return templates.TemplateResponse("home/index.html", {"request": request, "query": query})
         return templates.TemplateResponse("home/index.html")
     except Exception as e:
         print(e)

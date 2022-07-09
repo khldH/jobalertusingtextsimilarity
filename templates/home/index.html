@@ -5,7 +5,7 @@
 {% if query %}
 <title>{{query}}</title>
 {% else %}
-<title>get new jobs in your email</title>
+<title>get new  somali jobs delivered to your email everyday</title>
 {% endif %}
 {% endblock %}
 
@@ -21,25 +21,43 @@
             <div class="col-lg mb-2">
                 <h3 class="font-weight-bold ">Keep track of the jobs that interest you without spending hours
                     searching for them</h3>
-                <span class="text-muted text-center">Diractly scrapes job listings from a variety of Somali
+                <span class="text-muted text-center ">Diractly searches job listings from a variety of Somali
                 job posting sites and sends you daily
-                email alerts when new jobs matching your criteria are posted online. Don't spend hours searching for a job, let Diractly do the hard work of job hunting for you. It will take less than a minute to set up your job alert</span>
+                email alerts when new jobs matching your criteria are posted online. Don't spend hours searching for a job,
+                    let Diractly do the hard work of job hunting for you. It takes less than a minute to set up your job alert</span>
                 <!--            <hr>-->
             </div>
             <div class="col-lg-5">
+                <div class="text-danger font-weight-bold mb-2">
+                    {% for error in errors %}
+                    <li>{{error}}</li>
+                    {% endfor %}
+                </div>
                 <div class="card p-2" style="background-color:#41464b !important">
                     <div class="card-header" style="border-bottom: 1px solid #f8f9fa">
-                        <p class="font-weight-light text-white">Subscribe and get new job alerts by email</p>
+                        <p class="font-weight-bolder text-white text-center mb-1">Subscribe to our daily job alerts</p>
+                        <p class="small font-monospace text-center text-white">Receive latest jobs that match your saved
+                            job alert
+                            delivered to your inbox everyday</p>
                     </div>
                     <div class="card-body">
                         <form method="POST" action="/subscribe">
-                            <div class="mb-3">
-                                <input type="text-area" required
-                                       placeholder="job-title, keyword, organization or location"
-                                       value="" name="job_description" class="form-control">
+                            <div class="form-check form-switch mb-2">
+                                <input class="form-check-input" type="checkbox" id="switch-id" name="is_all"
+                                       style="height: 1.35rem;width: calc(2rem + 0.80rem);border-radius: 3rem;">
+                                <label class="form-check-label fw-normal text-white pl-3 pt-0" for="switch-id">Send all
+                                    new jobs to my email</label>
+                                <p class="small font-monospace text-white all-jobs pl-3 ">Select this option to get all
+                                    new jobs delivered to your inbox </p>
                             </div>
                             <div class="mb-3">
-                                <input type="text" required placeholder="email" name="email" value=""
+                                <input type="text-area"
+                                       placeholder="job-title, keyword, organization or location"
+                                       value="{{job_description}}" name="job_description"
+                                       class="form-control job-description">
+                            </div>
+                            <div class="mb-3">
+                                <input type="text" required placeholder="email" name="email" value="{{email}}"
                                        class="form-control">
                             </div>
                             <button style="background-color: #ff8007!important ;font-weight:bold" type="submit"
@@ -47,6 +65,7 @@
                             </button>
                         </form>
                     </div>
+
                 </div>
             </div>
         </div>
@@ -55,151 +74,77 @@
                 <h5 class="p-2 text-muted">Popular job posting sites and career pages crawled by the service</h5>
                 <br>
                 <div class="row justify-content-center">
-                    <div class="col-sm-2">
+                    <a class="col-sm-2" href="https://www.somalijobs.com" target="_blank">
                         <img alt="" class="" src="{{ url_for('static', path='imgs/somalijobs.png') }}">
-                    </div>
-                    <div class="col-sm-2">
+                    </a>
+                    <a class="col-sm-2" href="https://qaranjobs.com/" target="_blank">
                         <img alt="" class="img-fluid" src="{{ url_for('static', path='imgs/qaran.png') }}">
-                    </div>
-                    <div class="col-sm-2">
+                    </a>
+                    <a class="col-sm-2" href="https://reliefweb.int/jobs" target="_blank">
                         <img alt="" class="" src="{{ url_for('static', path='imgs/reliefweb.png') }}">
-                    </div>
-                    <div class="col-sm-2">
-                        <img alt="" class="" src="{{ url_for('static', path='imgs/UNjobs.png') }}">
-                    </div>
+                    </a>
+                    <a class="col-sm-2" href="https://www.impactpool.org/search" target="_blank">
+                        <img alt="" class="" src="{{ url_for('static', path='imgs/impactpool.png') }}">
+                    </a>
                 </div>
             </div>
         </div>
+        {% if common_orgs %}
         <div class="row p-2 justify-content-center align-items-center">
             <hr>
             <h4 class="text-muted text-center"> New job alerts from organizations you follow</h4>
+            {% set all = common_orgs + more_orgs %}
             <span class="text-muted text-center">Follow from a curated selection of organizations to get started and receive job alerts for the new jobs they advertise </span>
             <div class="col-lg-8">
                 <form action="/follow" , method="POST">
                     <div class="mt-3">
                         <div class="checkbox-block">
+                            {% for org in common_orgs %}
                             <div class="btn btn-outline-primary rounded-pill mx-sm-2 mb-2">
-                                <label for="1" role="button" class="mb-0">
-                                    World Bank <span><i class="fad fa-plus fa-lg"></i></span> </label>
-                                <input name="org" id="1" style="display:none"
-                                       type="checkbox" value="World Bank">
-                            </div>
-                            <div class="btn btn-outline-primary rounded-pill mx-sm-2 mb-2">
-                                <label for="2" role="button" class="mb-0">
-                                    ACTED <span><i class="fad fa-plus fa-lg"></i></span> </label>
-                                <input name="org" id="2" style="display:none;"
-                                       type="checkbox" value="ACTED">
-                            </div>
-                            <div class="btn btn-outline-primary rounded-pill mx-sm-2 mb-2">
-                                <label for="3" role="button" class="mb-0">
-                                    Mercy Corps <span><i class="fad fa-plus fa-lg"></i></span> </label>
-                                <input name="org" id="3" style="display:none;"
-                                       type="checkbox" value="Mercy Corps">
-                            </div>
-                            <div class="btn btn-outline-primary rounded-pill mx-sm-2 mb-2">
-                                <label for="4" role="button" class="mb-0">
-                                    Consilient <span><i class="fad fa-plus fa-lg"></i></span> </label>
-                                <input name="org" id="4" style="display:none;"
-                                       type="checkbox" value="Consilient">
-                            </div>
-                            <div class="btn btn-outline-primary rounded-pill mx-sm-2 mb-2">
-                                <label for="5" role="button" class="mb-0">
-                                    Shaqodoon Organization <span><i class="fad fa-plus fa-lg"></i></span> </label>
-                                <input name="org" id="5" style="display:none;"
-                                       type="checkbox" value="Shaqodoon Organization">
-                            </div>
-                            <div class="btn btn-outline-primary rounded-pill mx-sm-2 mb-2">
-                                <label for="6" role="button" class="mb-0">
-                                    Save the Children <span><i class="fad fa-plus fa-lg"></i></span> </label>
-                                <input name="org" id="6" style="display:none;"
-                                       type="checkbox" value="Save the Children">
-                            </div>
-                            <div class="btn btn-outline-primary rounded-pill mx-sm-2 mb-2">
-                                <label for="7" role="button" class="mb-0">
-                                    CTG <span><i class="fad fa-plus fa-lg"></i></span> </label>
-                                <input name="org" id="7" style="display:none;"
-                                       type="checkbox" value="CTG">
-                            </div>
-                            <div class="btn btn-outline-primary rounded-pill mx-sm-2 mb-2">
-                                <label for="8" role="button" class="mb-0">
-                                    Danish Refugee Council <span><i class="fad fa-plus fa-lg"></i></span> </label>
-                                <input name="org" id="8" style="display:none;"
-                                       type="checkbox" value="Danish Refugee Council">
-                            </div>
-                            <div class="btn btn-outline-primary rounded-pill mx-sm-2 mb-2">
-                                <label for="9" role="button" class="mb-0">
-                                    UNOPS <span><i class="fad fa-plus fa-lg"></i></span> </label>
-                                <input name="" id="9" style="display:none;"
-                                       type="checkbox" value="UNOPS">
-                            </div>
-                            <div class="btn btn-outline-primary rounded-pill mx-sm-2 mb-2">
-                                <label for="10" role="button" class="mb-0">
-                                    Human Appeal <span><i class="fad fa-plus fa-lg"></i></span> </label>
-                                <input name="org" id="10" style="display:none;"
-                                       type="checkbox" value="Human Appeal">
-                            </div>
-                            <div class="btn btn-outline-primary rounded-pill mx-sm-2 mb-2">
-                                <label for="11" role="button" class="mb-0">
-                                    Islamic Relief <span><i class="fad fa-plus fa-lg"></i></span> </label>
-                                <input name="org" id="11" style="display:none;"
-                                       type="checkbox" value="Islamic Relief">
-                            </div>
-                            <div class="btn btn-outline-primary rounded-pill mx-sm-2 mb-2">
-                                <label for="12" role="button" class="mb-0">
-                                    Dahabshiil Real Estate <span><i class="fad fa-plus fa-lg"></i></span> </label>
-                                <input name="org" id="12" style="display:none;"
-                                       type="checkbox" value="Dahabshiil Real Estate">
-                            </div>
-                            <div class="btn btn-outline-primary rounded-pill mx-sm-2 mb-2">
-                                <label for="13" role="button" class="mb-0">
-                                    The International Rescue Committee <span><i class="fad fa-plus fa-lg"></i></span>
+                                <label for="{{org}}" role="button" class="mb-0">
+                                    {{org}}
+                                    <!--                                    <span><i class="fad fa-plus fa-lg"></i></span> -->
                                 </label>
-                                <input name="org" id="13" style="display:none;"
-                                       type="checkbox" value="The International Rescue Committe">
+                                <input name="org" id="{{org}}" style="display:none"
+                                       type="checkbox" value="{{org}}">
                             </div>
-                            <div class="btn btn-outline-primary rounded-pill mx-sm-2 mb-2">
-                                <label for="14" role="button" class="mb-0">
-                                    UNHCR <span><i class="fad fa-plus fa-lg"></i></span> </label>
-                                <input name="org" id="14" style="display:none;"
-                                       type="checkbox" value="UNHCR">
+                            {% endfor %}
+                        </div>
+                    </div>
+                    <div class="mt-2 float-right">
+                        <a class="text-decoration-none" data-bs-toggle="collapse" href="#seeMore" role="button"
+                           aria-expanded="false" aria-controls="seeMore">
+                            See more ...
+                        </a>
+                    </div>
+                    <div class="collapse mt-4" id="seeMore">
+                        <div class="">
+                            <div class="checkbox-block">
+                                {% for org_ in more_orgs %}
+                                <div class="btn btn-outline-primary rounded-pill mx-sm-2 mb-2">
+                                    <label for="{{org_}}" role="button" class="mb-0">
+                                        {{org_}}
+                                        <!--                                        <span><i class="fad fa-plus fa-lg"></i></span> -->
+                                    </label>
+                                    <input name="org" id="{{org_}}" style="display:none"
+                                           type="checkbox" value="{{org_}}">
+                                </div>
+                                {% endfor %}
                             </div>
                         </div>
                     </div>
-                    <div class="collapse" id="collapseSubscribe">
+                    <div class="collapse-org" id="collapseSubscribe">
                         <div class="card card-body">
                             <div class="row g-3 justify-content-center">
                                 <div class="tag-list">
                                     <p class="text-muted small">Notify me about jobs posted by these organization(s)</p>
-                                    <span class="badge bg-success rounded-pill" data-id="1" role="button">
-                                    World Bank  <i class="fa-thin fa-x"></i>
-                                </span>
-                                    <span class="badge bg-success rounded-pill" data-id="2" role="button">
-                                    ACTED <i class="fa-thin fa-x"></i>
-                                </span>
-                                    <span class="badge bg-success rounded-pill" data-id="3" role="button">
-                                    Mercy Corps <i class="fa-thin fa-x"></i></span>
-                                    <span class="badge bg-success rounded-pill" data-id="4" role="button">
-                                    Consilient <i class="fa-thin fa-x"></i></span>
-                                    <span class="badge bg-success rounded-pill" data-id="5" role="button">
-                                    Shaqodoon Organization <i class="fa-thin fa-x"></i></span>
-                                    <span class="badge bg-success rounded-pill" data-id="6" role="button">
-                                    Save the Children <i class="fa-thin fa-x"></i></span>
-                                    <span class="badge bg-success rounded-pill" data-id="7" role="button">
-                                    CTG <i class="fa-thin fa-x"></i></span>
-                                    <span class="badge bg-success rounded-pill" data-id="8" role="button">
-                                    Danish Refugee Council <i class="fa-thin fa-x"></i></span>
-                                    <span class="badge bg-success rounded-pill" data-id="9" role="button">
-                                    UNOPS <i class="fa-thin fa-x"></i></span>
-                                    <span class="badge bg-success rounded-pill" data-id="10" role="button">
-                                    Human Appeal <i class="fa-thin fa-x"></i></span>
-                                    <span class="badge bg-success rounded-pill" data-id="11" role="button">
-                                    Islamic Relief <i class="fa-thin fa-x"></i></span>
-                                    <span class="badge bg-success rounded-pill" data-id="12" role="button">
-                                    Dahabshiil Real Estate <i class="fa-thin fa-x"></i></span>
-                                    <span class="badge bg-success rounded-pill" data-id="13" role="button">
-                                    The International Rescue Committee <i class="fa-thin fa-x"></i></span>
-                                    <span class="badge bg-success rounded-pill" data-id="14" role="button">
-                                    UNHCR <i class="fa-thin fa-x"></i></span>
+                                    {% for org in all %}
+                                    <span class="badge bg-success rounded-pill" data-id="{{org}}" role="button">
+                                    {{org}}
+                                        <!--                                        <i class="fa-thin fa-x"></i>-->
+                                    </span>
+                                    {% endfor %}
+
                                 </div>
                                 <div class="col-sm-7">
                                     <input type="text" required class="form-control" id="email-address"
@@ -218,6 +163,8 @@
                 </form>
             </div>
         </div>
+        {% endif %}
+
         <div class="row p-2 justify-content-center align-items-center">
             <hr>
             <h4 class="text-muted text-center">Set up your job alert from a custom search</h4>
@@ -266,7 +213,7 @@
             <!-- End -->
         </div>
     </div>
-    <div class="row p-3" >
+    <div class="row p-3">
         <hr>
         <div class="col-md-4">
             <div class="card bg-dark mb-3" style="background-color:#41464b !important">
@@ -319,7 +266,7 @@
             {% endfor %}
         </div>
 
-        {% elif query%}
+        {% elif query %}
         <!--        <hr>-->
         <div class="col-md-6 p-5">
             <p class="text-muted"> The search <strong>{{query}}</strong> did not match any jobs</p>
@@ -329,90 +276,7 @@
                 <li>Replace abbreviations with full words</li>
             </ul>
         </div>
-        {% else %}
-        <!--        <div class="row p-3" style="background-color: rgb(236, 237, 232)">-->
-        <!--            <hr>-->
-        <!--            <div class="">-->
-        <!--                <div class="row">-->
-        <!--                    <div class="col-sm mb-2">-->
-        <!--                        <div class="card">-->
-        <!--                            <h6 class="card-subtitle  text-muted">New Jobs Alert! Why spend hours searching through job-->
-        <!--                                boards-->
-        <!--                                when you can receive daily alerts? </h6>-->
-        <!--                            <p class="card-body small ">-->
-
-        <!--                                Navigating multiple career websites and job-->
-        <!--                                boards to check all new job postings can be exhausting. Save your time and create-->
-        <!--                                variety by-->
-        <!--                                subscribing to Diractly's email job alert service. Diractly will get every single new-->
-        <!--                                job across-->
-        <!--                                multiple job boards, filter out the noise and send you an alert with just the jobs that-->
-        <!--                                match-->
-        <!--                                your custom search!<br>-->
-
-        <!--                                → All career types - full time/part time/contract/freelance (for individuals and-->
-        <!--                                creative-->
-        <!--                                agencies)<br>-->
-
-        <!--                                → 7 days a week – whatever your schedule require, we-->
-        <!--                                have it covered</p>-->
-        <!--                        </div>-->
-
-
-        <!--                    </div>-->
-
-        <!--                    <div class="col-sm mb-2">-->
-        <!--                        <div class="card">-->
-        <!--                            <img alt="" class="img-fluid "-->
-        <!--                                 src="{{ url_for('static', path='imgs/d_sample_alert.png')}}"/>-->
-        <!--                        </div>-->
-
-
-        <!--                    </div>-->
-        <!--                    <div class="col-sm">-->
-        <!--                        <div class="card">-->
-        <!--                            <h6 class="card-subtitle  text-muted">Get daily job alerts about new jobs in your area</h6>-->
-        <!--                            <p class="small card-body">-->
-
-        <!--                                → Saves you time in finding new jobs via email<br>-->
-
-        <!--                                → find the latest job postings from multiple sources from one place<br>-->
-
-        <!--                                → Customise alerts based on your search criteria </p>-->
-        <!--                        </div>-->
-        <!--                    </div>-->
-        <!--                </div>-->
-        <!--            </div>-->
-        <!--        </div>-->
-
-        <!--        <div class="row my-5">-->
-        <!--            <div class="col text-center">-->
-        <!--                <div class="mb-5">-->
-        <!--                    <div class="">-->
-        <!--                        <h6 class="mb-4 lead">Popular job posting sites and career pages crawled by the service</h6>-->
-        <!--                    </div>-->
-        <!--                    <br>-->
-        <!--                    <div class="row justify-content-center">-->
-
-        <!--                        <div class="col-md-2">-->
-        <!--                            <img alt="" class="" src="{{ url_for('static', path='imgs/reliefweb.png') }}">-->
-
-        <!--                        </div>-->
-
-        <!--                        <div class="col-md-2">-->
-        <!--                            <img alt="" class="" src="{{ url_for('static', path='imgs/somalijobs.png')}}">-->
-        <!--                        </div>-->
-
-        <!--                        <div class="col-md-2">-->
-        <!--                            <img alt="" class="img-fluid" src="{{ url_for('static', path='imgs/stc.png') }}">-->
-        <!--                        </div>-->
-        <!--                        <div class="col-md-2">-->
-        <!--                            <img alt="" class="" src="{{ url_for('static', path='imgs/UNjobs.png') }}">-->
-        <!--                        </div>-->
-        <!--                    </div>-->
-        <!--                </div>-->
-        <!--            </div>-->
-        <!--        </div>-->
+        <div></div>
         {% endif %}
     </div>
 </div>
@@ -425,7 +289,7 @@ $(document).ready(function () {
   // If none are checked
   if (count_checked == 0)  {
     $(".tag-list span").hide();
-    $(".collapse").hide()
+    $(".collapse-org").hide()
   }
 
   // On change - checkboxes
@@ -436,13 +300,13 @@ $(document).ready(function () {
 
       $('.checkbox-block').find('input:checkbox:checked').each(function () {
         $('.tag-list span[data-id="' + $(this).attr('id') + '"]').show();
-        $(".collapse").show();
+        $(".collapse-org").show();
         });
 
     // If none are checked
     } else if(count_checked == 0) {
       $(".tag-list span").hide();
-       $(".collapse").hide();
+       $(".collapse-org").hide();
        }
   });
 
@@ -456,6 +320,29 @@ $(document).ready(function () {
     //$(this).hide();
     });
 });
+
+
+$(function () {
+        $("#switch-id").change(function () {
+            if ($(this).is(":checked")) {
+                $(".job-description").hide();
+
+                }
+
+             else {
+                $(".job-description").show();
+<!--
+                }
+
+
+        });
+    });
+
+
+
+
+
+
 
 
 

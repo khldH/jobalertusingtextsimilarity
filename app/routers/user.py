@@ -5,7 +5,7 @@ from fastapi.responses import HTMLResponse
 from fastapi.templating import Jinja2Templates
 from itsdangerous import BadData, URLSafeSerializer
 from jose import jwt
-
+from pydantic import ValidationError
 from ..config import settings
 from ..crud import create_new_user  # create_new_user,
 from ..crud import (
@@ -40,9 +40,17 @@ async def subscribe(request: Request):
     form = UserCreateForm(request)
     await form.load_data()
     if await form.is_valid():
-        user_model = UserCreate(email=form.email, job_description=form.job_description)
+
         try:
+            user_model = UserCreate(
+                email=form.email,
+                job_description=form.job_description,
+                is_all=form.is_all,
+            )
             _user = create_new_user(db, new_user=user_model)
+            if isinstance(_user, ValueError):
+                form.__dict__.get("errors").append(f"{form.email} email already exists !")
+                return templates.TemplateResponse("home/index.html", form.__dict__)
             if _user:
                 confirmation = Auth.get_confirmation_token(_user["id"])
                 try:
@@ -66,12 +74,13 @@ async def subscribe(request: Request):
                             "correct",
                         },
                     )
-            form.__dict__.get("errors").append("email already exists !")
-            return templates.TemplateResponse("users/subscribe.html", form.__dict__)
-        except ValueError as e:
-            form.__dict__.get("errors").append("email already exists !")
-            return templates.TemplateResponse("users/subscribe.html", form.__dict__)
-    return templates.TemplateResponse("users/subscribe.html", form.__dict__)
+
+        except ValidationError as e:
+            print(e)
+            form.__dict__.get("errors").append(f"{form.email} is not a valid email address")
+            return templates.TemplateResponse("home/index.html", form.__dict__)
+
+    return templates.TemplateResponse("home/index.html", form.__dict__)
 
 
 @router.get("/verify/{token}")
@@ -82,9 +91,7 @@ async def verify(request: Request, token: str):
         db = dynamodb_web_service
     invalid_token_error = HTTPException(status_code=400, detail="Invalid token")
     try:
-        payload = jwt.decode(
-            token, settings.secret_key, algorithms=settings.token_algorithm
-        )
+        payload = jwt.decode(token, settings.secret_key, algorithms=settings.token_algorithm)
     except jwt.JWTError:
         raise HTTPException(status_code=403, detail="Token has expired")
     if payload["scope"] != "registration":
@@ -105,6 +112,11 @@ async def verify(request: Request, token: str):
         )
     try:
         update_user_status(db, _user["id"])
+        # email = Email(settings.mail_sender, settings.mail_sender_password)
+        # email.send_resource(
+        #     "https://drive.google.com/uc?export=download&id=1ALOG-4yBvIOeaIRN32lXH04fY499yVh-",
+        #     _user["email"]
+        # )
         return templates.TemplateResponse(
             "users/success.html",
             {"request": request, "msg": "verification successful"},
@@ -172,11 +184,15 @@ async def edit_job_alert(request: Request, follows: List[str] = Form(...)):
         try:
             user = {}
             status = True
+            is_all = True
             if form.is_active is None:
                 status = False
+            if form.is_all is None:
+                is_all = False
             user["id"] = form.id
             user["is_active"] = status
             user["job_description"] = form.job_description
+            user["is_all"] = is_all
             user["follows"] = follows
             update_job_alert(db, user)
             return templates.TemplateResponse(
@@ -195,9 +211,7 @@ async def edit_job_alert(request: Request, follows: List[str] = Form(...)):
 
 
 @router.post("/follow")
-async def follow_organization(
-    request: Request, email: str = Form(...), org: List[str] = Form(...)
-):
+async def follow_organization(request: Request, email: str = Form(...), org: List[str] = Form(...)):
     if settings.is_prod is False:
         db = dynamodb
     else:
@@ -238,9 +252,7 @@ async def follow_organization(
             try:
                 confirmation = Auth.get_confirmation_token(updated_user["id"])
                 email = Email(settings.mail_sender, settings.mail_sender_password)
-                email.send_confirmation_message(
-                    confirmation["token"], updated_user["email"]
-                )
+                email.send_confirmation_message(confirmation["token"], updated_user["email"])
             except Exception as e:
                 print(e)
                 return templates.TemplateResponse(
