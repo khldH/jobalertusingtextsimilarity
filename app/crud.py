@@ -40,6 +40,7 @@ def create_new_user(db, new_user: UserCreate):
         # _user["is_active"] = False
         # _user['frequency'] = 'Daily'
         _user["created_at"] = datetime.utcnow().isoformat()
+        # _user["modified_at"] = None
         table.put_item(Item=_user)
         return _user
     except Exception as e:
@@ -58,9 +59,10 @@ def update_user_status(db, user_id, status=True):
     table = db.Table("users")
     table.update_item(
         Key={"id": user_id},
-        UpdateExpression="set is_active = :r",
+        UpdateExpression="set is_active = :r, modified_at =:d",
         ExpressionAttributeValues={
             ":r": status,
+            ":d": datetime.utcnow().isoformat()
         },
         ReturnValues="UPDATED_NEW",
     )
@@ -78,12 +80,13 @@ def update_job_alert(db, user):
     table = db.Table("users")
     updated_job_alert = table.update_item(
         Key={"id": user["id"]},
-        UpdateExpression="set is_active = :s, job_description = :j, follows = :f, is_all = :a",
+        UpdateExpression="set is_active = :s, job_description = :j, follows = :f, is_all = :a, modified_at =:d",
         ExpressionAttributeValues={
             ":s": user["is_active"],
             ":j": user["job_description"],
             ":f": user["follows"],
-            ":a": user["is_all"]
+            ":a": user["is_all"],
+            ":d": datetime.utcnow().isoformat()
         },
         ReturnValues="ALL_NEW",
     )

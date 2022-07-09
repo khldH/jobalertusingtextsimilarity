@@ -35,9 +35,7 @@ async def home(request: Request):
         for job in jobs:
             orgs.append(job["organization"].strip())
         common_orgs = Counter(orgs).most_common(15)
-        common_orgs = [
-            name[0].replace(",", "") for name in common_orgs if name[0] != ""
-        ]
+        common_orgs = [name[0].replace(",", "") for name in common_orgs if name[0] != ""]
         more_orgs = [org for org in orgs if org not in common_orgs and org != ""]
         return templates.TemplateResponse(
             "home/index.html",
@@ -83,9 +81,7 @@ async def search(request: Request, query: Optional[str] = None):
                 {"request": request, "jobs": matched_jobs, "query": query},
             )
         except ValueError:
-            return templates.TemplateResponse(
-                "home/index.html", {"request": request, "query": query}
-            )
+            return templates.TemplateResponse("home/index.html", {"request": request, "query": query})
         return templates.TemplateResponse("home/index.html")
     except Exception as e:
         print(e)

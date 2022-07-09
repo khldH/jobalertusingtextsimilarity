@@ -41,19 +41,15 @@ class DocumentSearch(TfidfVectorizer):
                             job["days_since_posted"] = 1
                         else:
                             job["days_since_posted"] = (
-                                datetime.now().date()
-                                - parser.parse(document.posted_date).date()
+                                datetime.now().date() - parser.parse(document.posted_date).date()
                             ).days
                     else:
                         job["days_since_posted"] = (
-                            datetime.now().date()
-                            - datetime.fromisoformat(document.posted_date).date()
+                            datetime.now().date() - datetime.fromisoformat(document.posted_date).date()
                         ).days
 
                     results.append(job)
-            return sorted(
-                results, key=lambda item: item["days_since_posted"], reverse=False
-            )
+            return sorted(results, key=lambda item: item["days_since_posted"], reverse=False)
         except Exception as e:
             print(e)
             raise ValueError("not a valid sentence")

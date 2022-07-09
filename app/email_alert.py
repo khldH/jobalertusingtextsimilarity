@@ -42,11 +42,26 @@ class Email:
                 </html>""".format(
             link=confirmation_url, text=confirmation_url
         )
-        row = (
-            "<tr><td>"
-            "<a href=" + confirmation_url + ">" + "verify your email" + "</a>"
-            "</td></tr>"
-        )
+        row = "<tr><td>" "<a href=" + confirmation_url + ">" + "verify your email" + "</a>" "</td></tr>"
         message = message.format(link=confirmation_url, text=confirmation_url)
         message = html_email.format(link=confirmation_url)
         self.send_message(message, "Activate your account", mail_to)
+
+    def send_resource(self, resource: str, mail_to: str):
+        # confirmation_url = "{}/verify/{}".format(settings.base_url, token)
+        message = """
+                    <html>
+                      <head></head>
+                      <body>
+                        <p>Thank you for subscribing and activating your account<br>
+                          Download your free resume template here <br>
+                         {link}
+                        </p>
+                      </body>
+                    </html>""".format(
+            link=resource
+        )
+        # row = "<tr><td>" "<a href=" + confirmation_url + ">" + "verify your email" + "</a>" "</td></tr>"
+        # message = message.format(link=confirmation_url, text=confirmation_url)
+        # message = html_email.format(link=confirmation_url)
+        self.send_message(message, "Download your free resume", mail_to)

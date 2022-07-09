@@ -49,9 +49,7 @@ async def subscribe(request: Request):
             )
             _user = create_new_user(db, new_user=user_model)
             if isinstance(_user, ValueError):
-                form.__dict__.get("errors").append(
-                    f"{form.email} email already exists !"
-                )
+                form.__dict__.get("errors").append(f"{form.email} email already exists !")
                 return templates.TemplateResponse("home/index.html", form.__dict__)
             if _user:
                 confirmation = Auth.get_confirmation_token(_user["id"])
@@ -79,9 +77,7 @@ async def subscribe(request: Request):
 
         except ValidationError as e:
             print(e)
-            form.__dict__.get("errors").append(
-                f"{form.email} is not a valid email address"
-            )
+            form.__dict__.get("errors").append(f"{form.email} is not a valid email address")
             return templates.TemplateResponse("home/index.html", form.__dict__)
 
     return templates.TemplateResponse("home/index.html", form.__dict__)
@@ -95,9 +91,7 @@ async def verify(request: Request, token: str):
         db = dynamodb_web_service
     invalid_token_error = HTTPException(status_code=400, detail="Invalid token")
     try:
-        payload = jwt.decode(
-            token, settings.secret_key, algorithms=settings.token_algorithm
-        )
+        payload = jwt.decode(token, settings.secret_key, algorithms=settings.token_algorithm)
     except jwt.JWTError:
         raise HTTPException(status_code=403, detail="Token has expired")
     if payload["scope"] != "registration":
@@ -118,6 +112,11 @@ async def verify(request: Request, token: str):
         )
     try:
         update_user_status(db, _user["id"])
+        # email = Email(settings.mail_sender, settings.mail_sender_password)
+        # email.send_resource(
+        #     "https://drive.google.com/uc?export=download&id=1ALOG-4yBvIOeaIRN32lXH04fY499yVh-",
+        #     _user["email"]
+        # )
         return templates.TemplateResponse(
             "users/success.html",
             {"request": request, "msg": "verification successful"},
@@ -212,9 +211,7 @@ async def edit_job_alert(request: Request, follows: List[str] = Form(...)):
 
 
 @router.post("/follow")
-async def follow_organization(
-    request: Request, email: str = Form(...), org: List[str] = Form(...)
-):
+async def follow_organization(request: Request, email: str = Form(...), org: List[str] = Form(...)):
     if settings.is_prod is False:
         db = dynamodb
     else:
@@ -255,9 +252,7 @@ async def follow_organization(
             try:
                 confirmation = Auth.get_confirmation_token(updated_user["id"])
                 email = Email(settings.mail_sender, settings.mail_sender_password)
-                email.send_confirmation_message(
-                    confirmation["token"], updated_user["email"]
-                )
+                email.send_confirmation_message(confirmation["token"], updated_user["email"])
             except Exception as e:
                 print(e)
                 return templates.TemplateResponse(
