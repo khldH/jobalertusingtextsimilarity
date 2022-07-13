@@ -2,7 +2,7 @@
 
 
 {% block title %}
-<title>an error has occurred</title>
+<title>{{msg}}</title>
 {% endblock %}
 
 {% block content %}
@@ -10,7 +10,7 @@
     <div class="row row my-5 p-2 justify-content-center">
         <div class="col-md-12">
             <div class="p-2 text-center">
-                {% if msg == 'error-unsubscirbe' %}
+                {% if msg == 'error-unsubscribe' %}
                 <div class="alert alert-light" role="alert">
                     <p>an error has occurred</p>
                 </div>

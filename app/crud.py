@@ -60,10 +60,7 @@ def update_user_status(db, user_id, status=True):
     table.update_item(
         Key={"id": user_id},
         UpdateExpression="set is_active = :r, modified_at =:d",
-        ExpressionAttributeValues={
-            ":r": status,
-            ":d": datetime.utcnow().isoformat()
-        },
+        ExpressionAttributeValues={":r": status, ":d": datetime.utcnow().isoformat()},
         ReturnValues="UPDATED_NEW",
     )
 
@@ -86,7 +83,7 @@ def update_job_alert(db, user):
             ":j": user["job_description"],
             ":f": user["follows"],
             ":a": user["is_all"],
-            ":d": datetime.utcnow().isoformat()
+            ":d": datetime.utcnow().isoformat(),
         },
         ReturnValues="ALL_NEW",
     )

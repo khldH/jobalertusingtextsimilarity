@@ -19,7 +19,7 @@
     <div class="container">
         <div class="row pt-4 pl-1 pr-1">
             <div class="col-lg mb-2">
-                <h3 class="font-weight-bold ">Keep track of the jobs that interest you without spending hours
+                <h3 class="font-weight-bold">Keep track of the jobs that interest you without spending hours
                     searching for them</h3>
                 <span class="text-muted text-center ">Diractly searches job listings from a variety of Somali
                 job posting sites and sends you daily
@@ -70,17 +70,41 @@
             </div>
         </div>
         <div class="row p-5">
+                <h2 class="text-center pb-4">Why set up job alerts?</h2>
+                <div class="col-lg-3">
+<!--                  <i class="fa-thin fa-envelope"></i>-->
+                    <h6 class="text-center font-weight-bold pb-1">Get jobs straight to your email</h6>
+                    <p class="text-center">Keep up to date with the latest jobs matching your criteria</p>
+                </div>
+                <div class="col-lg-3">
+                    <h6 class="text-center font-weight-bold pb-1">Jobs from multiple sources</h6>
+                    <p class="text-center">Get latest job postings from multiple Somali job posting sites in one place</p>
+
+                </div>
+                <div class="col-lg-3">
+                    <h6 class="text-center font-weight-bold pb-1">Quick & easy setup</h6>
+                    <p class="text-center">It takes less than one minute to create a job alert on Diractly. You can update your alerts anytime </p>
+
+                </div>
+                <div class="col-lg-3">
+                    <h6 class="text-center font-weight-bold pb-1">Be the first to apply</h6>
+                    <p class="text-center">Know about the best opportunities before anyone else. Save time and effort, find jobs faster!</p>
+
+                </div>
+
+        </div>
+        <div class="row p-5">
             <div class="text-center">
-                <h5 class="p-2 text-muted">Popular job posting sites and career pages crawled by the service</h5>
+                <h5 class="text-muted">Popular job posting sites and career pages crawled by the service</h5>
                 <br>
                 <div class="row justify-content-center">
-                    <a class="col-sm-2" href="https://www.somalijobs.com" target="_blank">
+                    <a class="col-sm-2 mb-2" href="https://www.somalijobs.com" target="_blank">
                         <img alt="" class="" src="{{ url_for('static', path='imgs/somalijobs.png') }}">
                     </a>
-                    <a class="col-sm-2" href="https://qaranjobs.com/" target="_blank">
+                    <a class="col-sm-2 mb-2" href="https://qaranjobs.com/" target="_blank">
                         <img alt="" class="img-fluid" src="{{ url_for('static', path='imgs/qaran.png') }}">
                     </a>
-                    <a class="col-sm-2" href="https://reliefweb.int/jobs" target="_blank">
+                    <a class="col-sm-2 mb-2" href="https://reliefweb.int/jobs" target="_blank">
                         <img alt="" class="" src="{{ url_for('static', path='imgs/reliefweb.png') }}">
                     </a>
                     <a class="col-sm-2" href="https://www.impactpool.org/search" target="_blank">
@@ -90,12 +114,12 @@
             </div>
         </div>
         {% if common_orgs %}
-        <div class="row p-2 justify-content-center align-items-center">
-            <hr>
+        <div class="row p-5 justify-content-center align-items-center">
+            <hr >
             <h4 class="text-muted text-center"> New job alerts from organizations you follow</h4>
             {% set all = common_orgs + more_orgs %}
-            <span class="text-muted text-center">Follow from a curated selection of organizations to get started and receive job alerts for the new jobs they advertise </span>
-            <div class="col-lg-8">
+            <span class="text-muted text-center pt-2">Follow from a curated selection of organizations to get started and receive job alerts for the new jobs they advertise </span>
+            <div class="col-lg-8 pt-2">
                 <form action="/follow" , method="POST">
                     <div class="mt-3">
                         <div class="checkbox-block">
@@ -165,10 +189,10 @@
         </div>
         {% endif %}
 
-        <div class="row p-2 justify-content-center align-items-center">
+        <div class="row p-5 justify-content-center align-items-center">
             <hr>
-            <h4 class="text-muted text-center">Set up your job alert from a custom search</h4>
-            <span class="text-muted text-center">Use job title, industry, keywords,organization or location to search jobs and set up daily job alerts based on your search</span>
+            <h4 class="text-muted text-center pt-2">Set up your job alert from a custom search</h4>
+            <span class="text-muted text-center  pt-2">Use job title, industry, keywords,organization or location to search jobs and set up daily job alerts based on your search</span>
             <div class="col-lg-8">
                 <div class="mt-3">
                     <div class="">
