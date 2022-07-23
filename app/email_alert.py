@@ -54,7 +54,7 @@ class Email:
                       <head></head>
                       <body>
                         <p>Thank you for subscribing and activating your account<br>
-                          Download your free resume template here <br>
+                          Download your free CV template here <br>
                          {link}
                         </p>
                       </body>
@@ -64,4 +64,4 @@ class Email:
         # row = "<tr><td>" "<a href=" + confirmation_url + ">" + "verify your email" + "</a>" "</td></tr>"
         # message = message.format(link=confirmation_url, text=confirmation_url)
         # message = html_email.format(link=confirmation_url)
-        self.send_message(message, "Download your free resume", mail_to)
+        self.send_message(message, "Download your free CV", mail_to)

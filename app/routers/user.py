@@ -120,11 +120,11 @@ async def verify(request: Request, token: str):
         )
     try:
         update_user_status(db, _user["id"])
-        # email = Email(settings.mail_sender, settings.mail_sender_password)
-        # email.send_resource(
-        #     "https://drive.google.com/uc?export=download&id=1ALOG-4yBvIOeaIRN32lXH04fY499yVh-",
-        #     _user["email"]
-        # )
+        email = Email(settings.mail_sender, settings.mail_sender_password)
+        email.send_resource(
+            "https://drive.google.com/uc?export=download&id=1aJGlSLjlgHU62awmazd-COzt6IWgcq32",
+            _user["email"]
+        )
         return templates.TemplateResponse(
             "users/success.html",
             {"request": request, "msg": "verification successful"},
