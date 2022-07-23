@@ -47,6 +47,14 @@ async def subscribe(request: Request):
                 job_description=form.job_description,
                 is_all=form.is_all,
             )
+            print(user_model)
+            if not user_model.job_description and user_model.is_all is None:
+                form.__dict__.get("errors").append(
+                    "Please either select 'Send all new jobs to my email' or write "
+                    "your criteria in the space provided"
+                )
+                return templates.TemplateResponse("home/index.html", form.__dict__)
+
             _user = create_new_user(db, new_user=user_model)
             if isinstance(_user, ValueError):
                 form.__dict__.get("errors").append(f"{form.email} email already exists !")
@@ -112,11 +120,11 @@ async def verify(request: Request, token: str):
         )
     try:
         update_user_status(db, _user["id"])
-        # email = Email(settings.mail_sender, settings.mail_sender_password)
-        # email.send_resource(
-        #     "https://drive.google.com/uc?export=download&id=1ALOG-4yBvIOeaIRN32lXH04fY499yVh-",
-        #     _user["email"]
-        # )
+        email = Email(settings.mail_sender, settings.mail_sender_password)
+        email.send_resource(
+            "https://drive.google.com/uc?export=download&id=1aJGlSLjlgHU62awmazd-COzt6IWgcq32",
+            _user["email"]
+        )
         return templates.TemplateResponse(
             "users/success.html",
             {"request": request, "msg": "verification successful"},
@@ -144,7 +152,7 @@ async def unsubscribe(request: Request, token: str):
     except BadData:
         return templates.TemplateResponse(
             "users/error_page.html",
-            {"request": request, "msg": "error-unsubscirbe"},
+            {"request": request, "msg": "error-unsubscribe"},
         )
 
 

@@ -16,11 +16,26 @@
                 Please check your inbox and verify your email.
                 Make sure you check your spam folder as well if you can't find the email in your inbox
             </div>
+            <div class="alert alert-info">
+                <p>Let your friends know about <strong>www.diractly.com</strong>. Share the link on Facebook
+                <a class="btn  btn-social btn-fb"
+                   href="https://www.facebook.com/sharer/sharer.php?u=www.diractly.com" target="_blank"
+                   title="Share this on Facebook"> <i class="fab fa-facebook-square"></i> Share
+                </a>
+            </div>
             {% elif msg == 'verification successful' %}
             <div class="alert alert-light" role="alert">
                 Verification successful,
-                you will receive new jobs matching your saved criteria in to your email every day
-<!--                <strong>Bonus</strong> - Download your free resume template from the email we have just sent you-->
+                you will receive new jobs matching your saved criteria in to your email every day<br>
+                <strong>Bonus</strong> - Download your free CV template from the email we have just sent you
+            </div>
+            <div class="alert alert-info">
+                <p>Let your friends know about <strong>www.diractly.com</strong>. Share the link on Facebook
+                <a class="btn  btn-social btn-fb"
+                   href="https://www.facebook.com/sharer/sharer.php?u=www.diractly.com" target="_blank"
+                   title="Share this on Facebook">
+                    <i class="fab fa-facebook-square"></i> Share
+                </a>
             </div>
             {% elif msg == 'successfully unsubscribed' %}
             <div class="alert alert-light" role="alert">
@@ -32,9 +47,9 @@
             </div>
             {% elif msg == "successful follow" %}
             <div class="alert alert-light" role="alert">
-                 You're now subscribed to receive alerts for new jobs from
+                You're now subscribed to receive alerts for new jobs from
                 {% for org in orgs %}
-                    <span class="badge badge-pill badge-secondary">{{org}}</span>
+                <span class="badge badge-pill badge-secondary">{{org}}</span>
                 {% endfor %}
             </div>
             {% else %}
