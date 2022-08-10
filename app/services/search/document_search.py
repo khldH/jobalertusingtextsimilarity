@@ -34,7 +34,7 @@ class DocumentSearch(TfidfVectorizer):
                         "organization": document.organization,
                         "posted_date": document.posted_date,
                     }
-                    if document.source == "Somali jobs":
+                    if document.source == "Somalijobs":
                         if document.posted_date == "Today":
                             job["days_since_posted"] = 0
                         elif document.posted_date == "Yesterday":

@@ -40,7 +40,6 @@ async def subscribe(request: Request):
     form = UserCreateForm(request)
     await form.load_data()
     if await form.is_valid():
-
         try:
             user_model = UserCreate(
                 email=form.email,
