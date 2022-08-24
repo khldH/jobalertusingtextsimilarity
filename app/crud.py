@@ -77,12 +77,28 @@ def update_job_alert(db, user):
     table = db.Table("users")
     updated_job_alert = table.update_item(
         Key={"id": user["id"]},
-        UpdateExpression="set is_active = :s, job_description = :j, follows = :f, is_all = :a, modified_at =:d",
+        UpdateExpression="set is_active = :s, "
+                         "job_description = :j, "
+                         "follows = :f, "
+                         "is_all = :a, "
+                         "first_name = :fn, "
+                         "last_name = :ln, "
+                         "job_title = :jt, "
+                         "qualification = :q, "
+                         "experience= :ex, "
+                         "skills= :sk, "
+                         "modified_at =:d",
         ExpressionAttributeValues={
             ":s": user["is_active"],
             ":j": user["job_description"],
             ":f": user["follows"],
             ":a": user["is_all"],
+            ":fn": user['first_name'],
+            ":ln": user['last_name'],
+            ":jt": user['job_title'],
+            ":q": user['qualification'],
+            ":ex": user['experience'],
+            ":sk": user['skills'],
             ":d": datetime.utcnow().isoformat(),
         },
         ReturnValues="ALL_NEW",

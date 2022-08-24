@@ -14,12 +14,25 @@ from app.services.search.document import Document
 # from ..services.scrappers.scrape_jobs import create_documents
 from ..services.search.document_search import DocumentSearch
 from ..views.index import JobDescriptionForm
+import numpy as np
 
 templates = Jinja2Templates(directory="templates")
 router = APIRouter(prefix="", tags=["home"])
 
-
 # router.mount("/static", StaticFiles(directory="app/static"), name="static")
+
+random_decimal = np.random.rand()
+
+
+#
+
+@router.get("/update_decimal/")
+def update_decimal(query: Optional[str] = None):
+    random_decimal = np.random.rand()
+    print(random_decimal)
+    return {"x": random_decimal, "query": query}
+    # return templates.TemplateResponse(
+    #     "home/random_decimal.html", {"request": request, "x": random_decimal, "query": query})
 
 
 @router.get("/")
@@ -43,6 +56,7 @@ async def home(request: Request):
                 "request": request,
                 "common_orgs": common_orgs,
                 "more_orgs": more_orgs,
+                "x": random_decimal
             },
         )
     except Exception as e:

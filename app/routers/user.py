@@ -201,6 +201,12 @@ async def edit_job_alert(request: Request, follows: List[str] = Form(...)):
             user["job_description"] = form.job_description
             user["is_all"] = is_all
             user["follows"] = follows
+            user['first_name'] = form.first_name
+            user['last_name'] = form.last_name
+            user['job_title'] = form.job_title
+            user['qualification'] = form.qualification
+            user['experience'] = form.experience
+            user['skills'] = form.skills
             update_job_alert(db, user)
             return templates.TemplateResponse(
                 "users/success.html",
