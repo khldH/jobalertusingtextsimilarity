@@ -210,8 +210,6 @@ async def edit_job_alert(request: Request, follows: List[str] = Form(...)):
             user['skills'] = form.skills
             updated_alert = update_job_alert(db, user)
 
-            time.sleep(10)
-
             if (updated_alert['is_active']
                     and updated_alert['first_name']
                     and updated_alert['last_name']
