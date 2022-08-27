@@ -1,4 +1,5 @@
 from typing import List
+import time
 
 from fastapi import APIRouter, Form, HTTPException, Request
 from fastapi.responses import HTMLResponse
@@ -78,7 +79,7 @@ async def subscribe(request: Request):
                         {
                             "request": request,
                             "msg": "an error has occurred, email couldn't be send,please make sure your email is "
-                            "correct",
+                                   "correct",
                         },
                     )
 
@@ -207,7 +208,19 @@ async def edit_job_alert(request: Request, follows: List[str] = Form(...)):
             user['qualification'] = form.qualification
             user['experience'] = form.experience
             user['skills'] = form.skills
-            update_job_alert(db, user)
+            updated_alert = update_job_alert(db, user)
+
+            time.sleep(10)
+
+            if (updated_alert['is_active']
+                    and updated_alert['first_name']
+                    and updated_alert['last_name']
+                    and updated_alert['job_title']
+                    and updated_alert['qualification']):
+                email = Email(settings.mail_sender, settings.mail_sender_password)
+                email.send_resource("https://drive.google.com/uc?export=download&id=1aJGlSLjlgHU62awmazd-COzt6IWgcq32",
+                                    updated_alert["email"]
+                                    )
             return templates.TemplateResponse(
                 "users/success.html",
                 {"request": request, "msg": "successfully updated"},
@@ -247,7 +260,7 @@ async def follow_organization(request: Request, email: str = Form(...), org: Lis
                     {
                         "request": request,
                         "msg": "an error has occurred, email couldn't be send,please make sure your email is "
-                        "correct",
+                               "correct",
                     },
                 )
             return templates.TemplateResponse(
@@ -273,7 +286,7 @@ async def follow_organization(request: Request, email: str = Form(...), org: Lis
                     {
                         "request": request,
                         "msg": "an error has occurred, email couldn't be send,please make sure your email is "
-                        "correct",
+                               "correct",
                     },
                 )
             return templates.TemplateResponse(
