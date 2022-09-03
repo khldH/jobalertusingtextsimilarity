@@ -76,9 +76,13 @@ async def subscribe(request: Request):
                     user_df = pd.DataFrame([user_model.dict()])
                     prediction = spam_detector_model.predict(user_df)
                     print("prediction", prediction[0])
-                    if prediction[0] == 0:
+                    if user_model.is_all:
                         email = Email(settings.mail_sender, settings.mail_sender_password)
                         email.send_confirmation_message(confirmation["token"], form.email)
+                    else:
+                        if prediction[0] == 0:
+                            email = Email(settings.mail_sender, settings.mail_sender_password)
+                            email.send_confirmation_message(confirmation["token"], form.email)
                     return templates.TemplateResponse(
                         "users/success.html",
                         {
