@@ -1,5 +1,8 @@
 from typing import List
 import time
+import joblib
+import pandas as pd
+import numpy as np
 
 from fastapi import APIRouter, Form, HTTPException, Request
 from fastapi.responses import HTMLResponse
@@ -25,6 +28,13 @@ from ..views.user import UpdateJobAlertForm, UserCreateForm
 
 templates = Jinja2Templates(directory="templates")
 router = APIRouter(tags=["Users"])
+
+spam_detector = {}
+
+
+@router.on_event("startup")
+def load_spam_detector():
+    spam_detector['model'] = joblib.load("app/services/spam_detector/spam_detector.pkl")
 
 
 @router.get("/subscribe")
@@ -62,8 +72,13 @@ async def subscribe(request: Request):
             if _user:
                 confirmation = Auth.get_confirmation_token(_user["id"])
                 try:
-                    email = Email(settings.mail_sender, settings.mail_sender_password)
-                    email.send_confirmation_message(confirmation["token"], form.email)
+                    spam_detector_model = spam_detector['model']
+                    user_df = pd.DataFrame([user_model.dict()])
+                    prediction = spam_detector_model.predict(user_df)
+                    print("prediction", prediction[0])
+                    if prediction[0] == 0:
+                        email = Email(settings.mail_sender, settings.mail_sender_password)
+                        email.send_confirmation_message(confirmation["token"], form.email)
                     return templates.TemplateResponse(
                         "users/success.html",
                         {
