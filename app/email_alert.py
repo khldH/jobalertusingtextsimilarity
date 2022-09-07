@@ -53,7 +53,7 @@ class Email:
                     <html>
                       <head></head>
                       <body>
-                        <p>Thank you for subscribing and activating your account<br>
+                        <p>Thank you for updating your profile<br>
                           Download your free CV template here <br>
                          {link}
                         </p>

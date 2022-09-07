@@ -355,7 +355,8 @@ $(document).ready(function () {
 $(function () {
         $("#switch-id").change(function () {
             if ($(this).is(":checked")) {
-                $(".job-description").hide();
+                $(".job-description").val('')
+                $(".job-description").hide()
 
                 }
 

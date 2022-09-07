@@ -1,4 +1,8 @@
 from typing import List
+import time
+import joblib
+import pandas as pd
+import numpy as np
 
 from fastapi import APIRouter, Form, HTTPException, Request
 from fastapi.responses import HTMLResponse
@@ -24,6 +28,13 @@ from ..views.user import UpdateJobAlertForm, UserCreateForm
 
 templates = Jinja2Templates(directory="templates")
 router = APIRouter(tags=["Users"])
+
+spam_detector = {}
+
+
+@router.on_event("startup")
+def load_spam_detector():
+    spam_detector['model'] = joblib.load("app/services/spam_detector/spam_detector.pkl")
 
 
 @router.get("/subscribe")
@@ -61,8 +72,17 @@ async def subscribe(request: Request):
             if _user:
                 confirmation = Auth.get_confirmation_token(_user["id"])
                 try:
-                    email = Email(settings.mail_sender, settings.mail_sender_password)
-                    email.send_confirmation_message(confirmation["token"], form.email)
+                    spam_detector_model = spam_detector['model']
+                    user_df = pd.DataFrame([user_model.dict()])
+                    prediction = spam_detector_model.predict(user_df)
+                    print("prediction", prediction[0])
+                    # if user_model.is_all:
+                    #     email = Email(settings.mail_sender, settings.mail_sender_password)
+                    #     email.send_confirmation_message(confirmation["token"], form.email)
+                    # else:
+                    if prediction[0] == 0:
+                        email = Email(settings.mail_sender, settings.mail_sender_password)
+                        email.send_confirmation_message(confirmation["token"], form.email)
                     return templates.TemplateResponse(
                         "users/success.html",
                         {
@@ -78,7 +98,7 @@ async def subscribe(request: Request):
                         {
                             "request": request,
                             "msg": "an error has occurred, email couldn't be send,please make sure your email is "
-                            "correct",
+                                   "correct",
                         },
                     )
 
@@ -201,7 +221,23 @@ async def edit_job_alert(request: Request, follows: List[str] = Form(...)):
             user["job_description"] = form.job_description
             user["is_all"] = is_all
             user["follows"] = follows
-            update_job_alert(db, user)
+            user['first_name'] = form.first_name
+            user['last_name'] = form.last_name
+            user['job_title'] = form.job_title
+            user['qualification'] = form.qualification
+            user['experience'] = form.experience
+            user['skills'] = form.skills
+            updated_alert = update_job_alert(db, user)
+
+            if (updated_alert['is_active']
+                    and updated_alert['first_name']
+                    and updated_alert['last_name']
+                    and updated_alert['job_title']
+                    and updated_alert['qualification']):
+                email = Email(settings.mail_sender, settings.mail_sender_password)
+                email.send_resource("https://drive.google.com/uc?export=download&id=1aJGlSLjlgHU62awmazd-COzt6IWgcq32",
+                                    updated_alert["email"]
+                                    )
             return templates.TemplateResponse(
                 "users/success.html",
                 {"request": request, "msg": "successfully updated"},
@@ -241,7 +277,7 @@ async def follow_organization(request: Request, email: str = Form(...), org: Lis
                     {
                         "request": request,
                         "msg": "an error has occurred, email couldn't be send,please make sure your email is "
-                        "correct",
+                               "correct",
                     },
                 )
             return templates.TemplateResponse(
@@ -267,7 +303,7 @@ async def follow_organization(request: Request, email: str = Form(...), org: Lis
                     {
                         "request": request,
                         "msg": "an error has occurred, email couldn't be send,please make sure your email is "
-                        "correct",
+                               "correct",
                     },
                 )
             return templates.TemplateResponse(
