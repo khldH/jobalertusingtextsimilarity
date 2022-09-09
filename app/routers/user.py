@@ -57,6 +57,8 @@ async def subscribe(request: Request):
                 job_description=form.job_description,
                 is_all=form.is_all,
             )
+            if user_model.is_all:
+                user_model.job_description = ''
             print(user_model)
             if not user_model.job_description and user_model.is_all is None:
                 form.__dict__.get("errors").append(
@@ -81,8 +83,9 @@ async def subscribe(request: Request):
                     #     email.send_confirmation_message(confirmation["token"], form.email)
                     # else:
                     if prediction[0] == 0:
-                        email = Email(settings.mail_sender, settings.mail_sender_password)
-                        email.send_confirmation_message(confirmation["token"], form.email)
+                        pass
+                        # email = Email(settings.mail_sender, settings.mail_sender_password)
+                        # email.send_confirmation_message(confirmation["token"], form.email)
                     return templates.TemplateResponse(
                         "users/success.html",
                         {
