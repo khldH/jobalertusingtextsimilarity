@@ -57,7 +57,7 @@ async def subscribe(request: Request):
                 job_description=form.job_description,
                 is_all=form.is_all,
             )
-            if user_model.is_all:
+            if user_model.job_description is None:
                 user_model.job_description = ''
             print(user_model)
             if not user_model.job_description and user_model.is_all is None:
