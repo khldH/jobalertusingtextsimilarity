@@ -70,7 +70,7 @@ async def subscribe(request: Request):
             _user = create_new_user(db, new_user=user_model)
             if isinstance(_user, ValueError):
                 form.__dict__.get("errors").append(f"{form.email} email already exists !")
-                return templates.TemplateResponse("home/index.html", form.__dict__)
+                return templates.TemplateResponse("users/subscribe.html", form.__dict__)
             if _user:
                 confirmation = Auth.get_confirmation_token(_user["id"])
                 try:
