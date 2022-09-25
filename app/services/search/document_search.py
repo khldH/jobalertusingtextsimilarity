@@ -41,11 +41,16 @@ class DocumentSearch(TfidfVectorizer):
                             job["days_since_posted"] = 1
                         else:
                             job["days_since_posted"] = (
-                                datetime.now().date() - parser.parse(document.posted_date).date()
+                                    datetime.now().date() - parser.parse(document.posted_date).date()
                             ).days
+                    elif document.source == "weworkremotely":
+                        job["days_since_posted"] = (
+                                datetime.now().date() - parser.parse(document.posted_date).date()
+                        ).days
+
                     else:
                         job["days_since_posted"] = (
-                            datetime.now().date() - datetime.fromisoformat(document.posted_date).date()
+                                datetime.now().date() - datetime.fromisoformat(document.posted_date).date()
                         ).days
 
                     results.append(job)
