@@ -83,9 +83,9 @@ async def subscribe(request: Request):
                     #     email.send_confirmation_message(confirmation["token"], form.email)
                     # else:
                     if prediction[0] == 0:
-                        pass
-                        # email = Email(settings.mail_sender, settings.mail_sender_password)
-                        # email.send_confirmation_message(confirmation["token"], form.email)
+
+                        email = Email(settings.mail_sender, settings.mail_sender_password)
+                        email.send_confirmation_message(confirmation["token"], form.email)
                     return templates.TemplateResponse(
                         "users/success.html",
                         {
