@@ -2,6 +2,7 @@ import re
 from collections import Counter
 from pathlib import Path
 from typing import Optional
+from dateutil import parser
 
 from fastapi import APIRouter, Request
 from fastapi.staticfiles import StaticFiles
@@ -38,7 +39,7 @@ def home(request: Request):
             if job['location'] == 'Anywhere in the World':
                 fully_remote.append(job)
 
-        fully_remote = sorted(fully_remote, key=lambda item: item["posted_date"], reverse=True)
+        fully_remote = sorted(fully_remote, key=lambda item: parser.parse(item["posted_date"]), reverse=True)
         # break
         # common_orgs = Counter(orgs).most_common(15)
         # common_orgs = [name[0].replace(",", "") for name in common_orgs if name[0] != ""]
@@ -73,7 +74,7 @@ def get_all_remote_jobs(request: Request):
         for job in jobs:
             if job['location'] == 'Anywhere in the World':
                 fully_remote.append(job)
-        fully_remote = sorted(fully_remote, key=lambda item: item["posted_date"], reverse=True)
+        fully_remote = sorted(fully_remote, key=lambda item: parser.parse(item["posted_date"]), reverse=True)
         return templates.TemplateResponse(
             "home/remote_jobs.html",
             {
