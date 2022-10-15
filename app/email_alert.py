@@ -42,7 +42,11 @@ class Email:
                 </html>""".format(
             link=confirmation_url, text=confirmation_url
         )
-        row = "<tr><td>" "<a href=" + confirmation_url + ">" + "verify your email" + "</a>" "</td></tr>"
+        row = (
+            "<tr><td>"
+            "<a href=" + confirmation_url + ">" + "verify your email" + "</a>"
+            "</td></tr>"
+        )
         message = message.format(link=confirmation_url, text=confirmation_url)
         message = html_email.format(link=confirmation_url)
         self.send_message(message, "Activate your account", mail_to)

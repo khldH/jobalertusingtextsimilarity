@@ -16,31 +16,37 @@ from .schemas import JobCreate, UserCreate
 #     return user
 
 
-def create_new_user(db, new_user: UserCreate):
-    table = db.Table("users")
+def create_new_user(db, new_user: UserCreate, is_spam=False):
     try:
-        user = table.scan(FilterExpression=Attr("email").eq(new_user.email))["Items"]
-        if user:
-            user = user[0]
-            if user["is_active"] and user["job_description"] is not None:
-                return ValueError("email already exists")
-            updated_user = table.update_item(
-                Key={"id": user["id"]},
-                UpdateExpression="set job_description = :r, is_active = :s",
-                ExpressionAttributeValues={
-                    ":r": new_user.job_description,
-                    ":s": False,
-                },
-                ReturnValues="ALL_NEW",
-            )["Attributes"]
-            return updated_user
+        if not is_spam:
+            table = db.Table("users")
+            user = table.scan(FilterExpression=Attr("email").eq(new_user.email))[
+                "Items"
+            ]
+            if user:
+                user = user[0]
+                if user["is_active"] and user["job_description"] is not None:
+                    return ValueError("email already exists")
+                updated_user = table.update_item(
+                    Key={"id": user["id"]},
+                    UpdateExpression="set job_description = :r, is_active = :s",
+                    ExpressionAttributeValues={
+                        ":r": new_user.job_description,
+                        ":s": False,
+                    },
+                    ReturnValues="ALL_NEW",
+                )["Attributes"]
+                return updated_user
 
+            _user = new_user.dict()
+            _user["id"] = str(uuid.uuid4())
+            _user["created_at"] = datetime.utcnow().isoformat()
+            table.put_item(Item=_user)
+            return _user
+        table = db.Table("spam_users")
         _user = new_user.dict()
         _user["id"] = str(uuid.uuid4())
-        # _user["is_active"] = False
-        # _user['frequency'] = 'Daily'
         _user["created_at"] = datetime.utcnow().isoformat()
-        # _user["modified_at"] = None
         table.put_item(Item=_user)
         return _user
     except Exception as e:
@@ -78,27 +84,27 @@ def update_job_alert(db, user):
     updated_job_alert = table.update_item(
         Key={"id": user["id"]},
         UpdateExpression="set is_active = :s, "
-                         "job_description = :j, "
-                         "follows = :f, "
-                         "is_all = :a, "
-                         "first_name = :fn, "
-                         "last_name = :ln, "
-                         "job_title = :jt, "
-                         "qualification = :q, "
-                         "experience= :ex, "
-                         "skills= :sk, "
-                         "modified_at =:d",
+        "job_description = :j, "
+        "follows = :f, "
+        "is_all = :a, "
+        "first_name = :fn, "
+        "last_name = :ln, "
+        "job_title = :jt, "
+        "qualification = :q, "
+        "experience= :ex, "
+        "skills= :sk, "
+        "modified_at =:d",
         ExpressionAttributeValues={
             ":s": user["is_active"],
             ":j": user["job_description"],
             ":f": user["follows"],
             ":a": user["is_all"],
-            ":fn": user['first_name'],
-            ":ln": user['last_name'],
-            ":jt": user['job_title'],
-            ":q": user['qualification'],
-            ":ex": user['experience'],
-            ":sk": user['skills'],
+            ":fn": user["first_name"],
+            ":ln": user["last_name"],
+            ":jt": user["job_title"],
+            ":q": user["qualification"],
+            ":ex": user["experience"],
+            ":sk": user["skills"],
             ":d": datetime.utcnow().isoformat(),
         },
         ReturnValues="ALL_NEW",

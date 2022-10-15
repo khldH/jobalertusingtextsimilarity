@@ -45,12 +45,12 @@ class UpdateJobAlertForm:
         self.is_all = form.get("is_all")
         self.is_active = form.get("is_active")
         self.follows = form.get("follows")
-        self.first_name = form.get('first_name')
-        self.last_name = form.get('last_name')
-        self.job_title = form.get('job_title')
-        self.qualification = form.get('qualification')
-        self.experience = form.get('experience')
-        self.skills = form.get('skills')
+        self.first_name = form.get("first_name")
+        self.last_name = form.get("last_name")
+        self.job_title = form.get("job_title")
+        self.qualification = form.get("qualification")
+        self.experience = form.get("experience")
+        self.skills = form.get("skills")
 
         # self.frequency = form.get('frequency')
 

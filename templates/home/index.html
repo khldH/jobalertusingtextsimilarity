@@ -428,7 +428,9 @@
             <a class="" href={{job.url}} style="text-decoration:none;" target="_blank">
                 <div class="card">
                     <div class="list border-bottom">
-                        <div class="d-flex flex-column ml-3"><span>{{job.title}}</span>
+                        <div class="d-flex flex-column ml-3">
+                            <span>{{job.title}}</span>
+                             <span class="text-muted">{{job.organization}}</span>
                             {% if job.days_since_posted == 0 %}
                             <span class="text-muted"><small><i class=""></i> today </small></span>
                             {% elif job.days_since_posted ==1%}

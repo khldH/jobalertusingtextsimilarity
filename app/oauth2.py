@@ -12,7 +12,9 @@ class Auth:
     def get_token(data: dict, expires_delta: int):
         to_encode = data.copy()
         to_encode.update({"exp": datetime.utcnow() + timedelta(minutes=expires_delta)})
-        return jwt.encode(to_encode, settings.secret_key, algorithm=settings.token_algorithm)
+        return jwt.encode(
+            to_encode, settings.secret_key, algorithm=settings.token_algorithm
+        )
 
     @staticmethod
     def get_confirmation_token(user_id: UUID4):

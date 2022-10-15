@@ -34,7 +34,7 @@ spam_detector = {}
 
 @router.on_event("startup")
 def load_spam_detector():
-    spam_detector['model'] = joblib.load("app/services/spam_detector/spam_detector.pkl")
+    spam_detector["model"] = joblib.load("app/services/spam_detector/spam_detector.pkl")
 
 
 @router.get("/subscribe")
@@ -58,34 +58,34 @@ async def subscribe(request: Request):
                 is_all=form.is_all,
             )
             if user_model.job_description is None:
-                user_model.job_description = ''
-            print(user_model)
+                user_model.job_description = ""
             if not user_model.job_description and user_model.is_all is None:
                 form.__dict__.get("errors").append(
                     "Please either select 'Send all new jobs to my email' or write "
                     "your criteria in the space provided"
                 )
                 return templates.TemplateResponse("home/index.html", form.__dict__)
-
-            _user = create_new_user(db, new_user=user_model)
+            spam_detector_model = spam_detector["model"]
+            user_df = pd.DataFrame([user_model.dict()])
+            prediction = spam_detector_model.predict(user_df)
+            is_spam = False if prediction == 0 else True
+            _user = create_new_user(db, new_user=user_model, is_spam=is_spam)
             if isinstance(_user, ValueError):
-                form.__dict__.get("errors").append(f"{form.email} email already exists !")
+                form.__dict__.get("errors").append(
+                    f"{form.email} email already exists !"
+                )
                 return templates.TemplateResponse("users/subscribe.html", form.__dict__)
             if _user:
                 confirmation = Auth.get_confirmation_token(_user["id"])
                 try:
-                    spam_detector_model = spam_detector['model']
-                    user_df = pd.DataFrame([user_model.dict()])
-                    prediction = spam_detector_model.predict(user_df)
                     print("prediction", prediction[0])
-                    # if user_model.is_all:
-                    #     email = Email(settings.mail_sender, settings.mail_sender_password)
-                    #     email.send_confirmation_message(confirmation["token"], form.email)
-                    # else:
-                    if prediction[0] == 0:
-
-                        email = Email(settings.mail_sender, settings.mail_sender_password)
-                        email.send_confirmation_message(confirmation["token"], form.email)
+                    if not is_spam:
+                        email = Email(
+                            settings.mail_sender, settings.mail_sender_password
+                        )
+                        email.send_confirmation_message(
+                            confirmation["token"], form.email
+                        )
                     return templates.TemplateResponse(
                         "users/success.html",
                         {
@@ -107,7 +107,9 @@ async def subscribe(request: Request):
 
         except ValidationError as e:
             print(e)
-            form.__dict__.get("errors").append(f"{form.email} is not a valid email address")
+            form.__dict__.get("errors").append(
+                f"{form.email} is not a valid email address"
+            )
             return templates.TemplateResponse("home/index.html", form.__dict__)
 
     return templates.TemplateResponse("home/index.html", form.__dict__)
@@ -121,7 +123,9 @@ async def verify(request: Request, token: str):
         db = dynamodb_web_service
     invalid_token_error = HTTPException(status_code=400, detail="Invalid token")
     try:
-        payload = jwt.decode(token, settings.secret_key, algorithms=settings.token_algorithm)
+        payload = jwt.decode(
+            token, settings.secret_key, algorithms=settings.token_algorithm
+        )
     except jwt.JWTError:
         raise HTTPException(status_code=403, detail="Token has expired")
     if payload["scope"] != "registration":
@@ -145,7 +149,7 @@ async def verify(request: Request, token: str):
         email = Email(settings.mail_sender, settings.mail_sender_password)
         email.send_resource(
             "https://drive.google.com/uc?export=download&id=1aJGlSLjlgHU62awmazd-COzt6IWgcq32",
-            _user["email"]
+            _user["email"],
         )
         return templates.TemplateResponse(
             "users/success.html",
@@ -224,23 +228,26 @@ async def edit_job_alert(request: Request, follows: List[str] = Form(...)):
             user["job_description"] = form.job_description
             user["is_all"] = is_all
             user["follows"] = follows
-            user['first_name'] = form.first_name
-            user['last_name'] = form.last_name
-            user['job_title'] = form.job_title
-            user['qualification'] = form.qualification
-            user['experience'] = form.experience
-            user['skills'] = form.skills
+            user["first_name"] = form.first_name
+            user["last_name"] = form.last_name
+            user["job_title"] = form.job_title
+            user["qualification"] = form.qualification
+            user["experience"] = form.experience
+            user["skills"] = form.skills
             updated_alert = update_job_alert(db, user)
 
-            if (updated_alert['is_active']
-                    and updated_alert['first_name']
-                    and updated_alert['last_name']
-                    and updated_alert['job_title']
-                    and updated_alert['qualification']):
+            if (
+                    updated_alert["is_active"]
+                    and updated_alert["first_name"]
+                    and updated_alert["last_name"]
+                    and updated_alert["job_title"]
+                    and updated_alert["qualification"]
+            ):
                 email = Email(settings.mail_sender, settings.mail_sender_password)
-                email.send_resource("https://drive.google.com/uc?export=download&id=1aJGlSLjlgHU62awmazd-COzt6IWgcq32",
-                                    updated_alert["email"]
-                                    )
+                email.send_resource(
+                    "https://drive.google.com/uc?export=download&id=1aJGlSLjlgHU62awmazd-COzt6IWgcq32",
+                    updated_alert["email"],
+                )
             return templates.TemplateResponse(
                 "users/success.html",
                 {"request": request, "msg": "successfully updated"},
@@ -257,7 +264,9 @@ async def edit_job_alert(request: Request, follows: List[str] = Form(...)):
 
 
 @router.post("/follow")
-async def follow_organization(request: Request, email: str = Form(...), org: List[str] = Form(...)):
+async def follow_organization(
+        request: Request, email: str = Form(...), org: List[str] = Form(...)
+):
     if settings.is_prod is False:
         db = dynamodb
     else:
@@ -298,7 +307,9 @@ async def follow_organization(request: Request, email: str = Form(...), org: Lis
             try:
                 confirmation = Auth.get_confirmation_token(updated_user["id"])
                 email = Email(settings.mail_sender, settings.mail_sender_password)
-                email.send_confirmation_message(confirmation["token"], updated_user["email"])
+                email.send_confirmation_message(
+                    confirmation["token"], updated_user["email"]
+                )
             except Exception as e:
                 print(e)
                 return templates.TemplateResponse(
