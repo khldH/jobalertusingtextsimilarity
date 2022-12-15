@@ -67,8 +67,8 @@ async def subscribe(request: Request):
                 return templates.TemplateResponse("home/index.html", form.__dict__)
             spam_detector_model = spam_detector["model"]
             user_df = pd.DataFrame([user_model.dict()])
-            prediction = spam_detector_model.predict(user_df)
-            is_spam = False if prediction == 0 else True
+            prediction = spam_detector_model.predict_proba(user_df)[:, 1][0]
+            is_spam = False if prediction < 0.63 else True
             _user = create_new_user(db, new_user=user_model, is_spam=is_spam)
             if isinstance(_user, ValueError):
                 form.__dict__.get("errors").append(
@@ -78,7 +78,7 @@ async def subscribe(request: Request):
             if _user:
                 confirmation = Auth.get_confirmation_token(_user["id"])
                 try:
-                    print("prediction", prediction[0])
+                    print("prediction", prediction)
                     if not is_spam:
                         email = Email(
                             settings.mail_sender, settings.mail_sender_password
