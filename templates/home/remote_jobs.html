@@ -35,10 +35,10 @@
                         <form method="POST" action="/subscribe">
 
                             <div class="mb-3">
-                                <input type="text-area"
+                                <input type="text"
                                        placeholder="e.g customer support"
                                        value="{{job_description}}" name="job_description"
-                                       class="form-control job-description">
+                                       class="form-control job-description" required>
                             </div>
                             <div class="mb-3">
                                 <input type="text" required placeholder="email" name="email" value="{{email}}"

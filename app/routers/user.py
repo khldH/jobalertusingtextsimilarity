@@ -16,7 +16,7 @@ from ..crud import (
     get_user_by_email,
     get_user_by_id,
     update_job_alert,
-    update_user_status,
+    update_org_status,
 )
 from ..database import dynamodb, dynamodb_web_service
 from ..email_alert import Email
@@ -145,7 +145,7 @@ async def verify(request: Request, token: str):
             {"request": request, "msg": "user already verified"},
         )
     try:
-        update_user_status(db, _user["id"])
+        update_org_status(db, _user["id"])
         email = Email(settings.mail_sender, settings.mail_sender_password)
         email.send_resource(
             "https://drive.google.com/uc?export=download&id=1aJGlSLjlgHU62awmazd-COzt6IWgcq32",
@@ -170,7 +170,7 @@ async def unsubscribe(request: Request, token: str):
     try:
         email = s.loads(token)
         user = get_user_by_email(db, email)
-        update_user_status(db, user["id"], status=False)
+        update_org_status(db, user["id"], status=False)
         return templates.TemplateResponse(
             "users/success.html",
             {"request": request, "msg": "successfully unsubscribed"},
@@ -230,24 +230,41 @@ async def edit_job_alert(request: Request, follows: List[str] = Form(...)):
             user["follows"] = follows
             user["first_name"] = form.first_name
             user["last_name"] = form.last_name
-            user["job_title"] = form.job_title
+            user["item_title"] = form.job_title
             user["qualification"] = form.qualification
             user["experience"] = form.experience
+            user["user_location"] = form.user_location
             user["skills"] = form.skills
             updated_alert = update_job_alert(db, user)
-
+            email = Email(settings.mail_sender, settings.mail_sender_password)
             if (
                     updated_alert["is_active"]
                     and updated_alert["first_name"]
                     and updated_alert["last_name"]
-                    and updated_alert["job_title"]
+                    and updated_alert["item_title"]
                     and updated_alert["qualification"]
             ):
-                email = Email(settings.mail_sender, settings.mail_sender_password)
+                body = "<p>Thank you for updating your profile<br>Download your free CV template here " \
+                       "<br></p>"
+
                 email.send_resource(
                     "https://drive.google.com/uc?export=download&id=1aJGlSLjlgHU62awmazd-COzt6IWgcq32",
+                    "Download your free CV template",
+                    body,
                     updated_alert["email"],
                 )
+            # if updated_alert["user_location"]:
+            #
+            #     body = "<p>Thank you for updating your location<br>Download your free cover letter template here " \
+            #            "<br></p> "
+            #
+            #     email.send_resource(
+            #         "https://drive.google.com/uc?export=download&id=1SnH0_keAVPUep8BZEzZQFWQGW9LD0Bug",
+            #         "Download your free cover letter template",
+            #         body,
+            #         updated_alert["email"],
+            #     )
+
             return templates.TemplateResponse(
                 "users/success.html",
                 {"request": request, "msg": "successfully updated"},

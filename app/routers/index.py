@@ -55,7 +55,7 @@ def home(request: Request):
                 "request": request,
                 # "common_orgs": common_orgs,
                 # "more_orgs": more_orgs,
-                "remote_jobs": fully_remote,
+                # "remote_jobs": fully_remote,
             },
         )
     except Exception as e:
@@ -79,11 +79,13 @@ def get_all_remote_jobs(request: Request):
         for job in jobs:
             if job["location"] == "Anywhere in the World":
                 fully_remote.append(job)
+
         fully_remote = sorted(
             fully_remote,
             key=lambda item: parser.parse(item["posted_date"]),
             reverse=True,
         )
+
         return templates.TemplateResponse(
             "home/remote_jobs.html", {"request": request, "remote_jobs": fully_remote}
         )

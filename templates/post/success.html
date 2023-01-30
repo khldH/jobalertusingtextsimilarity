@@ -1,0 +1,31 @@
+{% extends "shared/base.html" %}
+
+
+{% block title %}
+<title>{{msg}}</title>
+{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="row my-5 p-2 justify-content-center">
+        <div class="col-md-4 p-2 text-center">
+             {% if msg == 'registration successful' %}
+            <div class="alert alert-light" role="alert">
+                Thank you for creating a Diractly account. Verification email has been sent to {{email}}.
+                Please check your inbox and verify your email. Check your spam folder if you can't find the email in your inbox
+            </div>
+            {% elif msg == 'login link sent successfully' %}
+            <div class="alert alert-light" role="alert">
+               If you have an active account, Login link has been sent to {{org.email}}. Check your spam folder if you can't find the email in your inbox
+            </div>
+            {% else %}
+            <div class="alert alert-light" role="alert">
+                Posting for item with title - {{item.title}} is successful <br>
+                Post is scheduled to be sent to 5k users
+            </div>
+             {% endif %}
+        </div>
+
+    </div>
+</div>
+{% endblock %}

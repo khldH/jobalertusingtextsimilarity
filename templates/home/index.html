@@ -15,104 +15,10 @@
 {% if jobs%}
 <div></div>
 {% else %}
-<div class="position-relative w-100" style="background-color:white">
-    {% set cs = remote_jobs | selectattr("category", "equalto", "customer-support") |list %}
-    {% set sm = remote_jobs | selectattr("category", "equalto", "sales-and-marketing") |list %}
-    {% set mf = remote_jobs | selectattr("category", "equalto", "management-and-finance")|list %}
-    {% set de = remote_jobs | selectattr("category", "equalto", "design") | list %}
-    <div class="row p-5">
-        <div class="mb-4">
-            <h1 class="text-center">Fully Remote Jobs</h1>
-            <p class="text-muted text-center">Discover fully remote jobs from companies around the world</p>
-        </div>
-        <div class="col-md-4">
-            <p class="text-muted">These jobs accept applications from anywhere in the world</p>
+<div class="position-relative w-100 p-3" style="background-color:white">
 
-
-            <div class="">
-                <div class="text-danger font-weight-bold mb-2">
-                    {% for error in errors %}
-                    <li>{{error}}</li>
-                    {% endfor %}
-                </div>
-                <div class="card p-2" style="background-color:#41464b !important">
-                    <div class="card-header" style="border-bottom: 1px solid #f8f9fa">
-                        <!--                        <p class="font-weight-bolder text-white text-center mb-1">Subscribe to our daily job alerts</p>-->
-                        <h6 class="text-center text-white font-weight-bold">Receive fully remote jobs to your inbox
-                            everyday</h6>
-                    </div>
-                    <div class="card-body">
-                        <form method="POST" action="/subscribe">
-
-                            <div class="mb-3">
-                                <input type="text-area"
-                                       placeholder="e.g customer support"
-                                       value="{{job_description}}" name="job_description"
-                                       class="form-control job-description">
-                            </div>
-                            <div class="mb-3">
-                                <input type="text" required placeholder="email" name="email" value="{{email}}"
-                                       class="form-control">
-                            </div>
-                            <button style="background-color: #ff8007!important  ;font-weight:bold" type="submit"
-                                    class="btn bg-warning text-white form-control">Subscribe
-                            </button>
-                        </form>
-                    </div>
-
-                </div>
-            </div>
-        </div>
-        <div class="col-md-6 mt-2">
-            <!--            <p class="text-muted">{{jobs|length}} jobs found</p>-->
-
-            <div class="d-flex flex-column">
-                <a class="text-decoration-none text-center pb-3 ml-auto" href="/remote-jobs">View all
-                    {{remote_jobs|length}} fully
-                    remote
-                    jobs</a>
-            </div>
-
-            {% for job in remote_jobs[:5]%}
-
-            <a class="" href={{job.url}} style="text-decoration:none; " target="_blank">
-                <div class="card" style="background-color: rgb(251, 245, 230)">
-                    <div class="">
-                        <div class="d-flex flex-column">
-                                <span class="text-muted ml-auto"><small><i
-                                        class=""></i> {{job.posted_date}} </small></span>
-                            <span>{{job.title}}</span>
-                            <span class="text-muted"><small><i
-                                    class=""></i> {{job.organization}} </small></span>
-                            <span class="text-muted"><small><i class=""></i> {{job.location}} </small></span>
-                        </div>
-                    </div>
-                </div>
-            </a>
-            <hr>
-            {% endfor %}
-        </div>
-        <div class="col-md-2">
-            <div id="filters" class="button-group">
-                <button type="" class="btn btn-primary bg-light  text-dark rounded-pill mx-sm-2 mb-2">
-                    Customer Support <span class="badge bg-secondary">{{cs|length}}</span>
-                </button>
-                <button type="" class="btn btn-primary bg-light  text-dark rounded-pill mx-sm-2 mb-2">
-                    Sales and Marketing <span class="badge bg-secondary">{{sm|length}}</span>
-                </button>
-                <button type="" class="btn btn-primary bg-light  text-dark rounded-pill mx-sm-2 mb-2">
-                    Management and Finance <span class="badge bg-secondary">{{mf|length}}</span>
-                </button>
-                <button type="" class="btn btn-primary bg-light  text-dark rounded-pill mx-sm-2 mb-2">
-                    Design <span class="badge bg-secondary">{{de|list|length}}</span>
-                </button>
-
-            </div>
-
-        </div>
-    </div>
     <div class="container">
-        <hr>
+<!--        <hr>-->
 
         <div class="row pt-4 pl-1 pr-1">
             <div class="col-lg mb-2">

@@ -28,44 +28,31 @@ class Email:
         mail_server.sendmail(self.user, mail_to, message.as_string())
         mail_server.quit()
 
-    def send_confirmation_message(self, token: str, mail_to: str):
+    def send_confirmation_message(self, token: str,
+                                  mail_to: str,
+                                  is_subscriber: bool = True,
+                                  subject: str = "Activate your account and get a sample CV chosen by an expert "
+                                                 "recruiter"):
         confirmation_url = "{}/verify/{}".format(settings.base_url, token)
-        message = """
-                <html>
-                  <head></head>
-                  <body>
-                    <p>Thank you for subscribing to the services<br>
-                       Please confirm your email by clicking this link <br>
-                       <a href="http://{link}">{text}</a>
-                    </p>
-                  </body>
-                </html>""".format(
-            link=confirmation_url, text=confirmation_url
-        )
-        row = (
-            "<tr><td>"
-            "<a href=" + confirmation_url + ">" + "verify your email" + "</a>"
-            "</td></tr>"
-        )
-        message = message.format(link=confirmation_url, text=confirmation_url)
-        message = html_email.format(link=confirmation_url)
-        self.send_message(message, "Activate your account", mail_to)
+        if not is_subscriber:
+            confirmation_url = "{}/org/verify/{}".format(settings.base_url, token)
 
-    def send_resource(self, resource: str, mail_to: str):
+        message = html_email.format(link=confirmation_url)
+        self.send_message(message, subject=subject, mail_to=mail_to)
+
+    def send_resource(self, resource: str, subject: str, body: str, mail_to: str):
         # confirmation_url = "{}/verify/{}".format(settings.base_url, token)
         message = """
                     <html>
                       <head></head>
                       <body>
-                        <p>Thank you for updating your profile<br>
-                          Download your free CV template here <br>
-                         {link}
-                        </p>
+                        {body}
+                        {link}
                       </body>
-                    </html>""".format(
-            link=resource
-        )
+                    </html>""".format(body=body,
+                                      link=resource
+                                      )
         # row = "<tr><td>" "<a href=" + confirmation_url + ">" + "verify your email" + "</a>" "</td></tr>"
         # message = message.format(link=confirmation_url, text=confirmation_url)
         # message = html_email.format(link=confirmation_url)
-        self.send_message(message, "Download your free CV", mail_to)
+        self.send_message(message, subject, mail_to)
