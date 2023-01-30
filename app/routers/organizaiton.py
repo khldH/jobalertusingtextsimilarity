@@ -97,7 +97,7 @@ async def verify(request: Request, token: str):
             {"request": request, "org": _org},
         )
     except jwt.JWTError:
-        return templates.TemplateResponse("home/services.html")
+        return templates.TemplateResponse("post/services.html")
 
 
 @router.post("/org/generate_login_link")
@@ -111,22 +111,30 @@ async def generate_login_link(request: Request):
         await form.load_data()
         if await form.is_valid():
             org = get_org_by_email(db, form.email)
+            if not org:
+                form.errors.append(f"{org['email']} doesn't have an account, try to creating an account first")
+                return templates.TemplateResponse("post/services.html",
+                                                  {"request": request, "errors": form.__dict__.get("errors")})
+
             email = Email(settings.mail_sender, settings.mail_sender_password)
             if org.get('is_active'):
                 lgn = URLSafeSerializer(settings.secret_key, salt="login")
                 login_token = lgn.dumps(org["id"])
-                login_url = "http://localhost:8001/org/login/{}".format(login_token)
+                login_url = settings.base_url+"/org/login/{}".format(login_token)
                 body = "<p>Click this link to login</p>"
                 email.send_resource(login_url, "Login link", body, org['email'])
                 return templates.TemplateResponse(
                     "post/success.html",
                     {"request": request, "org": org, "msg": "login link sent successfully"},
                 )
-            return templates.TemplateResponse("home/services.html")
+            form.errors.append(f"{org['email']} doesn't have an active account, try creating and activating your "
+                               f"account first")
+            return templates.TemplateResponse("post/services.html", {"request": request,"errors":form.__dict__.get("errors")})
 
     except Exception as e:
         print(e)
-        return templates.TemplateResponse("home/services.html")
+        form.errors.append(f"an unexpected error occurred, make sure you create an account first before logging in")
+        return templates.TemplateResponse("post/services.html", {"request": request,"errors":form.__dict__.get("errors")})
 
 
 @router.get("/org/login/{token}")
@@ -158,5 +166,3 @@ async def login(request: Request, token: str):
         #     "post/create_post.html",
         #     {"request": request, "msg": "login successful"},
         # )
-
-
