@@ -68,7 +68,7 @@ async def subscribe(request: Request):
             spam_detector_model = spam_detector["model"]
             user_df = pd.DataFrame([user_model.dict()])
             prediction = spam_detector_model.predict_proba(user_df)[:, 1][0]
-            is_spam = False if prediction < 0.63 else True
+            is_spam = False if prediction < 0.63 or user_model.is_all else True
             _user = create_new_user(db, new_user=user_model, is_spam=is_spam)
             if isinstance(_user, ValueError):
                 form.__dict__.get("errors").append(
@@ -146,10 +146,13 @@ async def verify(request: Request, token: str):
         )
     try:
         update_org_status(db, _user["id"])
+        body = "<p>Thank you for verifying your email. Click this link to download your free cv template</p>"
         email = Email(settings.mail_sender, settings.mail_sender_password)
         email.send_resource(
-            "https://drive.google.com/uc?export=download&id=1aJGlSLjlgHU62awmazd-COzt6IWgcq32",
-            _user["email"],
+            resource="https://drive.google.com/uc?export=download&id=1aJGlSLjlgHU62awmazd-COzt6IWgcq32",
+            subject= "Download your free example CV",
+            body =body,
+            mail_to=_user["email"],
         )
         return templates.TemplateResponse(
             "users/success.html",
@@ -198,11 +201,11 @@ async def edit_job_alert(request: Request, token: str):
             {"request": request, "msg": "update job alert", "user": user},
         )
 
-    except Exception as e:
+    except BadData as e:
         print(e)
         return templates.TemplateResponse(
             "users/error_page.html",
-            {"request": request, "msg": "error-unsubscirbe"},
+            {"request": request, "msg": "an error occurred, can't update your alert now "},
         )
 
 
@@ -241,7 +244,7 @@ async def edit_job_alert(request: Request, follows: List[str] = Form(...)):
                     updated_alert["is_active"]
                     and updated_alert["first_name"]
                     and updated_alert["last_name"]
-                    and updated_alert["item_title"]
+                    and updated_alert["user_location"]
                     and updated_alert["qualification"]
             ):
                 body = "<p>Thank you for updating your profile<br>Download your free CV template here " \

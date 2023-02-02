@@ -41,18 +41,23 @@ class DocumentSearch(TfidfVectorizer):
                         job["days_since_posted"] = 1
                     else:
                         job["days_since_posted"] = abs((
-                            datetime.now().date()
-                            - parser.parse(document.posted_date).date()
-                        ).days)
+                                                               datetime.now().date()
+                                                               - parser.parse(document.posted_date).date()
+                                                       ).days)
                 elif document.source == "weworkremotely":
                     job["days_since_posted"] = abs((
-                        datetime.now().date()
-                        - parser.parse(document.posted_date).date()
-                    ).days)
+                                                           datetime.now().date()
+                                                           - parser.parse(document.posted_date).date()
+                                                   ).days)
 
                 else:
-                    print(job)
-                    job["days_since_posted"] = abs((datetime.now().date()- parser.parse(document.posted_date).date()).days)
+                    # print(job)
+                    job["days_since_posted"] = abs(
+                        (datetime.now().date() - parser.parse(document.posted_date).date()).days)
+                if document.source == 'diractly':
+                    job['url'] = "/" + job['url'].split('/',1)[1]
+                    # print(job['url'])
+
 
                 results.append(job)
         return sorted(

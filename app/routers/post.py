@@ -72,8 +72,8 @@ async def create_post(request: Request):
                                           {"request": request, "org": org, "errors": form.__dict__.get("errors")})
 
 
-@router.get("/item/{item_id}")
-def get_item_details(request: Request, item_id: str):
+@router.get("/post/{item_id}")
+def get_post_details(request: Request, item_id: str):
     if settings.is_prod is False:
         db = dynamodb
     else:
@@ -81,6 +81,7 @@ def get_item_details(request: Request, item_id: str):
 
     item = get_item_details_by_id(db, item_id)
     if item:
+        # print(item)
         item['days_since_posted'] = (datetime.now().date() - parser.parse(item['posted_date']).date()).days
         if item['end_date']:
             item['closes_on'] = (parser.parse(item['end_date']).date() - datetime.now().date()).days

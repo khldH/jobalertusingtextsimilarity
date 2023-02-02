@@ -122,7 +122,8 @@ def post_new_item(db, new_item):
         item["id"] = str(uuid.uuid4())
         item["posted_date"] = datetime.utcnow().isoformat()
         item['sponsored'] = True
-        item['url'] = "{}/item/{}".format(settings.base_url, item['id'])
+        item['source'] = 'diractly'
+        item['url'] = "{}/post/{}".format(settings.base_url, item['id'])
         table.put_item(Item=item)
         return item
     except Exception as e:
