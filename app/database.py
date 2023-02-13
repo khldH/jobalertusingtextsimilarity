@@ -29,4 +29,6 @@ dynamodb_web_service = boto3.resource(
     aws_secret_access_key=settings.aws_secret_access_key,
 )
 
-dynamodb = boto3.resource("dynamodb", region_name="eu-west-2", endpoint_url="http://localhost:8000")
+dynamodb = boto3.resource(
+    "dynamodb", region_name="eu-west-2", endpoint_url="http://localhost:8000"
+)

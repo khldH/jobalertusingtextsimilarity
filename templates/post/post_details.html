@@ -1,0 +1,48 @@
+{% extends "shared/base.html" %}
+
+
+{% block title %}
+<title>{{item.title}}</title>
+{% endblock %}
+
+{% block content %}
+
+<div class='row justify-content-center'>
+    <div class="col-g offset-g-1">
+         <div class="container p-5">
+        <div class="w-100">
+            <div class="">
+                <div class="d-flex w-100 justify-content-between">
+                    <h5 class="mb-0">{{item.title}}</h5>
+                </div>
+
+                <p class="text-muted mb-1">{{item.organization}} <> {{item.location}} </p>
+<!--                <p class="text-muted mb-0">{{item.location}}</p>-->
+                {% if item.days_since_posted == 0 %}
+                <p class="text-muted mb-0">Posted <strong>today</strong></p>
+                {% elif item.days_since_posted == 1 %}
+                <p class="text-muted mb-0">Posted <strong>yesterday</strong></p>
+                {% else %}
+                <p class="text-muted mb-0">Posted {{item.days_since_posted}} <strong> days ago</strong></p>
+                {% endif %}
+                {% if item.closes_on == 0 %}
+                <p class="text-muted mb-0">Closes today</p>
+                {% elif item.closes_on == 1 %}
+                <p class="text-muted mb-0">Closes tomorrow</p>
+                {% elif item.closes_on > 1 %}
+                <p class="text-muted mb-0">Closes in {{item.closes_on}} days </p>
+                {% else %}
+                <p class="text-muted mb-0"> Job closed {{item.closes_on|abs}} day(s) ago  </p>
+                {% endif %}
+                <hr>
+                <h5 class="text-muted">Details</h5>
+                <p class="mb-1"> {{item.details|safe}} </p>
+            </div>
+        </div>
+    </div>
+    </div>
+
+</div>
+
+
+{% endblock %}

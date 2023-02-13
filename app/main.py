@@ -4,12 +4,15 @@ from fastapi.staticfiles import StaticFiles
 
 # from app import models
 # from app.database import engine
-from app.routers import index, user
+from app.routers import index, user,post, services,organizaiton
 
 
 def include_router(application):
     application.include_router(index.router)
     application.include_router(user.router)
+    application.include_router(post.router)
+    application.include_router(services.router)
+    application.include_router(organizaiton.router)
 
 
 # def create_tables():

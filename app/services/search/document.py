@@ -18,4 +18,6 @@ class Document(BaseModel):
 
     @property
     def full_text(self):
-        return " ".join([self.title, self.category, self.type, self.location, self.organization])
+        return " ".join(
+            [self.title, self.category, self.type, self.location, self.organization]
+        )
