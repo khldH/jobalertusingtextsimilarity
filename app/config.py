@@ -1,5 +1,6 @@
 from typing import Optional
 
+import boto3
 from pydantic import BaseSettings
 
 
@@ -12,6 +13,7 @@ class Settings(BaseSettings):
     aws_region_name: str
     aws_access_key_id: str
     aws_secret_access_key: str
+    endpoint_url: str = None
     host = "localhost"
     port = 8001
     mail_sender: str
