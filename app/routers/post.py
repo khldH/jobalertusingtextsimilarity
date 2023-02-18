@@ -51,6 +51,7 @@ async def create_post(request: Request, db=Depends(get_db)):
                         'end_date': form.end_date, 'type': form.item_type, 'category': '',
                         'details': form.item_details}
             item = create_new_post(db, new_item)
+            item['url'] = "/" + item['url'].split('/', 1)[1]
             return templates.TemplateResponse(
                 "post/success.html", {"request": request, "item": item},
             )
