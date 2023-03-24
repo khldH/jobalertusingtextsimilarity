@@ -1,11 +1,11 @@
-from fastapi import APIRouter, Form, HTTPException, Request
+from fastapi import APIRouter, Form, HTTPException, Request, Depends
 from requests.compat import urljoin, quote_plus
 from fastapi.responses import HTMLResponse
 from fastapi.templating import Jinja2Templates
 from starlette.responses import RedirectResponse
 
 from ..config import settings
-from ..database import dynamodb, dynamodb_web_service
+from ..database import get_db
 from ..views.user import CreateOrganization, GenerateLoginLink
 from ..crud import create_new_org, get_org_by_id, update_org_status, get_org_by_email
 
@@ -14,7 +14,7 @@ from jose import jwt
 from ..oauth2 import Auth
 from ..email_alert import Email
 from starlette.datastructures import URL
-from app.routers.post import post_item
+# from app.routers.post import post_item
 
 templates = Jinja2Templates(directory="templates")
 router = APIRouter(tags=["Organization"])
@@ -22,11 +22,7 @@ templates.env.globals['URL'] = URL
 
 
 @router.post("/create_organization")
-async def create_organization(request: Request):
-    if settings.is_prod is False:
-        db = dynamodb
-    else:
-        db = dynamodb_web_service
+async def create_organization(request: Request, db=Depends(get_db)):
     try:
 
         form = CreateOrganization(request)
@@ -62,11 +58,7 @@ async def create_organization(request: Request):
 
 
 @router.get("/org/verify/{token}")
-async def verify(request: Request, token: str):
-    if settings.is_prod is False:
-        db = dynamodb
-    else:
-        db = dynamodb_web_service
+async def verify(request: Request, token: str,  db=Depends(get_db)):
     invalid_token_error = HTTPException(status_code=400, detail="Invalid token")
     try:
         payload = jwt.decode(
@@ -101,11 +93,7 @@ async def verify(request: Request, token: str):
 
 
 @router.post("/org/generate_login_link")
-async def generate_login_link(request: Request):
-    if settings.is_prod is False:
-        db = dynamodb
-    else:
-        db = dynamodb_web_service
+async def generate_login_link(request: Request, db=Depends(get_db)):
     try:
         form = GenerateLoginLink(request)
         await form.load_data()
@@ -138,12 +126,7 @@ async def generate_login_link(request: Request):
 
 
 @router.get("/org/login/{token}")
-async def login(request: Request, token: str):
-    if settings.is_prod is False:
-        db = dynamodb
-    else:
-        db = dynamodb_web_service
-
+async def login(request: Request, token: str, db=Depends(get_db)):
     try:
         lgn = URLSafeSerializer(settings.secret_key, salt="login")
         org_id = lgn.loads(token)

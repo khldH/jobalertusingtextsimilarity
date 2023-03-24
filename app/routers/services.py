@@ -7,5 +7,5 @@ router = APIRouter(tags=["Services"])
 
 
 @router.get("/services")
-def subscribe(request: Request):
+def index(request: Request):
     return templates.TemplateResponse("post/services.html", {"request": request})

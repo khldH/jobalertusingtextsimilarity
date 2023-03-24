@@ -20,8 +20,8 @@
             </div>
             {% else %}
             <div class="alert alert-light" role="alert">
-                Posting for item with title - {{item.title}} is successful <br>
-                Post is scheduled to be sent to 5k users
+
+                <a href={{item.url}}  class="text-decoration-none" target="_blank"> {{item.title}} successfully posted </a>
             </div>
              {% endif %}
         </div>

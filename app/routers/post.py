@@ -1,10 +1,10 @@
-from fastapi import APIRouter, Form, HTTPException, Request, Response, Cookie
+from fastapi import APIRouter, Form, HTTPException, Request, Response, Depends
 from fastapi.responses import HTMLResponse
 from fastapi.templating import Jinja2Templates
 from ..config import settings
-from ..database import dynamodb, dynamodb_web_service
+from ..database import get_db
 from ..views.user import PostItem
-from ..crud import post_new_item, get_item_details_by_id, get_org_by_id
+from ..crud import create_new_post, get_post_details_by_id, get_org_by_id
 from datetime import datetime, timedelta
 from dateutil import parser
 from itsdangerous import BadData, URLSafeSerializer
@@ -15,12 +15,7 @@ router = APIRouter(tags=["Job"])
 
 
 @router.get("/create_post/{token}")
-def post_item(request: Request, response: Response, token: str):
-    response.set_cookie(key='access_token', value=token)
-    if settings.is_prod is False:
-        db = dynamodb
-    else:
-        db = dynamodb_web_service
+def create_post(request: Request,  token: str, db=Depends(get_db)):
     try:
         lgn = URLSafeSerializer(settings.secret_key, salt="login")
         org_id = lgn.loads(token)
@@ -38,11 +33,7 @@ def post_item(request: Request, response: Response, token: str):
 
 
 @router.post("/create_post")
-async def create_post(request: Request):
-    if settings.is_prod is False:
-        db = dynamodb
-    else:
-        db = dynamodb_web_service
+async def create_post(request: Request, db=Depends(get_db)):
     try:
         org = {}
         form = PostItem(request)
@@ -59,8 +50,8 @@ async def create_post(request: Request):
                         'organization': form.organization, 'location': form.location,
                         'end_date': form.end_date, 'type': form.item_type, 'category': '',
                         'details': form.item_details}
-            item = post_new_item(db, new_item)
-
+            item = create_new_post(db, new_item)
+            item['url'] = "/" + item['url'].split('/', 1)[1]
             return templates.TemplateResponse(
                 "post/success.html", {"request": request, "item": item},
             )
@@ -73,23 +64,21 @@ async def create_post(request: Request):
 
 
 @router.get("/post/{item_id}")
-def get_post_details(request: Request, item_id: str):
-    if settings.is_prod is False:
-        db = dynamodb
-    else:
-        db = dynamodb_web_service
+def get_post_details(request: Request, item_id: str, db=Depends(get_db)):
+    try:
+        item = get_post_details_by_id(db, item_id)
+        if item:
+            # print(item)
+            item['days_since_posted'] = (datetime.now().date() - parser.parse(item['posted_date']).date()).days
+            if item['end_date']:
+                item['closes_on'] = (parser.parse(item['end_date']).date() - datetime.now().date()).days
 
-    item = get_item_details_by_id(db, item_id)
-    if item:
-        # print(item)
-        item['days_since_posted'] = (datetime.now().date() - parser.parse(item['posted_date']).date()).days
-        if item['end_date']:
-            item['closes_on'] = (parser.parse(item['end_date']).date() - datetime.now().date()).days
-
-        return templates.TemplateResponse(
-            "post/post_details.html",
-            {"request": request, "item": item},
-        )
+            return templates.TemplateResponse(
+                "post/post_details.html",
+                {"request": request, "item": item},
+            )
+    except Exception as e:
+        print(e)
     return templates.TemplateResponse(
         "users/error_page.html",
         {

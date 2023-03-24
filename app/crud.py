@@ -115,9 +115,9 @@ def update_job_alert(db, user):
     return updated_job_alert["Attributes"]
 
 
-def post_new_item(db, new_item):
+def create_new_post(db, new_item):
     try:
-        table = db.Table("jobs")
+        table = db.Table("posts")
         item = new_item
         item["id"] = str(uuid.uuid4())
         item["posted_date"] = datetime.utcnow().isoformat()
@@ -130,8 +130,8 @@ def post_new_item(db, new_item):
         print(e)
 
 
-def get_item_details_by_id(db, id):
-    table = db.Table("jobs")
+def get_post_details_by_id(db, id):
+    table = db.Table("posts")
     items = table.scan(FilterExpression=Key("id").eq(id))["Items"]
     if len(items) > 0:
         return items[0]
