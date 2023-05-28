@@ -18,11 +18,16 @@
 <div class="position-relative w-100 p-3" style="background-color:white">
 
     <div class="container">
-<!--        <hr>-->
+        <div class="alert alert-success text-center" role="alert" id="success-message" style="display:none">
+        </div>
+        <div class="alert alert-danger text-center" role="alert" id="error-message" style="display:none">
+        </div>
+
 
         <div class="row pt-4 pl-1 pr-1">
             <div class="col-lg mb-2">
-                <h3 class="font-weight-bold">Keep track of the local Somali jobs that interest you without spending hours
+                <h3 class="font-weight-bold">Keep track of the local Somali jobs that interest you without spending
+                    hours
                     searching for them</h3>
                 <span class="text-muted text-center ">Diractly searches job listings from a variety of Somali
                 job posting sites and sends you daily
@@ -44,29 +49,38 @@
                             job alert to your inbox everyday</p>
                     </div>
                     <div class="card-body">
-                        <form method="POST" action="/subscribe">
+                          <!-- Overlay spinner -->
+                        <div class="overlay" id="overlay">
+                            <div class="d-flex justify-content-center align-items-center h-100">
+                                <div class="spinner-border text-primary" role="status">
+                                    <span class="sr-only">Loading...</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <form  id="subscribeForm">
                             <div class="form-check form-switch mb-2">
-                                <input class="form-check-input" type="checkbox" id="switch-id" name="is_all"
+                                <input class="form-check-input" type="checkbox" id="all" name="is_all"
                                        style="height: 1.35rem;width: calc(2rem + 0.80rem);border-radius: 3rem;">
-                                <label class="form-check-label fw-normal text-white pl-3 pt-0" for="switch-id">Send all
+                                <label class="form-check-label fw-normal text-white pl-3 pt-0" for="all">Send all
                                     new jobs to my email</label>
-                                <p class="small font-monospace text-white all-jobs pl-3 ">Select this option to get all
-                                    new jobs delivered to your inbox </p>
+                                <p class="small font-monospace text-white all-jobs pl-3 ">Select this option if you don't want to specify job title, industry or location </p>
                             </div>
                             <div class="mb-3">
                                 <input type="text-area"
                                        placeholder="job-title, keyword, organization or location"
-                                       value="{{job_description}}" name="job_description"
+                                       value="{{job_description}}" name="job_description" id="job_description"
                                        class="form-control job-description">
                             </div>
                             <div class="mb-3">
                                 <input type="text" required placeholder="email" name="email" value="{{email}}"
-                                       class="form-control">
+                                       class="form-control" id="email">
                             </div>
                             <button style="background-color: #ff8007!important ;font-weight:bold" type="submit"
                                     class="btn bg-warning text-white form-control ">Subscribe
                             </button>
                         </form>
+
                     </div>
 
                 </div>
@@ -135,9 +149,9 @@
                     <a class="col-sm-2 mb-2" href="https://www.somalijobs.com" target="_blank">
                         <img alt="" class="" src="{{ url_for('static', path='imgs/somalijobs.png') }}">
                     </a>
-<!--                    <a class="col-sm-2 mb-2" href="https://qaranjobs.com/" target="_blank">-->
-<!--                        <img alt="" class="img-fluid" src="{{ url_for('static', path='imgs/qaran.png') }}">-->
-<!--                    </a>-->
+                    <!--                    <a class="col-sm-2 mb-2" href="https://qaranjobs.com/" target="_blank">-->
+                    <!--                        <img alt="" class="img-fluid" src="{{ url_for('static', path='imgs/qaran.png') }}">-->
+                    <!--                    </a>-->
                     <a class="col-sm-2 mb-2" href="https://reliefweb.int/jobs" target="_blank">
                         <img alt="" class="" src="{{ url_for('static', path='imgs/reliefweb.png') }}">
                     </a>
@@ -336,7 +350,7 @@
                     <div class="list border-bottom">
                         <div class="d-flex flex-column ml-3">
                             <span>{{job.title}}</span>
-                             <span class="text-muted">{{job.organization}}</span>
+                            <span class="text-muted">{{job.organization}}</span>
                             {% if job.days_since_posted == 0 %}
                             <span class="text-muted"><small><i class=""></i> today </small></span>
                             {% elif job.days_since_posted ==1%}
@@ -411,42 +425,8 @@ $(document).ready(function () {
 });
 
 
-$(function () {
-        $("#switch-id").change(function () {
-            if ($(this).is(":checked")) {
-                $(".job-description").val('')
-                $(".job-description").hide()
-
-                }
-
-             else {
-                $(".job-description").show();
-<!--
-                }
 
 
-        });
-    });
-
-
-<!--$('#submit_search').on('submit', function() {-->
-<!--    console.log(data)-->
-<!--    function searchResults(){-->
-<!--        $.ajax({-->
-<!--            url:"/search/",-->
-<!--            type:"GET",-->
-<!--            dataType:"json",-->
-<!--            success: function(data){-->
-<!--                 console.log("success");-->
-<!--&lt;!&ndash;                $(search_results).replaceWith(data);&ndash;&gt;-->
-<!--            },-->
-<!--            error: function() {-->
-<!--                console.log("error", data);-->
-<!--                alert('error loading from database...');-->
-<!--            }-->
-<!--        });-->
-<!--    }-->
-<!--});-->
 
 
 

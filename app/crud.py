@@ -5,7 +5,7 @@ from boto3.dynamodb.conditions import Attr, Key
 from sqlalchemy.orm import Session
 
 # from .models import Job, User
-from .schemas import JobCreate, UserCreate
+from .schemas import PostCreate, UserCreate
 from app.config import settings
 
 
@@ -118,10 +118,11 @@ def update_job_alert(db, user):
 def create_new_post(db, new_item):
     try:
         table = db.Table("posts")
-        item = new_item
+        item = new_item.dict()
         item["id"] = str(uuid.uuid4())
         item["posted_date"] = datetime.utcnow().isoformat()
         item['sponsored'] = True
+        item['category'] = ''
         item['source'] = 'diractly'
         item['url'] = "{}/post/{}".format(settings.base_url, item['id'])
         table.put_item(Item=item)
@@ -141,7 +142,7 @@ def get_post_details_by_id(db, id):
 def create_new_org(db, new_org):
     try:
         table = db.Table("organizations")
-        org = table.scan(FilterExpression=Attr("email").eq(new_org['email']))[
+        org = table.scan(FilterExpression=Attr("email").eq(new_org.email))[
             "Items"
         ]
         if org:
@@ -152,14 +153,14 @@ def create_new_org(db, new_org):
                 Key={"id": org["id"]},
                 UpdateExpression="set user_name = :u, organization = :o",
                 ExpressionAttributeValues={
-                    ":u": new_org['user_name'],
-                    ":o": new_org['organization'],
+                    ":u": new_org.username,
+                    ":o": new_org.organization,
                 },
                 ReturnValues="ALL_NEW",
             )["Attributes"]
             return updated_org
 
-        _org = new_org
+        _org = new_org.dict()
         _org["id"] = str(uuid.uuid4())
         _org["is_active"] = False
         _org["created_at"] = datetime.utcnow().isoformat()
@@ -167,7 +168,7 @@ def create_new_org(db, new_org):
         return _org
     except Exception as e:
         print(e)
-        return {}
+        return BaseException("An error occurred, try again later")
 
 
 def get_org_by_id(db, org_id):
