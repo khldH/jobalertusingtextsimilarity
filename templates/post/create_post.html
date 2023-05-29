@@ -10,57 +10,60 @@
 
 <div class='row justify-content-center'>
     <div class="container">
+<!--        <div class="position-fixed bottom-0 end-0 p-3" style="z-index: 11">-->
+<!--             <div class="alert alert-success text-center" role="alert" id="success-message" style="display:none">-->
+<!--            Form submitted successfully!-->
+<!--        </div>-->
+
+<!--        </div>-->
+
+        <div class="alert alert-success text-center" role="alert" id="success-message" style="display:none">
+            Form submitted successfully!
+        </div>
+        <div id="error-message"></div>
         <div class="col-lg offset-lg-1">
-             <div class="text-danger font-weight-bold mb-2">
-                    {% for error in errors %}
-                    <li>{{error}}</li>
-                    {% endfor %}
-                </div>
+            <div class="text-danger font-weight-bold mb-2">
+                {% for error in errors %}
+                <li>{{error}}</li>
+                {% endfor %}
+            </div>
             <h4 class="p-2">Create Post</h4>
-            <form  method="POST" , action="/create_post">
-
+            <form method="POST" id="createPost">
                 <div class="col-md-4 p-2">
-                    <input class="form-control" type="text" , placeholder="title of your post"
-                           name="org_id"
-                           value="{{org.id}}" hidden>
-                </div>
-
-                <div class="col-md-4 p-2">
-                    <input class="form-control" type="text" , placeholder="title of your post"
-                           name="item_title"
+                    <input class="form-control" type="text" placeholder="title of your post"
+                           name="item_title" id="post-title"
                            value="{{item_title}}" required>
                 </div>
                 <div class="col-md-4 p-2">
-                    <input class="form-control" type="text" , placeholder="organization" name="organization"
-                           value="{{organization}}">
+                    <input class="form-control" type="text" placeholder="organization" name="organization"
+                           id='organization' value="{{organization}}">
                 </div>
                 <div class="form-floating col-md-4 p-2">
                     <select class="form-select" aria-label="Default select example" name="item_type"
-                            value="{{item_type}}" id="floatingSelect">
+                            value="{{item_type}}" id="post-type">
                         <option selected>Select item type</option>
                         <option value="job">job</option>
                         <option value="course">course</option>
                         <option value="event">event</option>
                         <option value="other">other</option>
                     </select>
-                     <label for="floatingSelect">type of post you are creating</label>
+                    <label for="post-type">type of post you are creating</label>
                 </div>
 
                 <div class="col-md-4 p-2">
-                    <input class="form-control" type="text" , placeholder="location" name="location"
-                           value="{{location}}">
+                    <input class="form-control" type="text" placeholder="location" name="location"
+                           id="location" value="{{location}}">
                 </div>
 
                 <div class="form-floating col-md-4 p-2">
                     <input class="form-control" type="date" , name="end_date"
-                           value="{{end_date}}" id="datetimepicker">
-                    <label for="floatingInputValue">closing date if applicable</label>
+                           value="{{end_date}}" id="end-date">
+                    <label for="end-date">closing date if applicable</label>
                 </div>
-
                 <div class="col-lg-10 p-2">
                     <h5>Post details</h5>
-                    <textarea id="job-details" class="form-control" name="item_details"
-                              placeholder="details of the item you are posting" value ="{{item_details}}" ></textarea>
+                    <textarea id="post-details" class="form-control" name="item_details"
+                              placeholder="details of the item you are posting" value="{{item_details}}"></textarea>
                 </div>
                 <div class="col-lg-2 p-2 mb-4">
                     <button style="background-color:green!important  ;font-weight:bold" type="submit"
@@ -68,6 +71,13 @@
                     </button>
                 </div>
             </form>
+             <div class="overlay" id="overlay">
+                    <div class="d-flex justify-content-center align-items-center h-100">
+                        <div class="spinner-border text-primary" role="status">
+                            <span class="sr-only">Loading...</span>
+                        </div>
+                    </div>
+                </div>
         </div>
 
 
@@ -78,10 +88,13 @@
 
 <script>
  tinymce.init({
-        selector: '#job-details',
+        selector: '#post-details',
         forced_root_block : "",
         entity_encoding: 'raw',
         height : "350"});
+
+
+
 
 </script>
 

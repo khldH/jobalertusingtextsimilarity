@@ -1,6 +1,8 @@
 from fastapi import APIRouter, Form, HTTPException, Request, Response, Depends
-from fastapi.responses import HTMLResponse
+from fastapi.responses import HTMLResponse, JSONResponse
+from fastapi import responses, status
 from fastapi.templating import Jinja2Templates
+from starlette.responses import RedirectResponse
 from ..config import settings
 from ..database import get_db
 from ..views.user import PostItem
@@ -9,58 +11,29 @@ from datetime import datetime, timedelta
 from dateutil import parser
 from itsdangerous import BadData, URLSafeSerializer
 from typing import Optional
+from ..schemas import VerificationToken, PostCreate
 
 templates = Jinja2Templates(directory="templates")
 router = APIRouter(tags=["Job"])
 
 
-@router.get("/create_post/{token}")
-def create_post(request: Request,  token: str, db=Depends(get_db)):
-    try:
-        lgn = URLSafeSerializer(settings.secret_key, salt="login")
-        org_id = lgn.loads(token)
-        org = get_org_by_id(db, org_id)
-        if org:
-            return templates.TemplateResponse("post/create_post.html", {"request": request, 'org': org})
-        return templates.TemplateResponse(
-            "users/error_page.html",
-            {"request": request, "msg": "login-error"})
-    except Exception as e:
-        print(e)
-        return templates.TemplateResponse(
-            "users/error_page.html",
-            {"request": request, "msg": "login-error"})
+@router.get("/create_post")
+def create_post(request: Request):
+    return templates.TemplateResponse("post/create_post.html", {"request": request})
 
 
 @router.post("/create_post")
-async def create_post(request: Request, db=Depends(get_db)):
+def create_post(request: Request, post: PostCreate, db=Depends(get_db)):
+    # print(post.post_details)
     try:
-        org = {}
-        form = PostItem(request)
-        await form.load_data()
-        if await form.is_valid():
-            if form.end_date and parser.parse(form.end_date).date() < datetime.now().date():
-                org['id'] = form.organization_id
-                form.__dict__.get("errors").append(
-                    "Please check if end date is valid")
-                return templates.TemplateResponse("post/create_post.html",
-                                                  {"request": request, "org": org,
-                                                   "errors": form.__dict__.get("errors")})
-            new_item = {'title': form.item_title, 'organization_id': form.organization_id,
-                        'organization': form.organization, 'location': form.location,
-                        'end_date': form.end_date, 'type': form.item_type, 'category': '',
-                        'details': form.item_details}
-            item = create_new_post(db, new_item)
-            item['url'] = "/" + item['url'].split('/', 1)[1]
-            return templates.TemplateResponse(
-                "post/success.html", {"request": request, "item": item},
-            )
-        return templates.TemplateResponse("post/create_post.html", {"request": request, "org": org,
-                                                                    "errors": form.__dict__.get("errors")})
+        new_post = create_new_post(db, post)
+        print(new_post)
+        new_post['url'] = "/" + new_post['url'].split('/', 1)[1]
+        post_url = f"/post/{new_post['id']}"
+        return JSONResponse(content={"url": post_url}, status_code=200)
     except Exception as e:
         print(e)
-        return templates.TemplateResponse("post/create_post.html",
-                                          {"request": request, "org": org, "errors": form.__dict__.get("errors")})
+        return templates.TemplateResponse("post/create_post.html", {"request": request})
 
 
 @router.get("/post/{item_id}")

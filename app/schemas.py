@@ -12,36 +12,27 @@ class UserCreate(BaseModel):
     is_active: Optional[bool] = False
 
 
-class UserOut(BaseModel):
-    id: int
-    # name: str
+class OrganizationCreate(BaseModel):
     email: EmailStr
-    is_active: bool
-    job_description: str
-    created_at: datetime
-
-    class Config:
-        orm_mode = True
+    organization: Optional[str] = None
+    username: Optional[str] = False
 
 
-class Token(BaseModel):
-    access_token: str
-    token_type: str
+class GenerateOrgLoginLink(BaseModel):
+    email: EmailStr
 
 
-class TokenData(BaseModel):
-    id: Optional[str] = None
-
-
-class JobCreate(BaseModel):
+class PostCreate(BaseModel):
     title: str
-    url: str
-    created_date: str
-    category: str
-    organization: str
-    country: str
-    city: str
-    source: str
+    organization: Optional[str] = None
+    type: Optional[str] = None
+    location: Optional[str] = None
+    end_date: Optional[str] = None
+    category: Optional[str] = None
+    details: Optional[str] = None
 
-    class Config:
-        orm_mode = True
+
+class VerificationToken(BaseModel):
+    token: str
+    # is_authenticated: bool
+    # is_verified: bool

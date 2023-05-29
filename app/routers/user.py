@@ -1,11 +1,12 @@
 import time
-from typing import List
+from typing import List, Optional
+from pydantic import BaseModel
 
 import joblib
 import numpy as np
 import pandas as pd
 from fastapi import APIRouter, Depends, Form, HTTPException, Request
-from fastapi.responses import HTMLResponse
+from fastapi.responses import HTMLResponse, JSONResponse
 from fastapi.templating import Jinja2Templates
 from itsdangerous import BadData, URLSafeSerializer
 from jose import jwt
@@ -39,65 +40,51 @@ def subscribe(request: Request):
     return templates.TemplateResponse("users/subscribe.html", {"request": request})
 
 
+# class Job(BaseModel):
+#     email: Optional[str] = None
+#     job_description: Optional[str] = None
+#
+#
+# @router.post("/jobs_test")
+# def create_job(request: Request, user: UserCreate):
+#     print(user)
+#     # return {"message": "Job created successfully"}
+
+
 @router.post("/subscribe")
-async def subscribe(request: Request, db=Depends(get_db)):
-    form = UserCreateForm(request)
-    await form.load_data()
-    if await form.is_valid():
-        try:
-            user_model = UserCreate(
-                email=form.email,
-                job_description=form.job_description,
-                is_all=form.is_all,
-            )
-            if user_model.job_description is None:
-                user_model.job_description = ""
-            if not user_model.job_description and user_model.is_all is None:
-                form.__dict__.get("errors").append(
-                    "Please either select 'Send all new jobs to my email' or write "
-                    "your criteria in the space provided"
-                )
-                return templates.TemplateResponse("home/index.html", form.__dict__)
-            spam_detector_model = spam_detector["model"]
-            user_df = pd.DataFrame([user_model.dict()])
-            prediction = spam_detector_model.predict_proba(user_df)[:, 1][0]
-            is_spam = False if prediction < 0.63 or user_model.is_all else True
-            _user = create_new_user(db, new_user=user_model, is_spam=is_spam)
-            if isinstance(_user, ValueError):
-                form.__dict__.get("errors").append(f"{form.email} email already exists !")
-                return templates.TemplateResponse("users/subscribe.html", form.__dict__)
-            if _user:
-                confirmation = Auth.get_confirmation_token(_user["id"])
-                try:
-                    print("prediction", prediction)
-                    if not is_spam:
-                        email = Email(settings.mail_sender, settings.mail_sender_password)
-                        email.send_confirmation_message(confirmation["token"], form.email)
-                    return templates.TemplateResponse(
-                        "users/success.html",
-                        {
-                            "request": request,
-                            "msg": "registration successful",
-                            "email": form.email,
-                        },
-                    )
-                except Exception as e:
-                    print(e)
-                    return templates.TemplateResponse(
-                        "users/error_page.html",
-                        {
-                            "request": request,
-                            "msg": "an error has occurred, email couldn't be send,please make sure your email is "
-                            "correct",
-                        },
-                    )
+def subscribe(request: Request, user: UserCreate, db=Depends(get_db)):
+    try:
+        if not user.job_description and user.is_all is False:
+            return JSONResponse(content={"error": "Please either select 'Send all new jobs to my email' or write your "
+                                                  "criteria in the space provided"},
+                                status_code=400)
+        spam_detector_model = spam_detector["model"]
+        user_df = pd.DataFrame([user.dict()])
+        prediction = spam_detector_model.predict_proba(user_df)[:, 1][0]
+        is_spam = False if prediction < 0.63 or user.is_all else True
+        _user = create_new_user(db, new_user=user, is_spam=is_spam)
+        if isinstance(_user, ValueError):
+            return JSONResponse(content={"error": str(_user)}, status_code=400)
+        if _user:
+            confirmation = Auth.get_confirmation_token(_user["id"])
+            try:
+                print("prediction", prediction)
+                if not is_spam:
+                    email = Email(settings.mail_sender, settings.mail_sender_password)
+                    email.send_confirmation_message(confirmation["token"], user.email)
+                return JSONResponse(content={
+                    "success": f"Successfully subscribed. Verification email has been sent to {user.email}. Please "
+                               f"check your inbox and spam folder."}
+                    , status_code=200)
+            except Exception as e:
+                print(e)
+                return JSONResponse(content={"error": f"an error occurred, please try again later"}, status_code=400)
 
-        except ValidationError as e:
-            print(e)
-            form.__dict__.get("errors").append(f"{form.email} is not a valid email address")
-            return templates.TemplateResponse("home/index.html", form.__dict__)
-
-    return templates.TemplateResponse("home/index.html", form.__dict__)
+    except Exception as e:
+        print(e)
+        raise HTTPException(status_code=400, detail="An error occurred while creating your account. Try again later")
+#
+    # return templates.TemplateResponse("home/index.html", form.__dict__)
 
 
 @router.get("/verify/{token}")
@@ -143,13 +130,12 @@ async def verify(request: Request, token: str, db=Depends(get_db)):
 
 @router.get("/unsubscribe/{token}")
 async def unsubscribe(request: Request, token: str, db=Depends(get_db)):
-
     s = URLSafeSerializer(settings.secret_key, salt="unsubscribe")
 
     try:
         email = s.loads(token)
         user = get_user_by_email(db, email)
-        update_org_status(db, user["id"], status=False)
+        update_user_status(db, user["id"], status=False)
         return templates.TemplateResponse(
             "users/success.html",
             {"request": request, "msg": "successfully unsubscribed"},
@@ -213,11 +199,11 @@ async def edit_job_alert(request: Request, follows: List[str] = Form(...), db=De
             updated_alert = update_job_alert(db, user)
             email = Email(settings.mail_sender, settings.mail_sender_password)
             if (
-                updated_alert["is_active"]
-                and updated_alert["first_name"]
-                and updated_alert["last_name"]
-                and updated_alert["user_location"]
-                and updated_alert["qualification"]
+                    updated_alert["is_active"]
+                    and updated_alert["first_name"]
+                    and updated_alert["last_name"]
+                    and updated_alert["user_location"]
+                    and updated_alert["qualification"]
             ):
                 body = "<p>Thank you for updating your profile<br>Download your free CV template here " "<br></p>"
 
@@ -273,7 +259,7 @@ async def follow_organization(request: Request, email: str = Form(...), org: Lis
                     {
                         "request": request,
                         "msg": "an error has occurred, email couldn't be send,please make sure your email is "
-                        "correct",
+                               "correct",
                     },
                 )
             return templates.TemplateResponse(
@@ -299,7 +285,7 @@ async def follow_organization(request: Request, email: str = Form(...), org: Lis
                     {
                         "request": request,
                         "msg": "an error has occurred, email couldn't be send,please make sure your email is "
-                        "correct",
+                               "correct",
                     },
                 )
             return templates.TemplateResponse(
