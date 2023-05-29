@@ -71,7 +71,7 @@ def subscribe(request: Request, user: UserCreate, db=Depends(get_db)):
                 print("prediction", prediction)
                 if not is_spam:
                     email = Email(settings.mail_sender, settings.mail_sender_password)
-                    # email.send_confirmation_message(confirmation["token"], user.email)
+                    email.send_confirmation_message(confirmation["token"], user.email)
                 return JSONResponse(content={
                     "success": f"Successfully subscribed. Verification email has been sent to {user.email}. Please "
                                f"check your inbox and spam folder."}
