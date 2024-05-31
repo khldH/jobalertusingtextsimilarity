@@ -34,9 +34,9 @@ def create_organization(request: Request, org: OrganizationCreate, db=Depends(ge
             email = Email(
                 settings.mail_sender, settings.mail_sender_password
             )
-            # email.send_confirmation_message(
-            #     confirmation["token"], org.email, is_subscriber=False, subject="Activate your account",
-            # )
+            email.send_confirmation_message(
+                confirmation["token"], org.email, is_subscriber=False, subject="Activate your account",
+            )
             return JSONResponse(content={
                 "success": f"Account created successfully. Verification email has been sent to {org.email}. Please "
                            f"check your inbox and spam folder."}
