@@ -8,7 +8,7 @@ from .config import settings
 
 
 class Email:
-    def __init__(self, usr, pwd, server="smtp.gmail.com", port=587):
+    def __init__(self, usr, pwd, server="smtppro.zoho.eu", port=587):
         self.user = usr
         self.password = pwd
         self.server = server
