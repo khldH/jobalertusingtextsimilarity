@@ -114,12 +114,12 @@ async def verify(request: Request, token: str, db=Depends(get_db)):
         update_user_status(db, _user["id"])
         body = "<p>Thank you for verifying your email. Click this link to download your free cv template</p>"
         email = Email(settings.mail_sender, settings.mail_sender_password)
-        email.send_resource(
-            resource="https://drive.google.com/uc?export=download&id=1aJGlSLjlgHU62awmazd-COzt6IWgcq32",
-            subject="Download your free example CV",
-            body=body,
-            mail_to=_user["email"],
-        )
+        # email.send_resource(
+        #     resource="https://drive.google.com/uc?export=download&id=1aJGlSLjlgHU62awmazd-COzt6IWgcq32",
+        #     subject="Download your free example CV",
+        #     body=body,
+        #     mail_to=_user["email"],
+        # )
         return templates.TemplateResponse(
             "users/success.html",
             {"request": request, "msg": "verification successful"},

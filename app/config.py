@@ -5,17 +5,17 @@ from pydantic import BaseSettings
 
 
 class Settings(BaseSettings):
-    database_hostname: str
-    database_port: str
-    database_password: str
-    database_name: str
-    database_username: str
+    # database_hostname: str
+    # database_port: str
+    # database_password: str
+    # database_name: str
+    # database_username: str
     aws_region_name: str
     aws_access_key_id: str
     aws_secret_access_key: str
     endpoint_url: str = None
     host = "localhost"
-    port = 8001
+    port = 8080
     mail_sender: str
     mail_sender_password: str
     smtp_server: str
