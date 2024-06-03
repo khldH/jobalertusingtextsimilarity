@@ -10,34 +10,38 @@
 
 <div class="container">
     <!-- Success message -->
-    <div class="alert alert-success text-center" role="alert" id="success-message" style="display:none">
-        Form submitted successfully!
-    </div>
-    <div id="error-message"></div>
-    <div class="card">
-        <div class="card-header">
-            <h4>Enter Email and Job Description</h4>
-        </div>
-        <div class="card-body">
-            <form id="myForm">
-                <div class="form-group">
-                    <label for="email">Email:</label>
-                    <input type="email" class="form-control" id="email" name="email" placeholder="Enter email" required>
-                </div>
-                <div class="form-group">
-                    <label for="job">Job Description:</label>
-                    <textarea class="form-control" id="job" name="job" placeholder="Enter job description"
-                              required></textarea>
-                </div>
-                <div class="form-group form-check">
-                    <input type="checkbox" class="form-check-input" id="agreement">
-                    <label class="form-check-label" for="agreement">I agree to the terms and conditions</label>
-                </div>
-                <button type="submit" class="btn btn-primary">Submit</button>
-            </form>
-        </div>
-    </div>
+<!--    <div class="alert alert-success text-center" role="alert" id="success-message" style="display:none">-->
+<!--        Form submitted successfully!-->
+<!--    </div>-->
+<!--    <div id="error-message"></div>-->
+<!--    <div class="card">-->
+<!--        <div class="card-header">-->
+<!--            <h4>Enter Email and Job Description</h4>-->
+<!--        </div>-->
+<!--        <div class="card-body">-->
+<!--            <form id="myForm">-->
+<!--                <div class="form-group">-->
+<!--                    <label for="email">Email:</label>-->
+<!--                    <input type="email" class="form-control" id="email" name="email" placeholder="Enter email" required>-->
+<!--                </div>-->
+<!--                <div class="form-group">-->
+<!--                    <label for="job">Job Description:</label>-->
+<!--                    <textarea class="form-control" id="job" name="job" placeholder="Enter job description"-->
+<!--                              required></textarea>-->
+<!--                </div>-->
+<!--                <div class="form-group form-check">-->
+<!--                    <input type="checkbox" class="form-check-input" id="agreement">-->
+<!--                    <label class="form-check-label" for="agreement">I agree to the terms and conditions</label>-->
+<!--                </div>-->
+<!--                <button type="submit" class="btn btn-primary">Submit</button>-->
+<!--            </form>-->
+<!--        </div>-->
+<!--    </div>-->
     <!-- Overlay spinner -->
+     <div class="alert alert-success text-center" role="alert" id="success-message" style="display:none">
+        </div>
+        <div class="alert alert-danger text-center" role="alert" id="error-message" style="display:none">
+        </div>
     <div class="overlay" id="overlay">
         <div class="d-flex justify-content-center align-items-center h-100">
             <div class="spinner-border text-primary" role="status">
@@ -62,22 +66,24 @@
                     <p class="font-weight-light">subscribe and get new job alerts by email</p>
                 </div>
             </div>
+
             <div class="card-body">
-                <form method="POST">
+                <form  action="/subscribe"  method="POST" id="subform">
                     <!--        <div class="mb-3">-->
                     <!--          <label>Name</label>-->
                     <!--          <input type="text" required class="form-control" name="name" value="{{name}}" placeholder="name">-->
                     <!--        </div>-->
                     <div class="mb-3">
                         <!--          <label>Email</label>-->
-                        <input type="text" required placeholder="Your email" name="email" value="{{email}}"
+                        <input type="text" required placeholder="Your email" name="email" value="{{email}}" id = "email"
                                class="form-control">
                     </div>
                     <div class="mb-3">
                         <!--          <label>Job Description</label>-->
                         <input type="text-area" required placeholder="title, keyword, organization or location"
-                               value="{{job_description}}" name="job_description" class="form-control">
+                               value="{{job_description}}" name="job_description" id ="job_description" class="form-control">
                     </div>
+
                     <button type="submit" class="btn btn-outline-secondary ">Send me new jobs</button>
                 </form>
             </div>
@@ -88,7 +94,45 @@
 </div>
 
 
-<!--<script type="text/javascript">-->
-<!--</script>-->
+<script>
+    $(document).ready(function() {
+            $('#subform').on('submit', function(event) {
+                event.preventDefault();
+
+                const data = {
+                    email: $('#email').val(),
+                    job_description: $('#job_description').val()
+                };
+
+                $.ajax({
+                    url: '/subscribe',
+                    type: 'POST',
+                    contentType: 'application/json',
+                    data: JSON.stringify(data),
+                    success: function(response) {
+                        $('#error-message').fadeOut();
+						// Hide overlay spinner
+						$('#overlay').fadeOut(function() {
+                                // show the success message for a few seconds
+                              $('#success-message').html('Successfully subscribed. Verification email has been sent to ' + data.email + '. Please check your inbox and spam folder.');
+                              $('#success-message').fadeIn(500).delay(5000).fadeOut()
+                              // Enable form elements
+						       $('#subform :input').prop('disabled', false);
+                                // Clear form inputs
+                                $('#subform')[0].reset();
+                                $(".job-description").removeAttr("style");
+                              });
+                    },
+                    error: function(xhr) {
+                        let errorMessage = 'Subscription failed. Please try again.';
+                        var errorResponse = JSON.parse(xhr.responseText);
+                        console.log(errorResponse.error);
+                        alert(`Subscription failed: ${errorResponse.error}`);
+                    }
+                });
+            });
+        });
+
+</script><!--</script>-->
 
 {% endblock %}

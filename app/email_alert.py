@@ -31,8 +31,7 @@ class Email:
     def send_confirmation_message(self, token: str,
                                   mail_to: str,
                                   is_subscriber: bool = True,
-                                  subject: str = "Activate your account and get a sample CV chosen by an expert "
-                                                 "recruiter"):
+                                  subject: str = "Activate your account to start receiving job alerts"):
         confirmation_url = "{}/verify/{}".format(settings.base_url, token)
         if not is_subscriber:
             confirmation_url = "{}/org/verify/{}".format(settings.base_url, token)
