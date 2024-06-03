@@ -321,13 +321,13 @@
                 </div>
 
                 <div class="card-body">
-                    <form action="/subscribe" method="POST">
+                    <form action="/subscribe" method="POST" id ='subform'>
                         <div class="mb-3">
                             <input class="form-control" name="email" placeholder="email address" required type="text"
-                                   value="{{email}}">
+                                   value="{{email}}" id="email_">
                         </div>
                         <div class="mb-3">
-                            <input class="form-control" name="job_description" placeholder="write a summary" required
+                            <input class="form-control" name="job_description" id="job_description_" placeholder="write a summary" required
                                    type="hidden" value="{{query}}">
                         </div>
                         <div class="mb-3">
@@ -383,6 +383,40 @@
 </div>
 </div>
 <script type="text/javascript">
+
+
+$(document).ready(function() {
+            $('#subform').on('submit', function(event) {
+                event.preventDefault();
+
+                const data = {
+                    email: $('#email_').val(),
+                    job_description: $('#job_description_').val()
+                };
+                console.log(data)
+                $.ajax({
+                    url: '/subscribe',
+                    type: 'POST',
+                    contentType: 'application/json',
+                    data: JSON.stringify(data),
+                    success: function(response) {
+                        alert('Subscription successful!, verification email has been sent to your email');
+                        $('#subform')[0].reset();
+                    },
+                    error: function(xhr) {
+                        let errorMessage = 'Subscription failed. Please try again.';
+                        var errorResponse = JSON.parse(xhr.responseText);
+                        console.log(errorResponse.error);
+                        alert(`Subscription failed: ${errorResponse.error}`);
+                    }
+                });
+            });
+        });
+
+
+
+
+
 
 
 $(document).ready(function () {

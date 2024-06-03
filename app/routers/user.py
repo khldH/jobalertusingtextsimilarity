@@ -6,7 +6,7 @@ import joblib
 import numpy as np
 import pandas as pd
 from fastapi import APIRouter, Depends, Form, HTTPException, Request
-from fastapi.responses import HTMLResponse, JSONResponse
+from fastapi.responses import HTMLResponse, JSONResponse, ORJSONResponse
 from fastapi.templating import Jinja2Templates
 from itsdangerous import BadData, URLSafeSerializer
 from jose import jwt
@@ -53,6 +53,7 @@ def subscribe(request: Request):
 
 @router.post("/subscribe")
 def subscribe(request: Request, user: UserCreate, db=Depends(get_db)):
+    print(user)
     try:
         if not user.job_description and user.is_all is False:
             return JSONResponse(content={"error": "Please either select 'Send all new jobs to my email' or write your "
@@ -63,6 +64,7 @@ def subscribe(request: Request, user: UserCreate, db=Depends(get_db)):
         prediction = spam_detector_model.predict_proba(user_df)[:, 1][0]
         is_spam = False if prediction < 0.63 or user.is_all else True
         _user = create_new_user(db, new_user=user, is_spam=is_spam)
+        print(_user)
         if isinstance(_user, ValueError):
             return JSONResponse(content={"error": str(_user)}, status_code=400)
         if _user:
@@ -83,8 +85,10 @@ def subscribe(request: Request, user: UserCreate, db=Depends(get_db)):
     except Exception as e:
         print(e)
         raise HTTPException(status_code=400, detail="An error occurred while creating your account. Try again later")
+
+
 #
-    # return templates.TemplateResponse("home/index.html", form.__dict__)
+# return templates.TemplateResponse("home/index.html", form.__dict__)
 
 
 @router.get("/verify/{token}")
